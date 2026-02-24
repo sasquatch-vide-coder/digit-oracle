@@ -1,0 +1,132 @@
+name: Spot47
+options:
+  bundleIdPrefix: com.spot47
+  deploymentTarget:
+    iOS: "18.0"
+  xcodeVersion: "15.0"
+  generateEmptyDirectories: true
+
+settings:
+  base:
+    SWIFT_VERSION: "5.9"
+    DEVELOPMENT_TEAM: "NCGL2D534N"
+
+targets:
+  Spot47:
+    type: application
+    platform: iOS
+    sources:
+      - path: Spot47
+      - path: Spot47Intents
+    entitlements:
+      path: Spot47/Spot47.entitlements
+      properties:
+        com.apple.security.application-groups:
+          - group.com.spot47.app
+    settings:
+      base:
+        INFOPLIST_FILE: Spot47/Info.plist
+        PRODUCT_BUNDLE_IDENTIFIER: com.spot47.app
+        MARKETING_VERSION: "1.0.0"
+        CURRENT_PROJECT_VERSION: "1"
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+    info:
+      path: Spot47/Info.plist
+      properties:
+        CFBundleDevelopmentRegion: en
+        CFBundleDisplayName: Spot47
+        CFBundleExecutable: $(EXECUTABLE_NAME)
+        CFBundleIdentifier: $(PRODUCT_BUNDLE_IDENTIFIER)
+        CFBundleInfoDictionaryVersion: "6.0"
+        CFBundleName: $(PRODUCT_NAME)
+        CFBundlePackageType: APPL
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        LSRequiresIPhoneOS: true
+        UIApplicationSceneManifest:
+          UIApplicationSupportsMultipleScenes: false
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+        UISupportedInterfaceOrientations~ipad:
+          - UIInterfaceOrientationPortrait
+          - UIInterfaceOrientationPortraitUpsideDown
+          - UIInterfaceOrientationLandscapeLeft
+          - UIInterfaceOrientationLandscapeRight
+        UILaunchScreen: {}
+        NSCameraUsageDescription: "Spot47 needs camera access to capture 47 sightings"
+        NSPhotoLibraryUsageDescription: "Spot47 needs photo library access to import 47 sightings"
+        NSLocationWhenInUseUsageDescription: "Spot47 uses your location to tag where you spotted a 47"
+    dependencies:
+      - target: Spot47Widget
+        embed: true
+      - target: Spot47ShareExtension
+        embed: true
+
+  Spot47Widget:
+    type: app-extension
+    platform: iOS
+    sources:
+      - path: Spot47Widget
+    entitlements:
+      path: Spot47Widget/Spot47Widget.entitlements
+      properties:
+        com.apple.security.application-groups:
+          - group.com.spot47.app
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.spot47.app.widget
+        MARKETING_VERSION: "1.0.0"
+        CURRENT_PROJECT_VERSION: "1"
+        INFOPLIST_FILE: Spot47Widget/Info.plist
+    info:
+      path: Spot47Widget/Info.plist
+      properties:
+        CFBundleDevelopmentRegion: en
+        CFBundleDisplayName: Spot47 Widgets
+        CFBundleExecutable: $(EXECUTABLE_NAME)
+        CFBundleIdentifier: $(PRODUCT_BUNDLE_IDENTIFIER)
+        CFBundleInfoDictionaryVersion: "6.0"
+        CFBundleName: $(PRODUCT_NAME)
+        CFBundlePackageType: XPC!
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.widgetkit-extension
+
+  Spot47ShareExtension:
+    type: app-extension
+    platform: iOS
+    sources:
+      - path: Spot47ShareExtension
+      - path: Spot47/Services/PendingSightingService.swift
+      - path: Spot47/Utilities/Constants.swift
+    entitlements:
+      path: Spot47ShareExtension/Spot47ShareExtension.entitlements
+      properties:
+        com.apple.security.application-groups:
+          - group.com.spot47.app
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.spot47.app.share
+        MARKETING_VERSION: "1.0.0"
+        CURRENT_PROJECT_VERSION: "1"
+        INFOPLIST_FILE: Spot47ShareExtension/Info.plist
+    info:
+      path: Spot47ShareExtension/Info.plist
+      properties:
+        CFBundleDevelopmentRegion: en
+        CFBundleDisplayName: Spot47
+        CFBundleExecutable: $(EXECUTABLE_NAME)
+        CFBundleIdentifier: $(PRODUCT_BUNDLE_IDENTIFIER)
+        CFBundleInfoDictionaryVersion: "6.0"
+        CFBundleName: $(PRODUCT_NAME)
+        CFBundlePackageType: XPC!
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        NSExtension:
+          NSExtensionAttributes:
+            NSExtensionActivationRule:
+              NSExtensionActivationSupportsImageWithMaxCount: 1
+          NSExtensionPointIdentifier: com.apple.share-services
+          NSExtensionPrincipalClass: $(PRODUCT_MODULE_NAME).ShareViewController
