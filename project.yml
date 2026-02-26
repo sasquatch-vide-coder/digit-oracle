@@ -1,6 +1,6 @@
-name: Spot47
+name: BinaryCurious
 options:
-  bundleIdPrefix: com.spot47
+  bundleIdPrefix: com.binarycurious
   deploymentTarget:
     iOS: "18.0"
   xcodeVersion: "15.0"
@@ -12,30 +12,30 @@ settings:
     DEVELOPMENT_TEAM: "NCGL2D534N"
 
 targets:
-  Spot47:
+  BinaryCurious:
     type: application
     platform: iOS
     sources:
-      - path: Spot47
-      - path: Spot47Intents
+      - path: BinaryCurious
+      - path: BinaryCuriousIntents
     entitlements:
-      path: Spot47/Spot47.entitlements
+      path: BinaryCurious/BinaryCurious.entitlements
       properties:
         com.apple.security.application-groups:
-          - group.com.spot47.app
+          - group.com.binarycurious.app
     settings:
       base:
-        INFOPLIST_FILE: Spot47/Info.plist
-        PRODUCT_BUNDLE_IDENTIFIER: com.spot47.app
-        MARKETING_VERSION: "1.0.0"
+        INFOPLIST_FILE: BinaryCurious/Info.plist
+        PRODUCT_BUNDLE_IDENTIFIER: com.binarycurious.app
+        MARKETING_VERSION: "0.47.0"
         CURRENT_PROJECT_VERSION: "1"
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
     info:
-      path: Spot47/Info.plist
+      path: BinaryCurious/Info.plist
       properties:
         CFBundleDevelopmentRegion: en
-        CFBundleDisplayName: Spot47
+        CFBundleDisplayName: Binary Curious
         CFBundleExecutable: $(EXECUTABLE_NAME)
         CFBundleIdentifier: $(PRODUCT_BUNDLE_IDENTIFIER)
         CFBundleInfoDictionaryVersion: "6.0"
@@ -54,36 +54,36 @@ targets:
           - UIInterfaceOrientationLandscapeLeft
           - UIInterfaceOrientationLandscapeRight
         UILaunchScreen: {}
-        NSCameraUsageDescription: "Spot47 needs camera access to capture 47 sightings"
-        NSPhotoLibraryUsageDescription: "Spot47 needs photo library access to import 47 sightings"
-        NSLocationWhenInUseUsageDescription: "Spot47 uses your location to tag where you spotted a 47"
+        NSCameraUsageDescription: "Binary Curious needs camera access to capture number sightings"
+        NSPhotoLibraryUsageDescription: "Binary Curious needs photo library access to import number sightings"
+        NSLocationWhenInUseUsageDescription: "Binary Curious uses your location to tag where you spotted a number"
     dependencies:
-      - target: Spot47Widget
+      - target: BinaryCuriousWidget
         embed: true
-      - target: Spot47ShareExtension
+      - target: BinaryCuriousShareExtension
         embed: true
 
-  Spot47Widget:
+  BinaryCuriousWidget:
     type: app-extension
     platform: iOS
     sources:
-      - path: Spot47Widget
+      - path: BinaryCuriousWidget
     entitlements:
-      path: Spot47Widget/Spot47Widget.entitlements
+      path: BinaryCuriousWidget/BinaryCuriousWidget.entitlements
       properties:
         com.apple.security.application-groups:
-          - group.com.spot47.app
+          - group.com.binarycurious.app
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.spot47.app.widget
-        MARKETING_VERSION: "1.0.0"
+        PRODUCT_BUNDLE_IDENTIFIER: com.binarycurious.app.widget
+        MARKETING_VERSION: "0.47.0"
         CURRENT_PROJECT_VERSION: "1"
-        INFOPLIST_FILE: Spot47Widget/Info.plist
+        INFOPLIST_FILE: BinaryCuriousWidget/Info.plist
     info:
-      path: Spot47Widget/Info.plist
+      path: BinaryCuriousWidget/Info.plist
       properties:
         CFBundleDevelopmentRegion: en
-        CFBundleDisplayName: Spot47 Widgets
+        CFBundleDisplayName: Binary Curious Widgets
         CFBundleExecutable: $(EXECUTABLE_NAME)
         CFBundleIdentifier: $(PRODUCT_BUNDLE_IDENTIFIER)
         CFBundleInfoDictionaryVersion: "6.0"
@@ -94,29 +94,29 @@ targets:
         NSExtension:
           NSExtensionPointIdentifier: com.apple.widgetkit-extension
 
-  Spot47ShareExtension:
+  BinaryCuriousShareExtension:
     type: app-extension
     platform: iOS
     sources:
-      - path: Spot47ShareExtension
-      - path: Spot47/Services/PendingSightingService.swift
-      - path: Spot47/Utilities/Constants.swift
+      - path: BinaryCuriousShareExtension
+      - path: BinaryCurious/Services/PendingSightingService.swift
+      - path: BinaryCurious/Utilities/Constants.swift
     entitlements:
-      path: Spot47ShareExtension/Spot47ShareExtension.entitlements
+      path: BinaryCuriousShareExtension/BinaryCuriousShareExtension.entitlements
       properties:
         com.apple.security.application-groups:
-          - group.com.spot47.app
+          - group.com.binarycurious.app
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.spot47.app.share
-        MARKETING_VERSION: "1.0.0"
+        PRODUCT_BUNDLE_IDENTIFIER: com.binarycurious.app.share
+        MARKETING_VERSION: "0.47.0"
         CURRENT_PROJECT_VERSION: "1"
-        INFOPLIST_FILE: Spot47ShareExtension/Info.plist
+        INFOPLIST_FILE: BinaryCuriousShareExtension/Info.plist
     info:
-      path: Spot47ShareExtension/Info.plist
+      path: BinaryCuriousShareExtension/Info.plist
       properties:
         CFBundleDevelopmentRegion: en
-        CFBundleDisplayName: Spot47
+        CFBundleDisplayName: Binary Curious
         CFBundleExecutable: $(EXECUTABLE_NAME)
         CFBundleIdentifier: $(PRODUCT_BUNDLE_IDENTIFIER)
         CFBundleInfoDictionaryVersion: "6.0"

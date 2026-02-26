@@ -9,24 +9,24 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 xcodegen generate
 
 # Build main app (includes widget + share extension)
-xcodebuild -project Spot47.xcodeproj -scheme Spot47 -destination 'platform=iOS Simulator,name=iPhone 17 Pro' build
+xcodebuild -project BinaryCurious.xcodeproj -scheme BinaryCurious -destination 'platform=iOS Simulator,name=iPhone 17 Pro' build
 
 # Install and run on booted simulator
 xcrun simctl install booted <path-to-built-.app>
-xcrun simctl launch booted com.spot47.app
+xcrun simctl launch booted com.binarycurious.app
 ```
 
-The project uses **xcodegen** — the Xcode project is generated from `project.yml`. Never edit `Spot47.xcodeproj` directly; always modify `project.yml` and regenerate.
+The project uses **xcodegen** — the Xcode project is generated from `project.yml`. Never edit `BinaryCurious.xcodeproj` directly; always modify `project.yml` and regenerate.
 
 ## Architecture
 
-**Spot47** is an iOS 18+ app (Swift 5.9, SwiftUI, SwiftData) for tracking sightings of the number 47. It has three targets sharing an App Group (`group.com.spot47.app`):
+**Binary Curious** is an iOS 18+ app (Swift 5.9, SwiftUI, SwiftData) for tracking sightings of the number 47. It has three targets sharing an App Group (`group.com.binarycurious.app`):
 
 | Target | Bundle ID | Purpose |
 |--------|-----------|---------|
-| Spot47 | com.spot47.app | Main app |
-| Spot47Widget | com.spot47.app.widget | Home/Lock Screen widgets |
-| Spot47ShareExtension | com.spot47.app.share | Share sheet for importing images |
+| BinaryCurious | com.binarycurious.app | Main app |
+| BinaryCuriousWidget | com.binarycurious.app.widget | Home/Lock Screen widgets |
+| BinaryCuriousShareExtension | com.binarycurious.app.share | Share sheet for importing images |
 
 ### Data Flow Between Targets
 
@@ -37,7 +37,7 @@ Extensions **cannot** access the main app's Documents directory or SwiftData sto
 
 ### SwiftData Models
 
-Schema defined in `Spot47App.swift`: `Sighting`, `Album`, `Tag`, `UserProfile`, `Achievement`, `Challenge`, `TimeCapsule`. Relationships use `deleteRule: .nullify` with explicit inverse paths.
+Schema defined in `BinaryCuriousApp.swift`: `Sighting`, `Album`, `Tag`, `UserProfile`, `Achievement`, `Challenge`, `TimeCapsule`. Relationships use `deleteRule: .nullify` with explicit inverse paths.
 
 ### Image Storage
 
@@ -66,7 +66,7 @@ Images are stored on disk at `Documents/SightingImages/`, **not** in SwiftData. 
 
 ### Navigation
 
-`ContentView` uses `TabView` with `AppTab` enum: `.sightings`, `.capture`, `.albums`, `.profile`. Deep links via `spot47://` scheme handled in `Spot47App.handleDeepLink()`.
+`ContentView` uses `TabView` with `AppTab` enum: `.sightings`, `.capture`, `.albums`, `.profile`. Deep links via `binarycurious://` scheme handled in `BinaryCuriousApp.handleDeepLink()`.
 
 ## Patterns to Follow
 

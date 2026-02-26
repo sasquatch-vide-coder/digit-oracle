@@ -16,5 +16,8 @@ xcuserdata/
 Packages/
 Package.resolved
 
+# Secrets
+.env
+
 # Generated
-Spot47/Info.plist
+BinaryCurious/Info.plist
