@@ -5,7 +5,7 @@ import SwiftData
 struct BinaryCuriousApp: App {
     let container: ModelContainer
 
-    @State private var selectedTab: AppTab = .sightings
+    @State private var selectedTab: AppTab = .capture
 
     init() {
         let schema = Schema([

@@ -11,15 +11,15 @@ struct ContentView: View {
 
     var body: some View {
         TabView(selection: $selectedTab) {
-            Tab("Sightings", systemImage: "eye", value: .sightings) {
-                NavigationStack {
-                    SightingListView()
-                }
-            }
-
             Tab("Capture", systemImage: "camera.fill", value: .capture) {
                 NavigationStack {
                     CaptureView()
+                }
+            }
+
+            Tab("Sightings", systemImage: "eye", value: .sightings) {
+                NavigationStack {
+                    SightingListView()
                 }
             }
 
@@ -121,5 +121,5 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView(selectedTab: .constant(.sightings))
+    ContentView(selectedTab: .constant(.capture))
 }

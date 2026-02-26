@@ -1,8 +1,8 @@
 import SwiftUI
 
 enum AppTab: String, CaseIterable {
-    case sightings
     case capture
+    case sightings
     case albums
     case profile
 

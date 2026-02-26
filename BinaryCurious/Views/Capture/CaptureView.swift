@@ -203,7 +203,7 @@ struct CaptureView: View {
     }
 
     private var controlBar: some View {
-        HStack(spacing: 40) {
+        HStack {
             PhotosPicker(selection: $selectedItem, matching: .images) {
                 VStack(spacing: 4) {
                     Image(systemName: "photo.on.rectangle.angled")
@@ -220,6 +220,8 @@ struct CaptureView: View {
                 Task { await loadFromLibrary(newItem) }
             }
 
+            Spacer()
+
             Button {
                 Task { await capturePhoto() }
             } label: {
@@ -233,8 +235,13 @@ struct CaptureView: View {
                 }
             }
 
+            Spacer()
+
+            // Invisible counterweight to center the capture button
+            Color.clear
+                .frame(width: 50, height: 50)
         }
-        .padding(.horizontal, 40)
+        .padding(.horizontal, 20)
     }
 
     // MARK: - Focus Widget
