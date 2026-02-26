@@ -65,6 +65,17 @@ final class ImageStorageService {
         try? deleteImage(fileName: thumbFileName)
     }
 
+    func deleteAllImages() {
+        guard let contents = try? fileManager.contentsOfDirectory(
+            at: imagesDirectory,
+            includingPropertiesForKeys: nil,
+            options: .skipsHiddenFiles
+        ) else { return }
+        for url in contents {
+            try? fileManager.removeItem(at: url)
+        }
+    }
+
     // MARK: - Stats
 
     struct StorageStats {

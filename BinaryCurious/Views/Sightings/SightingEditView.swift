@@ -9,7 +9,6 @@ struct SightingEditView: View {
 
     @State private var notes: String = ""
     @State private var selectedCategory: SightingCategory?
-    @State private var rarityScore: Int = 1
     @State private var newTagName: String = ""
     @State private var tagNames: [String] = []
     @State private var selectedAlbumIDs: Set<UUID> = []
@@ -20,7 +19,6 @@ struct SightingEditView: View {
                 MetadataFormView(
                     notes: $notes,
                     selectedCategory: $selectedCategory,
-                    rarityScore: $rarityScore,
                     newTagName: $newTagName,
                     tagNames: $tagNames,
                     selectedAlbumIDs: $selectedAlbumIDs
@@ -45,7 +43,6 @@ struct SightingEditView: View {
     private func populateFromSighting() {
         notes = sighting.notes
         selectedCategory = sighting.category.flatMap { SightingCategory(rawValue: $0) }
-        rarityScore = sighting.rarityScore
         tagNames = sighting.tags.map(\.name)
         selectedAlbumIDs = Set(sighting.albums.map(\.id))
     }
@@ -53,7 +50,6 @@ struct SightingEditView: View {
     private func save() {
         sighting.notes = notes
         sighting.category = selectedCategory?.rawValue
-        sighting.rarityScore = rarityScore
         sighting.updatedAt = .now
 
         // Sync tags: remove old, add new

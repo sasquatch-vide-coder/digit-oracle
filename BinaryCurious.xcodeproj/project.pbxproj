@@ -56,7 +56,6 @@
 		954858970191400DB3D9BBEF /* PendingSightingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FCE3121C12291DEB40431EF /* PendingSightingService.swift */; };
 		959382FAD8C2D085FD21DB62 /* Date+Formatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AC98B58E10183DD3D19ABA5 /* Date+Formatting.swift */; };
 		95EF4ED5829903681F9954AC /* SightingRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDC303E42915DB980FEBCB66 /* SightingRowView.swift */; };
-		968D9DAD7193DDD303C4DC03 /* RarityPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4A6849241098FD515699990 /* RarityPickerView.swift */; };
 		9FA4DC98932E7866C8809A31 /* CaptureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87E08D5BB87795190E3E2F65 /* CaptureView.swift */; };
 		A557540183ED41CAD13E6B8C /* ImageStorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE9514F0DE5565179E230A95 /* ImageStorageService.swift */; };
 		AAF07FE41F4883215B4EDA3C /* WrappedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8352F1B6B9F146FFDC193228 /* WrappedView.swift */; };
@@ -177,7 +176,6 @@
 		BDC303E42915DB980FEBCB66 /* SightingRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SightingRowView.swift; sourceTree = "<group>"; };
 		C34DEE619A0FFA3B620311C1 /* AlbumDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumDetailView.swift; sourceTree = "<group>"; };
 		C45BFBC740E82278E6626533 /* BinaryCuriousWidgets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BinaryCuriousWidgets.swift; sourceTree = "<group>"; };
-		C4A6849241098FD515699990 /* RarityPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RarityPickerView.swift; sourceTree = "<group>"; };
 		C9876293188B1906C6372AAC /* SightingEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SightingEditView.swift; sourceTree = "<group>"; };
 		CA92C7ED40AF03C507F81EDB /* CalendarHeatmapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarHeatmapView.swift; sourceTree = "<group>"; };
 		CB4B44A0F108ABF51761FE68 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
@@ -214,7 +212,6 @@
 				1AF69D5B2C248CC054B2994C /* LiveDetectorView.swift */,
 				A94FEEAED4FD55B0717449A8 /* MetadataFormView.swift */,
 				EA9FCDCBC6F495A3CD5B52B9 /* PhotoReviewView.swift */,
-				C4A6849241098FD515699990 /* RarityPickerView.swift */,
 			);
 			path = Capture;
 			sourceTree = "<group>";
@@ -678,7 +675,6 @@
 				6E13B1B65476F9694F2E8805 /* PhotoReviewView.swift in Sources */,
 				E6BFE03F9B0F4BED0AC0BFF9 /* PreviewSampleData.swift in Sources */,
 				5D40EDB6BE24FACEF4D6ABC1 /* RarityCalculator.swift in Sources */,
-				968D9DAD7193DDD303C4DC03 /* RarityPickerView.swift in Sources */,
 				AF8DA6536F968465262BE575 /* ScanResultCard.swift in Sources */,
 				7980C00270AA3F7AAF7586BD /* SettingsView.swift in Sources */,
 				DBBF43E4789044586A7989D7 /* Sighting.swift in Sources */,

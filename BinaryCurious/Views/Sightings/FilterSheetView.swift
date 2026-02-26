@@ -7,7 +7,7 @@ struct SightingFilter {
     var verifiedOnly: Bool = false
     var favoritesOnly: Bool = false
     var albumID: UUID?
-    var sortOption: SortOption = .dateNewest
+    var sortOption: SortOption = .mostMatches
 
     var isActive: Bool {
         category != nil || minRarity != nil || verifiedOnly || favoritesOnly || albumID != nil
@@ -22,6 +22,7 @@ struct SightingFilter {
     }
 
     enum SortOption: String, CaseIterable {
+        case mostMatches = "Most Matches"
         case dateNewest = "Newest First"
         case dateOldest = "Oldest First"
         case rarityHighest = "Rarest First"

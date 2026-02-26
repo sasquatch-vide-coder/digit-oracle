@@ -30,8 +30,18 @@ final class OCRService {
                     return
                 }
 
+                // For each observation, prefer a candidate that contains a tracked pattern
                 let allText = observations
-                    .compactMap { $0.topCandidates(1).first?.string }
+                    .compactMap { observation -> String? in
+                        let candidates = observation.topCandidates(5)
+                        guard !candidates.isEmpty else { return nil }
+                        for candidate in candidates {
+                            if patterns.contains(where: { candidate.string.contains($0) }) {
+                                return candidate.string
+                            }
+                        }
+                        return candidates.first?.string
+                    }
                     .joined(separator: " ")
 
                 // Count occurrences of each tracked number
@@ -68,6 +78,8 @@ final class OCRService {
 
             request.recognitionLevel = .accurate
             request.usesLanguageCorrection = false
+            request.customWords = patterns
+            request.automaticallyDetectsLanguage = true
 
             let cgOrientation = CGImagePropertyOrientation(image.imageOrientation)
             let handler = VNImageRequestHandler(cgImage: cgImage, orientation: cgOrientation)
@@ -94,7 +106,12 @@ final class OCRService {
 
                 var rects: [CGRect] = []
                 for observation in observations {
-                    guard let candidate = observation.topCandidates(1).first else { continue }
+                    let candidates = observation.topCandidates(5)
+                    guard !candidates.isEmpty else { continue }
+                    // Prefer a candidate that contains a tracked pattern
+                    let candidate = candidates.first(where: { c in
+                        patterns.contains(where: { c.string.contains($0) })
+                    }) ?? candidates.first!
                     let text = candidate.string
 
                     let charCount = text.count
@@ -121,6 +138,8 @@ final class OCRService {
 
             request.recognitionLevel = .accurate
             request.usesLanguageCorrection = false
+            request.customWords = patterns
+            request.automaticallyDetectsLanguage = true
 
             let cgOrientation = CGImagePropertyOrientation(image.imageOrientation)
             let handler = VNImageRequestHandler(cgImage: cgImage, orientation: cgOrientation)

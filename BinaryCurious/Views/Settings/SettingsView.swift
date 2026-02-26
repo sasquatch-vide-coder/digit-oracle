@@ -50,7 +50,7 @@ struct SettingsView: View {
                     HStack {
                         Text("Storage Used")
                         Spacer()
-                        Text(ByteCountFormatter.string(fromByteCount: stats.totalBytes, countStyle: .file))
+                        Text(stats.totalBytes == 0 ? "0" : ByteCountFormatter.string(fromByteCount: stats.totalBytes, countStyle: .file))
                             .foregroundStyle(.secondary)
                     }
                 }
@@ -85,7 +85,7 @@ struct SettingsView: View {
                 }
             }
         }
-        .sheet(isPresented: $showingScanner) {
+        .sheet(isPresented: $showingScanner, onDismiss: { refreshStorageStats() }) {
             LibraryScannerView()
         }
         .onAppear { refreshStorageStats() }
@@ -121,10 +121,10 @@ struct SettingsView: View {
     private func deleteAllSightings() {
         let sightings = (try? modelContext.fetch(FetchDescriptor<Sighting>())) ?? []
         for sighting in sightings {
-            try? ImageStorageService.shared.deleteImages(for: sighting.id)
             modelContext.delete(sighting)
         }
         try? modelContext.save()
+        ImageStorageService.shared.deleteAllImages()
         refreshStorageStats()
     }
 

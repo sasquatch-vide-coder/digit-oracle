@@ -335,6 +335,7 @@ struct LibraryScannerView: View {
                 sighting.contains47 = result.ocrResult.matchedNumbers.contains(47)
                 sighting.matchedNumbers = result.ocrResult.matchedNumbers
                 sighting.matchCounts = result.ocrResult.matchCounts
+                sighting.rarityScore = min(max(sighting.totalMatchCount, 1), 5)
                 sighting.sourceIdentifier = result.id
 
                 modelContext.insert(sighting)

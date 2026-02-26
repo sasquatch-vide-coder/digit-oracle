@@ -11,6 +11,7 @@ struct SightingDetailView: View {
     @State private var showHighlights = true
     @State private var detectedRects: [CGRect] = []
     @State private var isDetecting = true
+    @State private var didRescan = false
 
     var body: some View {
         ScrollView {
@@ -96,8 +97,23 @@ struct SightingDetailView: View {
                     .padding(10)
                 }
                 .task {
-                    let rects = await OCRService.shared.detectLocations(in: image)
-                    detectedRects = rects
+                    // Re-run OCR if sighting has no stored matches
+                    if sighting.totalMatchCount == 0 && !didRescan {
+                        didRescan = true
+                        let ocrResult = await OCRService.shared.detectText(in: image)
+                        if ocrResult.matchCount > 0 {
+                            sighting.contains47 = ocrResult.matchedNumbers.contains(47)
+                            sighting.matchedNumbers = ocrResult.matchedNumbers
+                            sighting.matchCounts = ocrResult.matchCounts
+                            sighting.rarityScore = min(max(sighting.totalMatchCount, 1), 5)
+                        }
+                    }
+
+                    // Only detect highlight locations if sighting has confirmed matches
+                    if sighting.totalMatchCount > 0 {
+                        let rects = await OCRService.shared.detectLocations(in: image)
+                        detectedRects = rects
+                    }
                     isDetecting = false
                 }
                 .fullScreenCover(isPresented: $showingFullScreenImage) {

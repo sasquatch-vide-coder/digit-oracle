@@ -4,7 +4,6 @@ import SwiftData
 struct MetadataFormView: View {
     @Binding var notes: String
     @Binding var selectedCategory: SightingCategory?
-    @Binding var rarityScore: Int
     @Binding var newTagName: String
     @Binding var tagNames: [String]
     @Binding var selectedAlbumIDs: Set<UUID>
@@ -13,9 +12,6 @@ struct MetadataFormView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
-            // Rarity
-            RarityPickerView(rarityScore: $rarityScore)
-
             // Notes
             VStack(alignment: .leading, spacing: 8) {
                 Text("Notes")

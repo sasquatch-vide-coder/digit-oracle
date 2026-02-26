@@ -84,6 +84,7 @@ struct ContentView: View {
             sighting.contains47 = ocrResult.matchedNumbers.contains(47)
             sighting.matchedNumbers = ocrResult.matchedNumbers
             sighting.matchCounts = ocrResult.matchCounts
+            sighting.rarityScore = min(max(sighting.totalMatchCount, 1), 5)
 
             modelContext.insert(sighting)
             try? PendingSightingService.deletePendingItem(id: item.metadata.id)

@@ -11,7 +11,6 @@ struct PhotoReviewView: View {
 
     @State private var notes = ""
     @State private var selectedCategory: SightingCategory?
-    @State private var rarityScore = 1
     @State private var newTagName = ""
     @State private var tagNames: [String] = []
     @State private var isSaving = false
@@ -36,7 +35,6 @@ struct PhotoReviewView: View {
                 MetadataFormView(
                     notes: $notes,
                     selectedCategory: $selectedCategory,
-                    rarityScore: $rarityScore,
                     newTagName: $newTagName,
                     tagNames: $tagNames,
                     selectedAlbumIDs: $selectedAlbumIDs
@@ -214,7 +212,6 @@ struct PhotoReviewView: View {
                 notes: notes,
                 sourceType: sourceType,
                 category: selectedCategory?.rawValue,
-                rarityScore: rarityScore,
                 latitude: locationService.lastLocation?.coordinate.latitude,
                 longitude: locationService.lastLocation?.coordinate.longitude
             )
@@ -223,6 +220,7 @@ struct PhotoReviewView: View {
             sighting.contains47 = ocrResult?.matchedNumbers.contains(47) ?? false
             sighting.matchedNumbers = ocrResult?.matchedNumbers ?? []
             sighting.matchCounts = ocrResult?.matchCounts ?? [:]
+            sighting.rarityScore = min(max(sighting.totalMatchCount, 1), 5)
 
             for tagName in tagNames {
                 let tag = Tag(name: tagName)

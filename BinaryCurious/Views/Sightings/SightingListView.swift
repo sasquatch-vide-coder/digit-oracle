@@ -47,6 +47,8 @@ struct SightingListView: View {
 
         // Sort
         switch filter.sortOption {
+        case .mostMatches:
+            results.sort { $0.totalMatchCount > $1.totalMatchCount }
         case .dateNewest:
             results.sort { $0.captureDate > $1.captureDate }
         case .dateOldest:
