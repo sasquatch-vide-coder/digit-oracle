@@ -94,6 +94,11 @@ xcrun devicectl device process launch --device 68D99626-BCE0-5D39-B6A8-153B921C4
 
 Secrets are stored in `.env` (gitignored). Never commit `.env` or hardcode tokens.
 
+## Versioning
+
+- **Marketing version** (`MARKETING_VERSION`) is set manually in `project.yml` (currently `"0.47.0"`).
+- **Build number** (`CURRENT_PROJECT_VERSION`) is auto-incremented by a **git pre-commit hook** (`.git/hooks/pre-commit`). Every commit bumps the build number by 1 across all 3 targets, regenerates the Xcode project via `xcodegen`, and stages the changes. No manual intervention needed.
+
 ## Known Issues
 
 - SourceKit frequently shows false "Cannot find type" errors for cross-file references — these are analyzer issues, not real build errors. Always verify with `xcodebuild`.
