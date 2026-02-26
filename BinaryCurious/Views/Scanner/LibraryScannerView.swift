@@ -12,6 +12,7 @@ struct LibraryScannerView: View {
     @State private var importedCount: Int?
     @State private var achievementEngine = AchievementEngine()
     @State private var importedIdentifiers: Set<String> = []
+    @State private var isFullRescan = false
 
     var body: some View {
         NavigationStack {
@@ -69,16 +70,34 @@ struct LibraryScannerView: View {
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 40)
 
+            if let lastDate = scanner.lastScanDate {
+                Text("Last scanned: \(lastDate.formatted(date: .abbreviated, time: .omitted))")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+
             Button {
+                isFullRescan = false
                 Task { await startScan() }
             } label: {
-                Label("Scan Library", systemImage: "magnifyingglass")
+                Label(scanner.lastScanDate != nil ? "Scan New Photos" : "Scan Library", systemImage: "magnifyingglass")
                     .font(.headline)
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 14)
             }
             .buttonStyle(.borderedProminent)
             .padding(.horizontal, 40)
+
+            if scanner.lastScanDate != nil {
+                Button {
+                    isFullRescan = true
+                    scanner.resetLastScanDate()
+                    Task { await startScan() }
+                } label: {
+                    Text("Rescan Entire Library")
+                        .font(.subheadline)
+                }
+            }
 
             Spacer()
         }
@@ -92,7 +111,7 @@ struct LibraryScannerView: View {
 
             if scanner.matches.isEmpty {
                 ContentUnavailableView {
-                    Label("Scanning...", systemImage: "text.magnifyingglass")
+                    Label(isFullRescan ? "Scanning entire library..." : "Scanning new photos...", systemImage: "text.magnifyingglass")
                 } description: {
                     Text("Looking for numbers in your photos")
                 }
@@ -147,12 +166,38 @@ struct LibraryScannerView: View {
                     .foregroundStyle(.green)
             }
 
-            Button("Cancel", role: .cancel) {
+            if let startDate = scanner.scanStartDate {
+                TimelineView(.periodic(from: .now, by: 1)) { context in
+                    let elapsed = context.date.timeIntervalSince(startDate)
+                    HStack {
+                        Text("\(formattedDuration(elapsed)) elapsed")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                        Spacer()
+                        if scanner.scannedCount >= 5, scanner.scannedCount < scanner.totalCount {
+                            let perPhoto = elapsed / Double(scanner.scannedCount)
+                            let remaining = perPhoto * Double(scanner.totalCount - scanner.scannedCount)
+                            Text("~\(formattedDuration(remaining)) remaining")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        }
+                    }
+                }
+            }
+
+            Button("Stop", role: .cancel) {
                 scanner.cancel()
             }
             .font(.subheadline)
         }
         .padding()
+    }
+
+    private func formattedDuration(_ seconds: TimeInterval) -> String {
+        let total = Int(seconds)
+        let m = total / 60
+        let s = total % 60
+        return String(format: "%d:%02d", m, s)
     }
 
     private var resultsHeader: some View {
@@ -240,7 +285,7 @@ struct LibraryScannerView: View {
         let existing = (try? modelContext.fetch(descriptor)) ?? []
         importedIdentifiers = Set(existing.compactMap(\.sourceIdentifier))
 
-        scanner.startScan(excludingIdentifiers: importedIdentifiers)
+        scanner.startScan(excludingIdentifiers: importedIdentifiers, sinceDate: isFullRescan ? nil : scanner.lastScanDate)
     }
 
     private func toggleSelection(_ id: String) {

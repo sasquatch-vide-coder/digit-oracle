@@ -18,14 +18,22 @@ final class LibraryScannerService {
         case cancelled
     }
 
+    static let lastScanDateKey = "lastLibraryScanDate"
+
     var state: ScanState = .idle
     var scannedCount = 0
     var totalCount = 0
     var matches: [LibraryScanResult] = []
     var errorMessage: String?
+    var scanStartDate: Date?
+
+    var lastScanDate: Date? {
+        UserDefaults.standard.object(forKey: Self.lastScanDateKey) as? Date
+    }
 
     private var scanTask: Task<Void, Never>?
     private var excludedIdentifiers: Set<String> = []
+    private var sinceDate: Date?
 
     // MARK: - Permissions
 
@@ -40,16 +48,22 @@ final class LibraryScannerService {
 
     // MARK: - Scanning
 
-    func startScan(excludingIdentifiers: Set<String> = []) {
+    func startScan(excludingIdentifiers: Set<String> = [], sinceDate: Date? = nil) {
         guard state != .scanning else { return }
         state = .scanning
         scannedCount = 0
         totalCount = 0
         matches = []
         errorMessage = nil
+        scanStartDate = .now
         excludedIdentifiers = excludingIdentifiers
+        self.sinceDate = sinceDate
 
         scanTask = Task { await performScan() }
+    }
+
+    func resetLastScanDate() {
+        UserDefaults.standard.removeObject(forKey: Self.lastScanDateKey)
     }
 
     func cancel() {
@@ -63,9 +77,13 @@ final class LibraryScannerService {
     private func performScan() async {
         // Capture excluded set locally to avoid @Observable access from background tasks
         let excluded = excludedIdentifiers
+        let scanSinceDate = sinceDate
 
         let fetchOptions = PHFetchOptions()
         fetchOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
+        if let scanSinceDate {
+            fetchOptions.predicate = NSPredicate(format: "creationDate >= %@", scanSinceDate as NSDate)
+        }
         let assets = PHAsset.fetchAssets(with: .image, options: fetchOptions)
 
         // Collect assets, filtering out already-imported ones upfront
@@ -126,7 +144,10 @@ final class LibraryScannerService {
         }
 
         if !Task.isCancelled {
-            await MainActor.run { state = .completed }
+            await MainActor.run {
+                state = .completed
+                UserDefaults.standard.set(Date.now, forKey: Self.lastScanDateKey)
+            }
         }
     }
 

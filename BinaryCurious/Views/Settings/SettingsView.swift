@@ -5,6 +5,9 @@ struct SettingsView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var profiles: [UserProfile]
     @State private var showingDeleteConfirmation = false
+    @State private var showingResetConfirmation = false
+    @State private var showingScanner = false
+    @State private var storageStats: ImageStorageService.StorageStats?
 
     private var profile: UserProfile? { profiles.first }
 
@@ -37,8 +40,24 @@ struct SettingsView: View {
             }
 
             Section("Data") {
-                Button("Delete All Sightings", role: .destructive) {
-                    showingDeleteConfirmation = true
+                if let stats = storageStats {
+                    HStack {
+                        Text("Images")
+                        Spacer()
+                        Text("\(stats.fileCount)")
+                            .foregroundStyle(.secondary)
+                    }
+                    HStack {
+                        Text("Storage Used")
+                        Spacer()
+                        Text(ByteCountFormatter.string(fromByteCount: stats.totalBytes, countStyle: .file))
+                            .foregroundStyle(.secondary)
+                    }
+                }
+                Button {
+                    showingScanner = true
+                } label: {
+                    Label("Scan Library", systemImage: "magnifyingglass")
                 }
             }
 
@@ -56,7 +75,20 @@ struct SettingsView: View {
                         .foregroundStyle(.secondary)
                 }
             }
+
+            Section {
+                Button("Delete All Sightings", role: .destructive) {
+                    showingDeleteConfirmation = true
+                }
+                Button("Reset App", role: .destructive) {
+                    showingResetConfirmation = true
+                }
+            }
         }
+        .sheet(isPresented: $showingScanner) {
+            LibraryScannerView()
+        }
+        .onAppear { refreshStorageStats() }
         .navigationTitle("Settings")
         .navigationBarTitleDisplayMode(.inline)
         .navigationDestination(for: SettingsDestination.self) { dest in
@@ -75,6 +107,15 @@ struct SettingsView: View {
         } message: {
             Text("This will permanently remove all your sightings and their images. This cannot be undone.")
         }
+        .alert("Reset App?", isPresented: $showingResetConfirmation) {
+            Button("Cancel", role: .cancel) {}
+            Button("Reset", role: .destructive) {
+                deleteAllSightings()
+                TrackedNumberService.shared.resetToDefaults()
+            }
+        } message: {
+            Text("This will delete all sightings and reset the app to its initial state. You will go through onboarding again.")
+        }
     }
 
     private func deleteAllSightings() {
@@ -84,6 +125,11 @@ struct SettingsView: View {
             modelContext.delete(sighting)
         }
         try? modelContext.save()
+        refreshStorageStats()
+    }
+
+    private func refreshStorageStats() {
+        storageStats = ImageStorageService.shared.calculateStorageStats()
     }
 }
 

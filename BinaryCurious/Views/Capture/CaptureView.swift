@@ -17,7 +17,6 @@ struct CaptureView: View {
     @State private var detectorService = LiveDetectorService()
     @State private var selectedItem: PhotosPickerItem?
     @State private var pendingReview: PendingReview?
-    @State private var showingScanner = false
     @State private var isLiveDetectorMode = false
 
     // Focus/exposure widget state
@@ -48,9 +47,6 @@ struct CaptureView: View {
             NavigationStack {
                 PhotoReviewView(image: review.image, sourceType: review.sourceType)
             }
-        }
-        .sheet(isPresented: $showingScanner) {
-            LibraryScannerView()
         }
     }
 
@@ -237,20 +233,6 @@ struct CaptureView: View {
                 }
             }
 
-            Button {
-                showingScanner = true
-            } label: {
-                VStack(spacing: 4) {
-                    Image(systemName: "magnifyingglass")
-                        .font(.title2)
-                        .foregroundStyle(.white)
-                        .frame(width: 50, height: 50)
-                        .background(.ultraThinMaterial, in: Circle())
-                    Text("Scan Library")
-                        .font(.caption2)
-                        .foregroundStyle(.white)
-                }
-            }
         }
         .padding(.horizontal, 40)
     }
@@ -349,15 +331,6 @@ struct CaptureView: View {
             }
             .onChange(of: selectedItem) { _, newItem in
                 Task { await loadFromLibrary(newItem) }
-            }
-
-            Button {
-                showingScanner = true
-            } label: {
-                Label("Scan Library", systemImage: "magnifyingglass")
-                    .padding(.horizontal, 20)
-                    .padding(.vertical, 12)
-                    .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 12))
             }
         }
     }

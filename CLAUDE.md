@@ -78,6 +78,22 @@ Images are stored on disk at `Documents/SightingImages/`, **not** in SwiftData. 
 - Category definitions in `CategoryDefinitions.swift` (6 types: printed, digital, natural, handwritten, architectural, serendipitous)
 - Rarity scale 1-5 (Common → Legendary) defined in `Constants.Rarity`
 
+## GitHub
+
+Repository: `sasquatch-vide-coder/binary-curious` (private)
+
+```bash
+# Push to GitHub (credentials from .env are already configured in the git remote)
+git push origin main
+
+# Build and install on physical device (iPhone 15 Pro Max)
+xcodebuild -project BinaryCurious.xcodeproj -scheme BinaryCurious -destination 'generic/platform=iOS' build
+xcrun devicectl device install app --device 68D99626-BCE0-5D39-B6A8-153B921C4DFE <path-to-built-.app>
+xcrun devicectl device process launch --device 68D99626-BCE0-5D39-B6A8-153B921C4DFE com.binarycurious.app
+```
+
+Secrets are stored in `.env` (gitignored). Never commit `.env` or hardcode tokens.
+
 ## Known Issues
 
 - SourceKit frequently shows false "Cannot find type" errors for cross-file references — these are analyzer issues, not real build errors. Always verify with `xcodebuild`.

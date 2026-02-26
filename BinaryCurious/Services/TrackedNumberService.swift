@@ -7,6 +7,7 @@ final class TrackedNumberService {
     private let defaults: UserDefaults?
     private let trackedNumbersKey = "tracked_numbers"
     private let onboardingKey = "has_completed_number_onboarding"
+    private let libraryScanOfferKey = "has_offered_library_scan"
 
     var trackedNumbers: [Int] {
         didSet { persist() }
@@ -14,6 +15,10 @@ final class TrackedNumberService {
 
     var hasCompletedOnboarding: Bool {
         didSet { defaults?.set(hasCompletedOnboarding, forKey: onboardingKey) }
+    }
+
+    var hasOfferedLibraryScan: Bool {
+        didSet { defaults?.set(hasOfferedLibraryScan, forKey: libraryScanOfferKey) }
     }
 
     var primaryNumber: Int {
@@ -36,6 +41,7 @@ final class TrackedNumberService {
         }
 
         self.hasCompletedOnboarding = suite?.bool(forKey: onboardingKey) ?? false
+        self.hasOfferedLibraryScan = suite?.bool(forKey: libraryScanOfferKey) ?? false
     }
 
     // MARK: - Mutators
@@ -53,6 +59,14 @@ final class TrackedNumberService {
 
     func reorder(from source: IndexSet, to destination: Int) {
         trackedNumbers.move(fromOffsets: source, toOffset: destination)
+    }
+
+    func resetToDefaults() {
+        trackedNumbers = Constants.TrackedNumbers.defaultNumbers
+        hasCompletedOnboarding = false
+        hasOfferedLibraryScan = false
+        defaults?.removeObject(forKey: trackedNumbersKey)
+        UserDefaults.standard.removeObject(forKey: "lastLibraryScanDate")
     }
 
     // MARK: - Persistence

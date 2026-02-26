@@ -27,11 +27,15 @@ struct BinaryCuriousApp: App {
     var body: some Scene {
         WindowGroup {
             if TrackedNumberService.shared.hasCompletedOnboarding {
-                ContentView(selectedTab: $selectedTab)
-                    .onOpenURL { url in
-                        handleDeepLink(url)
-                    }
-                    .onAppear { backfillSightings() }
+                if TrackedNumberService.shared.hasOfferedLibraryScan {
+                    ContentView(selectedTab: $selectedTab)
+                        .onOpenURL { url in
+                            handleDeepLink(url)
+                        }
+                        .onAppear { backfillSightings() }
+                } else {
+                    OnboardingScanOfferView()
+                }
             } else {
                 NumberSelectionView(isOnboarding: true)
             }

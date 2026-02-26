@@ -65,6 +65,32 @@ final class ImageStorageService {
         try? deleteImage(fileName: thumbFileName)
     }
 
+    // MARK: - Stats
+
+    struct StorageStats {
+        let fileCount: Int
+        let totalBytes: Int64
+    }
+
+    func calculateStorageStats() -> StorageStats {
+        guard let contents = try? fileManager.contentsOfDirectory(
+            at: imagesDirectory,
+            includingPropertiesForKeys: [.fileSizeKey],
+            options: .skipsHiddenFiles
+        ) else {
+            return StorageStats(fileCount: 0, totalBytes: 0)
+        }
+
+        var totalBytes: Int64 = 0
+        for url in contents {
+            if let size = (try? url.resourceValues(forKeys: [.fileSizeKey]))?.fileSize {
+                totalBytes += Int64(size)
+            }
+        }
+
+        return StorageStats(fileCount: contents.count, totalBytes: totalBytes)
+    }
+
     // MARK: - Paths
 
     func thumbnailURL(for fileName: String) -> URL {
