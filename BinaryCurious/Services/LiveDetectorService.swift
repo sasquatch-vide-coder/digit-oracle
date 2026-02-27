@@ -38,7 +38,7 @@ final class LiveDetectorService: NSObject, AVCaptureVideoDataOutputSampleBufferD
     private func warmUpVision() {
         processingQueue.async {
             let request = VNRecognizeTextRequest { _, _ in }
-            request.recognitionLevel = .accurate
+            request.recognitionLevel = UserDefaults.standard.bool(forKey: Constants.OCR.useFastModeKey) ? .fast : .accurate
             var pixelBuffer: CVPixelBuffer?
             CVPixelBufferCreate(kCFAllocatorDefault, 1, 1, kCVPixelFormatType_32BGRA, nil, &pixelBuffer)
             guard let buffer = pixelBuffer else { return }
@@ -50,10 +50,11 @@ final class LiveDetectorService: NSObject, AVCaptureVideoDataOutputSampleBufferD
     // MARK: - Cooldown
 
     func startCooldown() {
-        let until = Date().addingTimeInterval(Constants.LiveDetector.cooldownDuration)
+        let duration = UserDefaults.standard.object(forKey: Constants.LiveDetector.cooldownDurationKey) as? TimeInterval ?? Constants.LiveDetector.cooldownDuration
+        let until = Date().addingTimeInterval(duration)
         cooldownUntil = until
         isInCooldown = true
-        cooldownRemaining = Constants.LiveDetector.cooldownDuration
+        cooldownRemaining = duration
 
         cooldownTimer?.invalidate()
         cooldownTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] timer in
@@ -92,7 +93,8 @@ final class LiveDetectorService: NSObject, AVCaptureVideoDataOutputSampleBufferD
         let now = Date()
 
         // Throttle to ~2 fps
-        guard now.timeIntervalSince(lastProcessTime) >= Constants.LiveDetector.throttleInterval else { return }
+        let throttle = UserDefaults.standard.object(forKey: Constants.LiveDetector.throttleIntervalKey) as? TimeInterval ?? Constants.LiveDetector.throttleInterval
+        guard now.timeIntervalSince(lastProcessTime) >= throttle else { return }
         guard !isProcessingFrame else { return }
 
         isProcessingFrame = true
@@ -142,8 +144,8 @@ final class LiveDetectorService: NSObject, AVCaptureVideoDataOutputSampleBufferD
             self.updateDetections(detectedRects, count: count)
         }
 
-        request.recognitionLevel = .accurate
-        request.usesLanguageCorrection = false
+        request.recognitionLevel = UserDefaults.standard.bool(forKey: Constants.OCR.useFastModeKey) ? .fast : .accurate
+        request.usesLanguageCorrection = UserDefaults.standard.bool(forKey: Constants.OCR.useLanguageCorrectionKey)
 
         let orientation: CGImagePropertyOrientation = cameraPosition == .front ? .leftMirrored : .right
         let handler = VNImageRequestHandler(cvPixelBuffer: pixelBuffer, orientation: orientation)
@@ -169,7 +171,8 @@ final class LiveDetectorService: NSObject, AVCaptureVideoDataOutputSampleBufferD
             self.matchCount = count
 
             // Only auto-capture after consecutive confirmations
-            if self.consecutiveDetections >= Constants.LiveDetector.confirmationFrames && !self.isInCooldown {
+            let requiredFrames = UserDefaults.standard.object(forKey: Constants.LiveDetector.confirmationFramesKey) as? Int ?? Constants.LiveDetector.confirmationFrames
+            if self.consecutiveDetections >= requiredFrames && !self.isInCooldown {
                 self.consecutiveDetections = 0
                 self.detectionTriggered.toggle()
                 self.onDetection?()

@@ -33,6 +33,7 @@ final class LibraryScannerService {
 
     private var scanTask: Task<Void, Never>?
     private var excludedIdentifiers: Set<String> = []
+    private var excludedHashes: Set<String> = []
     private var sinceDate: Date?
 
     // MARK: - Permissions
@@ -48,7 +49,7 @@ final class LibraryScannerService {
 
     // MARK: - Scanning
 
-    func startScan(excludingIdentifiers: Set<String> = [], sinceDate: Date? = nil) {
+    func startScan(excludingIdentifiers: Set<String> = [], excludingHashes: Set<String> = [], sinceDate: Date? = nil) {
         guard state != .scanning else { return }
         state = .scanning
         scannedCount = 0
@@ -57,6 +58,7 @@ final class LibraryScannerService {
         errorMessage = nil
         scanStartDate = .now
         excludedIdentifiers = excludingIdentifiers
+        excludedHashes = excludingHashes
         self.sinceDate = sinceDate
 
         scanTask = Task { await performScan() }
@@ -75,8 +77,9 @@ final class LibraryScannerService {
     }
 
     private func performScan() async {
-        // Capture excluded set locally to avoid @Observable access from background tasks
+        // Capture excluded sets locally to avoid @Observable access from background tasks
         let excluded = excludedIdentifiers
+        let excludedHashSet = excludedHashes
         let scanSinceDate = sinceDate
 
         let fetchOptions = PHFetchOptions()
@@ -117,7 +120,7 @@ final class LibraryScannerService {
                 inFlight += 1
                 group.addTask { [weak self] in
                     guard !Task.isCancelled else { return nil }
-                    return await self?.processAsset(asset)
+                    return await self?.processAsset(asset, excludedHashes: excludedHashSet)
                 }
             }
 
@@ -137,7 +140,7 @@ final class LibraryScannerService {
                     index += 1
                     group.addTask { [weak self] in
                         guard !Task.isCancelled else { return nil }
-                        return await self?.processAsset(asset)
+                        return await self?.processAsset(asset, excludedHashes: excludedHashSet)
                     }
                 }
             }
@@ -151,12 +154,19 @@ final class LibraryScannerService {
         }
     }
 
-    private func processAsset(_ asset: PHAsset) async -> LibraryScanResult? {
+    private func processAsset(_ asset: PHAsset, excludedHashes: Set<String>) async -> LibraryScanResult? {
         guard let image = await loadImage(from: asset, targetSize: CGSize(width: 600, height: 600)) else {
             return nil
         }
 
-        let ocrResult = await OCRService.shared.detectText(in: image)
+        // Skip if a perceptually identical image was already imported
+        if !excludedHashes.isEmpty,
+           let hash = ImageStorageService.perceptualHash(of: image),
+           excludedHashes.contains(hash) {
+            return nil
+        }
+
+        let ocrResult = (await OCRService.shared.detect(in: image)).ocr
 
         guard ocrResult.containsTrackedNumber else { return nil }
 

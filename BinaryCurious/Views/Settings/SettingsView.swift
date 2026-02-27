@@ -37,6 +37,9 @@ struct SettingsView: View {
                 NavigationLink(value: SettingsDestination.notifications) {
                     Label("Notifications", systemImage: "bell.badge")
                 }
+                NavigationLink(value: SettingsDestination.detection) {
+                    Label("Detection", systemImage: "eye")
+                }
             }
 
             Section("Data") {
@@ -98,6 +101,8 @@ struct SettingsView: View {
                 NumberSelectionView(isOnboarding: false)
             case .notifications:
                 NotificationSettingsView()
+            case .detection:
+                OCRSettingsView()
             }
         }
         .alert("Delete All Sightings?", isPresented: $showingDeleteConfirmation) {
@@ -113,6 +118,11 @@ struct SettingsView: View {
             Button("Reset", role: .destructive) {
                 deleteAllSightings()
                 TrackedNumberService.shared.resetToDefaults()
+                UserDefaults.standard.removeObject(forKey: Constants.OCR.useFastModeKey)
+                UserDefaults.standard.removeObject(forKey: Constants.OCR.useLanguageCorrectionKey)
+                UserDefaults.standard.removeObject(forKey: Constants.LiveDetector.throttleIntervalKey)
+                UserDefaults.standard.removeObject(forKey: Constants.LiveDetector.cooldownDurationKey)
+                UserDefaults.standard.removeObject(forKey: Constants.LiveDetector.confirmationFramesKey)
             }
         } message: {
             Text("This will delete all sightings and reset the app to its initial state. You will go through onboarding again.")
@@ -137,4 +147,5 @@ struct SettingsView: View {
 enum SettingsDestination: Hashable {
     case trackedNumbers
     case notifications
+    case detection
 }

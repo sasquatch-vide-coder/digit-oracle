@@ -59,6 +59,7 @@ final class Sighting {
     // MARK: - Source
     var sourceType: String
     var sourceIdentifier: String?
+    var imageHash: String?
 
     // MARK: - Relationships
     @Relationship(deleteRule: .nullify, inverse: \Tag.sightings)

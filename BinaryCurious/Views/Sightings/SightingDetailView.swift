@@ -11,7 +11,7 @@ struct SightingDetailView: View {
     @State private var showHighlights = true
     @State private var detectedRects: [CGRect] = []
     @State private var isDetecting = true
-    @State private var didRescan = false
+    @State private var isRescanning = false
 
     var body: some View {
         ScrollView {
@@ -97,22 +97,13 @@ struct SightingDetailView: View {
                     .padding(10)
                 }
                 .task {
-                    // Re-run OCR if sighting has no stored matches
-                    if sighting.totalMatchCount == 0 && !didRescan {
-                        didRescan = true
-                        let ocrResult = await OCRService.shared.detectText(in: image)
-                        if ocrResult.matchCount > 0 {
-                            sighting.contains47 = ocrResult.matchedNumbers.contains(47)
-                            sighting.matchedNumbers = ocrResult.matchedNumbers
-                            sighting.matchCounts = ocrResult.matchCounts
-                            sighting.rarityScore = min(max(sighting.totalMatchCount, 1), 5)
-                        }
-                    }
-
-                    // Only detect highlight locations if sighting has confirmed matches
-                    if sighting.totalMatchCount > 0 {
-                        let rects = await OCRService.shared.detectLocations(in: image)
-                        detectedRects = rects
+                    // Load cached detection — fall back to running detect if no cache exists
+                    if let cached = OCRService.shared.loadDetection(for: sighting.imageFileName) {
+                        detectedRects = cached.locationRects
+                    } else {
+                        let detection = await OCRService.shared.detect(in: image)
+                        OCRService.shared.saveDetection(detection, for: sighting.imageFileName)
+                        detectedRects = detection.locationRects
                     }
                     isDetecting = false
                 }
@@ -180,16 +171,45 @@ struct SightingDetailView: View {
         }
     }
 
+    // MARK: - Rescan
+
+    private func rescanSighting() async {
+        guard let image = ImageStorageService.shared.loadImage(fileName: sighting.imageFileName) else { return }
+        isRescanning = true
+        let detection = await OCRService.shared.detect(in: image)
+        OCRService.shared.saveDetection(detection, for: sighting.imageFileName)
+        sighting.contains47 = detection.ocr.matchedNumbers.contains(47)
+        sighting.matchedNumbers = detection.ocr.matchedNumbers
+        sighting.matchCounts = detection.ocr.matchCounts
+        sighting.rarityScore = min(max(sighting.totalMatchCount, 1), 5)
+        detectedRects = detection.locationRects
+        isRescanning = false
+    }
+
     // MARK: - Match Counts Section
 
     @ViewBuilder
     private var matchCountsSection: some View {
         let counts = sighting.matchCounts
-        if !counts.isEmpty {
-            VStack(alignment: .leading, spacing: 12) {
+        VStack(alignment: .leading, spacing: 12) {
+            HStack {
                 Text("Matches")
                     .font(.headline)
+                Spacer()
+                Button {
+                    Task { await rescanSighting() }
+                } label: {
+                    if isRescanning {
+                        ProgressView()
+                    } else {
+                        Label("Rescan", systemImage: "arrow.clockwise")
+                            .font(.subheadline)
+                    }
+                }
+                .disabled(isRescanning)
+            }
 
+            if !counts.isEmpty {
                 FlowLayout(spacing: 10) {
                     ForEach(counts.sorted(by: { $0.key < $1.key }), id: \.key) { number, count in
                         HStack(spacing: 6) {
@@ -206,7 +226,10 @@ struct SightingDetailView: View {
                         .background(.green, in: Capsule())
                     }
                 }
-
+            } else if !isRescanning {
+                Text("No matches found")
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
             }
         }
     }

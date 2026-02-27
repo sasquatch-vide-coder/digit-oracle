@@ -12,6 +12,7 @@ struct LibraryScannerView: View {
     @State private var importedCount: Int?
     @State private var achievementEngine = AchievementEngine()
     @State private var importedIdentifiers: Set<String> = []
+    @State private var importedHashes: Set<String> = []
     @State private var isFullRescan = false
 
     var body: some View {
@@ -280,12 +281,13 @@ struct LibraryScannerView: View {
             return
         }
 
-        // Load already-imported asset identifiers to skip duplicates
+        // Load already-imported asset identifiers and image hashes to skip duplicates
         let descriptor = FetchDescriptor<Sighting>()
         let existing = (try? modelContext.fetch(descriptor)) ?? []
         importedIdentifiers = Set(existing.compactMap(\.sourceIdentifier))
+        importedHashes = Set(existing.compactMap(\.imageHash))
 
-        scanner.startScan(excludingIdentifiers: importedIdentifiers, sinceDate: isFullRescan ? nil : scanner.lastScanDate)
+        scanner.startScan(excludingIdentifiers: importedIdentifiers, excludingHashes: importedHashes, sinceDate: isFullRescan ? nil : scanner.lastScanDate)
     }
 
     private func toggleSelection(_ id: String) {
@@ -305,10 +307,11 @@ struct LibraryScannerView: View {
             toImport = scanner.matches.filter { selectedIDs.contains($0.id) }
         }
 
-        // Fetch existing source identifiers to skip duplicates at import time
+        // Fetch existing source identifiers and hashes to skip duplicates at import time
         let existingDescriptor = FetchDescriptor<Sighting>()
         let existingSightings = (try? modelContext.fetch(existingDescriptor)) ?? []
         let alreadyImported = Set(existingSightings.compactMap(\.sourceIdentifier))
+        let existingHashes = Set(existingSightings.compactMap(\.imageHash))
 
         var count = 0
         let ownerID = Constants.defaultOwnerID
@@ -319,9 +322,18 @@ struct LibraryScannerView: View {
 
             guard let fullImage = await scanner.loadFullImage(for: result) else { continue }
 
+            // Skip if a perceptually identical image already exists
+            if let hash = ImageStorageService.perceptualHash(of: fullImage),
+               existingHashes.contains(hash) { continue }
+
             let sightingID = UUID()
             do {
+                // Save first, then OCR the saved JPEG so results match any future rescan
                 let fileNames = try ImageStorageService.shared.saveImage(fullImage, id: sightingID)
+                guard let savedImage = ImageStorageService.shared.loadImage(fileName: fileNames.full) else { continue }
+                let detection = await OCRService.shared.detect(in: savedImage)
+                OCRService.shared.saveDetection(detection, for: fileNames.full)
+                let ocrResult = detection.ocr
 
                 let sighting = Sighting(
                     ownerUserID: ownerID,
@@ -332,9 +344,10 @@ struct LibraryScannerView: View {
                     longitude: result.asset.location?.coordinate.longitude
                 )
                 sighting.thumbnailFileName = fileNames.thumbnail
-                sighting.contains47 = result.ocrResult.matchedNumbers.contains(47)
-                sighting.matchedNumbers = result.ocrResult.matchedNumbers
-                sighting.matchCounts = result.ocrResult.matchCounts
+                sighting.imageHash = ImageStorageService.perceptualHash(of: fullImage)
+                sighting.contains47 = ocrResult.matchedNumbers.contains(47)
+                sighting.matchedNumbers = ocrResult.matchedNumbers
+                sighting.matchCounts = ocrResult.matchCounts
                 sighting.rarityScore = min(max(sighting.totalMatchCount, 1), 5)
                 sighting.sourceIdentifier = result.id
 

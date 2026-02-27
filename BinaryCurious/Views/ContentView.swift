@@ -71,7 +71,11 @@ struct ContentView: View {
             let fileNames = try? ImageStorageService.shared.saveImage(item.image, id: item.metadata.id)
             guard let fileNames else { continue }
 
-            let ocrResult = await OCRService.shared.detectText(in: item.image)
+            // OCR the saved JPEG and cache results so detail view uses same data
+            guard let savedImage = ImageStorageService.shared.loadImage(fileName: fileNames.full) else { continue }
+            let detection = await OCRService.shared.detect(in: savedImage)
+            OCRService.shared.saveDetection(detection, for: fileNames.full)
+            let ocrResult = detection.ocr
 
             let sighting = Sighting(
                 ownerUserID: Constants.defaultOwnerID,
@@ -81,6 +85,7 @@ struct ContentView: View {
                 sourceType: "share"
             )
             sighting.thumbnailFileName = fileNames.thumbnail
+            sighting.imageHash = ImageStorageService.perceptualHash(of: item.image)
             sighting.contains47 = ocrResult.matchedNumbers.contains(47)
             sighting.matchedNumbers = ocrResult.matchedNumbers
             sighting.matchCounts = ocrResult.matchCounts

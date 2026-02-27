@@ -8,6 +8,7 @@ struct PhotoReviewView: View {
 
     let image: UIImage
     let sourceType: String
+    var assetIdentifier: String? = nil
 
     @State private var notes = ""
     @State private var selectedCategory: SightingCategory?
@@ -190,10 +191,10 @@ struct PhotoReviewView: View {
     }
 
     private func runOCR() async {
-        let result = await OCRService.shared.detectText(in: image)
-        ocrResult = result
+        let detection = await OCRService.shared.detect(in: image)
+        ocrResult = detection.ocr
         isScanning = false
-        detectedRects = await OCRService.shared.detectLocations(in: image)
+        detectedRects = detection.locationRects
     }
 
     private func saveSighting() async {
@@ -204,6 +205,16 @@ struct PhotoReviewView: View {
 
         do {
             let fileNames = try ImageStorageService.shared.saveImage(image, id: sightingID)
+
+            // Run OCR on saved JPEG and cache results so detail view never re-runs Vision
+            let savedOCR: OCRResult
+            if let savedImage = ImageStorageService.shared.loadImage(fileName: fileNames.full) {
+                let detection = await OCRService.shared.detect(in: savedImage)
+                OCRService.shared.saveDetection(detection, for: fileNames.full)
+                savedOCR = detection.ocr
+            } else {
+                savedOCR = ocrResult ?? OCRResult(fullText: nil, contains47: false, matchCount: 0, matchedNumbers: [], matchCounts: [:])
+            }
 
             let sighting = Sighting(
                 ownerUserID: ownerID,
@@ -216,10 +227,12 @@ struct PhotoReviewView: View {
                 longitude: locationService.lastLocation?.coordinate.longitude
             )
             sighting.thumbnailFileName = fileNames.thumbnail
+            sighting.sourceIdentifier = assetIdentifier
+            sighting.imageHash = ImageStorageService.perceptualHash(of: image)
             sighting.locationName = locationText
-            sighting.contains47 = ocrResult?.matchedNumbers.contains(47) ?? false
-            sighting.matchedNumbers = ocrResult?.matchedNumbers ?? []
-            sighting.matchCounts = ocrResult?.matchCounts ?? [:]
+            sighting.contains47 = savedOCR.matchedNumbers.contains(47)
+            sighting.matchedNumbers = savedOCR.matchedNumbers
+            sighting.matchCounts = savedOCR.matchCounts
             sighting.rarityScore = min(max(sighting.totalMatchCount, 1), 5)
 
             for tagName in tagNames {

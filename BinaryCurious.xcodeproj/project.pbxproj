@@ -34,6 +34,7 @@
 		43F3DEBA404AFDF493C8EF33 /* Achievement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98DDF25D6FEF2EC3D26F5663 /* Achievement.swift */; };
 		456EFAFF5308AA97D5D4F2FB /* WidgetDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F107B8F4326760535D2378 /* WidgetDataService.swift */; };
 		45F6CC550E0EA5D5A183AC3D /* CameraPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D287D514436CC04ED67E76FF /* CameraPreviewView.swift */; };
+		46F10B4C073B4F4D44828602 /* OCRSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF17874166B8397C6064273 /* OCRSettingsView.swift */; };
 		58A14D738B3F75387421A5B5 /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D654399EF5ECA16619F9FE5 /* ShareViewController.swift */; };
 		5A9154D27B0650C28A4552C7 /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 962761824581606F53537E3D /* UserProfile.swift */; };
 		5CC5EE5AE62480B7CEB5B043 /* CalendarHeatmapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA92C7ED40AF03C507F81EDB /* CalendarHeatmapView.swift */; };
@@ -179,6 +180,7 @@
 		C9876293188B1906C6372AAC /* SightingEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SightingEditView.swift; sourceTree = "<group>"; };
 		CA92C7ED40AF03C507F81EDB /* CalendarHeatmapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarHeatmapView.swift; sourceTree = "<group>"; };
 		CB4B44A0F108ABF51761FE68 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
+		CBF17874166B8397C6064273 /* OCRSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OCRSettingsView.swift; sourceTree = "<group>"; };
 		CC18CE064119E8A15B16FF9E /* Tag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tag.swift; sourceTree = "<group>"; };
 		CE438DC46451C78F74AA79A6 /* TimeCapsule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeCapsule.swift; sourceTree = "<group>"; };
 		D041A9F4571D493936F8F063 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
@@ -308,6 +310,7 @@
 			isa = PBXGroup;
 			children = (
 				685FECD70451E3B1F79E84BA /* NotificationSettingsView.swift */,
+				CBF17874166B8397C6064273 /* OCRSettingsView.swift */,
 				D041A9F4571D493936F8F063 /* SettingsView.swift */,
 			);
 			path = Settings;
@@ -669,6 +672,7 @@
 				F89CA9B322C5C48F982A1952 /* NotificationSettingsView.swift in Sources */,
 				5E92FB6503922539B569D051 /* NumberSelectionView.swift in Sources */,
 				19F3F54A89A6DD9D46AAF589 /* OCRService.swift in Sources */,
+				46F10B4C073B4F4D44828602 /* OCRSettingsView.swift in Sources */,
 				3D6D2E01E784987E127E5FB1 /* OnThisDayView.swift in Sources */,
 				7DEAD5D909A25FE73307339F /* OnboardingScanOfferView.swift in Sources */,
 				E6C78B67E183F0DCD4397A4E /* PendingSightingService.swift in Sources */,
@@ -781,7 +785,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = BinaryCurious/BinaryCurious.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 5;
 				INFOPLIST_FILE = BinaryCurious/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -798,7 +802,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = BinaryCuriousShareExtension/BinaryCuriousShareExtension.entitlements;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 5;
 				INFOPLIST_FILE = BinaryCuriousShareExtension/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -873,7 +877,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = BinaryCuriousShareExtension/BinaryCuriousShareExtension.entitlements;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 5;
 				INFOPLIST_FILE = BinaryCuriousShareExtension/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -891,7 +895,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = BinaryCuriousWidget/BinaryCuriousWidget.entitlements;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 5;
 				INFOPLIST_FILE = BinaryCuriousWidget/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -912,7 +916,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = BinaryCurious/BinaryCurious.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 5;
 				INFOPLIST_FILE = BinaryCurious/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -929,7 +933,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = BinaryCuriousWidget/BinaryCuriousWidget.entitlements;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 5;
 				INFOPLIST_FILE = BinaryCuriousWidget/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

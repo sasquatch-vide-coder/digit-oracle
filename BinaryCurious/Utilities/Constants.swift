@@ -26,6 +26,17 @@ enum Constants {
         static let throttleInterval: TimeInterval = 0.5
         static let cooldownDuration: TimeInterval = 3.0
         static let confirmationFrames = 2
+
+        static let throttleIntervalKey = "ocr_throttle_interval"
+        static let cooldownDurationKey = "ocr_cooldown_duration"
+        static let confirmationFramesKey = "ocr_confirmation_frames"
+    }
+
+    enum OCR {
+        static let useFastMode = false
+        static let useFastModeKey = "ocr_use_fast_mode"
+        static let useLanguageCorrection = true
+        static let useLanguageCorrectionKey = "ocr_use_language_correction"
     }
 
     enum Rarity {

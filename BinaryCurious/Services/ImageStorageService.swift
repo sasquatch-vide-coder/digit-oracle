@@ -99,13 +99,65 @@ final class ImageStorageService {
             }
         }
 
-        return StorageStats(fileCount: contents.count, totalBytes: totalBytes)
+        let imageCount = contents.filter { $0.lastPathComponent.contains(Constants.ImageStorage.fullSuffix) }.count
+        return StorageStats(fileCount: imageCount, totalBytes: totalBytes)
     }
 
     // MARK: - Paths
 
     func thumbnailURL(for fileName: String) -> URL {
         imagesDirectory.appendingPathComponent(fileName)
+    }
+
+    // MARK: - Perceptual Hash
+
+    /// Computes an 8x8 average perceptual hash for duplicate detection.
+    /// Returns a 16-character hex string, or nil if the image can't be processed.
+    static func perceptualHash(of image: UIImage) -> String? {
+        guard let cgImage = image.cgImage else { return nil }
+
+        let size = 8
+        let colorSpace = CGColorSpaceCreateDeviceGray()
+
+        guard let context = CGContext(
+            data: nil,
+            width: size,
+            height: size,
+            bitsPerComponent: 8,
+            bytesPerRow: size,
+            space: colorSpace,
+            bitmapInfo: CGImageAlphaInfo.none.rawValue
+        ) else { return nil }
+
+        context.interpolationQuality = .high
+        context.draw(cgImage, in: CGRect(x: 0, y: 0, width: size, height: size))
+
+        guard let data = context.data else { return nil }
+        let pixels = data.bindMemory(to: UInt8.self, capacity: size * size)
+
+        // Compute mean pixel value
+        var sum = 0
+        for i in 0..<(size * size) {
+            sum += Int(pixels[i])
+        }
+        let mean = sum / (size * size)
+
+        // Build 64-bit hash: 1 if pixel >= mean, 0 otherwise
+        var hash: UInt64 = 0
+        for i in 0..<(size * size) {
+            if pixels[i] >= mean {
+                hash |= (1 << (63 - i))
+            }
+        }
+
+        return String(format: "%016llx", hash)
+    }
+
+    /// Hamming distance between two 16-char hex hash strings.
+    static func hashDistance(_ a: String, _ b: String) -> Int? {
+        guard let va = UInt64(a, radix: 16),
+              let vb = UInt64(b, radix: 16) else { return nil }
+        return (va ^ vb).nonzeroBitCount
     }
 
     // MARK: - Orientation Normalization

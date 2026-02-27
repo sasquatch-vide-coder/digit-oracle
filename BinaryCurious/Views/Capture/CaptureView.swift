@@ -1,10 +1,18 @@
 import SwiftUI
+import SwiftData
 import PhotosUI
 
 struct PendingReview: Identifiable, Equatable {
     let id = UUID()
     let image: UIImage
     let sourceType: String
+    let assetIdentifier: String?
+
+    init(image: UIImage, sourceType: String, assetIdentifier: String? = nil) {
+        self.image = image
+        self.sourceType = sourceType
+        self.assetIdentifier = assetIdentifier
+    }
 
     static func == (lhs: PendingReview, rhs: PendingReview) -> Bool {
         lhs.id == rhs.id
@@ -18,6 +26,7 @@ struct CaptureView: View {
     @State private var selectedItem: PhotosPickerItem?
     @State private var pendingReview: PendingReview?
     @State private var isLiveDetectorMode = false
+    @State private var showDuplicateAlert = false
 
     // Focus/exposure widget state
     @State private var focusTapViewPoint: CGPoint?
@@ -45,8 +54,13 @@ struct CaptureView: View {
         }
         .fullScreenCover(item: $pendingReview) { review in
             NavigationStack {
-                PhotoReviewView(image: review.image, sourceType: review.sourceType)
+                PhotoReviewView(image: review.image, sourceType: review.sourceType, assetIdentifier: review.assetIdentifier)
             }
+        }
+        .alert("Already Imported", isPresented: $showDuplicateAlert) {
+            Button("OK", role: .cancel) { }
+        } message: {
+            Text("This photo has already been saved as a sighting.")
         }
     }
 
@@ -354,7 +368,25 @@ struct CaptureView: View {
         guard let data = try? await item.loadTransferable(type: Data.self),
               let image = UIImage(data: data) else { return }
 
-        pendingReview = PendingReview(image: image, sourceType: "library")
+        // Check if this photo has already been imported (by asset ID or perceptual hash)
+        let descriptor = FetchDescriptor<Sighting>()
+        let existing = (try? modelContext.fetch(descriptor)) ?? []
+
+        let assetID = item.itemIdentifier
+        if let assetID, existing.contains(where: { $0.sourceIdentifier == assetID }) {
+            selectedItem = nil
+            showDuplicateAlert = true
+            return
+        }
+
+        if let hash = ImageStorageService.perceptualHash(of: image),
+           existing.contains(where: { $0.imageHash == hash }) {
+            selectedItem = nil
+            showDuplicateAlert = true
+            return
+        }
+
+        pendingReview = PendingReview(image: image, sourceType: "library", assetIdentifier: assetID)
         selectedItem = nil
     }
 }
