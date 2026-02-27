@@ -10,6 +10,8 @@ struct LibraryScannerView: View {
     @State private var selectedIDs: Set<String> = []
     @State private var isImporting = false
     @State private var importedCount: Int?
+    @State private var importTotal: Int = 0
+    @State private var importProgress: Int = 0
     @State private var achievementEngine = AchievementEngine()
     @State private var importedIdentifiers: Set<String> = []
     @State private var importedHashes: Set<String> = []
@@ -240,26 +242,31 @@ struct LibraryScannerView: View {
     private var importBar: some View {
         VStack(spacing: 0) {
             Divider()
-            HStack(spacing: 12) {
-                Button {
-                    Task { await importSelected() }
-                } label: {
-                    if isImporting {
-                        ProgressView()
-                            .frame(maxWidth: .infinity)
-                            .padding(.vertical, 14)
-                    } else {
+            if isImporting {
+                VStack(spacing: 8) {
+                    ProgressView(value: Double(importProgress), total: max(Double(importTotal), 1))
+                        .tint(.accentColor)
+                    Text("Importing \(importProgress) of \(importTotal)...")
+                        .font(.subheadline.bold())
+                        .foregroundStyle(.primary)
+                }
+                .padding()
+                .background(.bar)
+            } else {
+                HStack(spacing: 12) {
+                    Button {
+                        Task { await importSelected() }
+                    } label: {
                         Text("Import \(selectedIDs.isEmpty ? "All" : "Selected") (\(selectedIDs.isEmpty ? scanner.matches.count : selectedIDs.count))")
                             .font(.headline)
                             .frame(maxWidth: .infinity)
                             .padding(.vertical, 14)
                     }
+                    .buttonStyle(.borderedProminent)
                 }
-                .buttonStyle(.borderedProminent)
-                .disabled(isImporting)
+                .padding()
+                .background(.bar)
             }
-            .padding()
-            .background(.bar)
         }
     }
 
@@ -307,6 +314,9 @@ struct LibraryScannerView: View {
             toImport = scanner.matches.filter { selectedIDs.contains($0.id) }
         }
 
+        importTotal = toImport.count
+        importProgress = 0
+
         // Fetch existing source identifiers and hashes to skip duplicates at import time
         let existingDescriptor = FetchDescriptor<Sighting>()
         let existingSightings = (try? modelContext.fetch(existingDescriptor)) ?? []
@@ -318,19 +328,31 @@ struct LibraryScannerView: View {
 
         for result in toImport {
             // Skip if this asset was already imported
-            if alreadyImported.contains(result.id) { continue }
+            if alreadyImported.contains(result.id) {
+                importProgress += 1
+                continue
+            }
 
-            guard let fullImage = await scanner.loadFullImage(for: result) else { continue }
+            guard let fullImage = await scanner.loadFullImage(for: result) else {
+                importProgress += 1
+                continue
+            }
 
             // Skip if a perceptually identical image already exists
             if let hash = ImageStorageService.perceptualHash(of: fullImage),
-               existingHashes.contains(hash) { continue }
+               existingHashes.contains(hash) {
+                importProgress += 1
+                continue
+            }
 
             let sightingID = UUID()
             do {
                 // Save first, then OCR the saved JPEG so results match any future rescan
                 let fileNames = try ImageStorageService.shared.saveImage(fullImage, id: sightingID)
-                guard let savedImage = ImageStorageService.shared.loadImage(fileName: fileNames.full) else { continue }
+                guard let savedImage = ImageStorageService.shared.loadImage(fileName: fileNames.full) else {
+                    importProgress += 1
+                    continue
+                }
                 let detection = await OCRService.shared.detect(in: savedImage)
                 OCRService.shared.saveDetection(detection, for: fileNames.full)
                 let ocrResult = detection.ocr
@@ -354,8 +376,9 @@ struct LibraryScannerView: View {
                 modelContext.insert(sighting)
                 count += 1
             } catch {
-                continue
+                // fall through to increment progress
             }
+            importProgress += 1
         }
 
         if count > 0 {
