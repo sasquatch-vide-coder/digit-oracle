@@ -16,6 +16,10 @@ struct SightingListView: View {
     @State private var showingDeleteAll = false
     @State private var showingAlbumPickerForSelected = false
 
+    private var totalMatches: Int {
+        filteredSightings.reduce(0) { $0 + $1.totalMatchCount }
+    }
+
     var filteredSightings: [Sighting] {
         var results = sightings
 
@@ -71,8 +75,25 @@ struct SightingListView: View {
             }
         }
         .navigationTitle("Sightings")
+        .navigationBarTitleDisplayMode(.inline)
         .searchable(text: $searchText, prompt: "Search sightings")
         .toolbar {
+            ToolbarItem(placement: .principal) {
+                VStack(spacing: 1) {
+                    Text("Sightings")
+                        .font(.headline)
+                    if !sightings.isEmpty {
+                        HStack(spacing: 4) {
+                            Text("\(filteredSightings.count) sighting\(filteredSightings.count == 1 ? "" : "s")")
+                            Text("·")
+                            Text("\(totalMatches) match\(totalMatches == 1 ? "" : "es")")
+                                .foregroundColor(.green)
+                        }
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                    }
+                }
+            }
             ToolbarItem(placement: .topBarLeading) {
                 HStack {
                     Button {
