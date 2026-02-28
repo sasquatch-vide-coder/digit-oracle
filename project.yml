@@ -28,7 +28,7 @@ targets:
         INFOPLIST_FILE: BinaryCurious/Info.plist
         PRODUCT_BUNDLE_IDENTIFIER: com.binarycurious.app
         MARKETING_VERSION: "0.47.0"
-        CURRENT_PROJECT_VERSION: "8"
+        CURRENT_PROJECT_VERSION: "9"
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
     info:
@@ -78,7 +78,7 @@ targets:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.binarycurious.app.widget
         MARKETING_VERSION: "0.47.0"
-        CURRENT_PROJECT_VERSION: "8"
+        CURRENT_PROJECT_VERSION: "9"
         INFOPLIST_FILE: BinaryCuriousWidget/Info.plist
     info:
       path: BinaryCuriousWidget/Info.plist
@@ -111,7 +111,7 @@ targets:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.binarycurious.app.share
         MARKETING_VERSION: "0.47.0"
-        CURRENT_PROJECT_VERSION: "8"
+        CURRENT_PROJECT_VERSION: "9"
         INFOPLIST_FILE: BinaryCuriousShareExtension/Info.plist
     info:
       path: BinaryCuriousShareExtension/Info.plist
