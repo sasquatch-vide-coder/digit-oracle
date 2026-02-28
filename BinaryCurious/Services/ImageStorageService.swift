@@ -40,6 +40,22 @@ final class ImageStorageService {
         return (fullFileName, thumbFileName)
     }
 
+    /// Saves only a thumbnail to disk (no full-resolution copy).
+    /// Returns the thumbnail filename.
+    func saveThumbnailOnly(_ image: UIImage, id: UUID) throws -> String {
+        let thumbFileName = "\(id.uuidString)\(Constants.ImageStorage.thumbSuffix).jpg"
+        let thumbURL = imagesDirectory.appendingPathComponent(thumbFileName)
+
+        let normalized = normalizeOrientation(image)
+        let thumbnail = generateThumbnail(from: normalized, size: Constants.ImageStorage.thumbnailSize)
+        guard let thumbData = thumbnail.jpegData(compressionQuality: Constants.ImageStorage.jpegCompression) else {
+            throw ImageStorageError.compressionFailed
+        }
+        try thumbData.write(to: thumbURL)
+
+        return thumbFileName
+    }
+
     // MARK: - Load
 
     func loadImage(fileName: String) -> UIImage? {

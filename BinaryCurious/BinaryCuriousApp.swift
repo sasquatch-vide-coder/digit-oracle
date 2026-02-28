@@ -32,7 +32,10 @@ struct BinaryCuriousApp: App {
                         .onOpenURL { url in
                             handleDeepLink(url)
                         }
-                        .onAppear { backfillSightings() }
+                        .onAppear {
+                            backfillSightings()
+                            migrateFullImagesToPhotoLibrary()
+                        }
                 } else {
                     OnboardingScanOfferView()
                 }
@@ -58,6 +61,31 @@ struct BinaryCuriousApp: App {
 
         if needsSave {
             try? context.save()
+        }
+    }
+
+    private func migrateFullImagesToPhotoLibrary() {
+        let key = "hasRunFullImageMigration"
+        guard !UserDefaults.standard.bool(forKey: key) else { return }
+
+        let context = container.mainContext
+        guard let sightings = try? context.fetch(FetchDescriptor<Sighting>()) else { return }
+
+        Task.detached(priority: .background) {
+            var migrated = 0
+            for sighting in sightings where sighting.hasLocalFullImage && sighting.sourceIdentifier != nil {
+                if PhotoLibraryImageService.shared.assetExists(identifier: sighting.sourceIdentifier!) {
+                    try? ImageStorageService.shared.deleteImage(fileName: sighting.imageFileName)
+                    await MainActor.run { sighting.hasLocalFullImage = false }
+                    migrated += 1
+                }
+            }
+            if migrated > 0 {
+                await MainActor.run { try? context.save() }
+            }
+            await MainActor.run {
+                UserDefaults.standard.set(true, forKey: key)
+            }
         }
     }
 

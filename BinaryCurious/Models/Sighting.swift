@@ -11,6 +11,7 @@ final class Sighting {
     // MARK: - Image
     var imageFileName: String
     var thumbnailFileName: String?
+    var hasLocalFullImage: Bool
     // MARK: - Timestamps
     var captureDate: Date
     var createdAt: Date
@@ -98,6 +99,7 @@ final class Sighting {
         self.rarityScore = rarityScore
         self.latitude = latitude
         self.longitude = longitude
+        self.hasLocalFullImage = true
         self.tags = []
         self.albums = []
     }

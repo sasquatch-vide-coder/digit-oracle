@@ -85,6 +85,7 @@ struct ContentView: View {
                 sourceType: "share"
             )
             sighting.thumbnailFileName = fileNames.thumbnail
+            sighting.hasLocalFullImage = true
             sighting.imageHash = ImageStorageService.perceptualHash(of: item.image)
             sighting.contains47 = ocrResult.matchedNumbers.contains(47)
             sighting.matchedNumbers = ocrResult.matchedNumbers

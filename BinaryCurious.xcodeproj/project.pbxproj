@@ -76,6 +76,7 @@
 		E6C78B67E183F0DCD4397A4E /* PendingSightingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FCE3121C12291DEB40431EF /* PendingSightingService.swift */; };
 		E963DA10C9A5EE74AA6165CD /* StreakWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = F35938D25351A4A024416683 /* StreakWidget.swift */; };
 		F070833F72FD50127C6212DC /* RecentSightingWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFA2B44FA8554E1CCCFCCFE8 /* RecentSightingWidget.swift */; };
+		F0D56F60547D88D397E42CFC /* PhotoLibraryImageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87970D6085A8E8238567A00F /* PhotoLibraryImageService.swift */; };
 		F27F8FA635D0D7107D1271BB /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B558AA610DD88C74498D321 /* ContentView.swift */; };
 		F5DF5B83F83057C21DA3D2CF /* ChallengeTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6FF06E2080A7B4FFFDC78F /* ChallengeTemplates.swift */; };
 		F6BB604E30F1B9FC7C48C90E /* CountWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5261165375845484D4FD3259 /* CountWidget.swift */; };
@@ -154,6 +155,7 @@
 		7E7AAC53F98DFF31F637873E /* AchievementEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementEngine.swift; sourceTree = "<group>"; };
 		815778D04D4C0AEC59EAC11B /* AchievementsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementsView.swift; sourceTree = "<group>"; };
 		8352F1B6B9F146FFDC193228 /* WrappedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WrappedView.swift; sourceTree = "<group>"; };
+		87970D6085A8E8238567A00F /* PhotoLibraryImageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryImageService.swift; sourceTree = "<group>"; };
 		87E08D5BB87795190E3E2F65 /* CaptureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureView.swift; sourceTree = "<group>"; };
 		8FCE3121C12291DEB40431EF /* PendingSightingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingSightingService.swift; sourceTree = "<group>"; };
 		95F8AAC496FF697BDBB75941 /* ChallengeListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeListView.swift; sourceTree = "<group>"; };
@@ -437,6 +439,7 @@
 				CB4B44A0F108ABF51761FE68 /* NotificationService.swift */,
 				AABA8D96085759361D9F92E7 /* OCRService.swift */,
 				8FCE3121C12291DEB40431EF /* PendingSightingService.swift */,
+				87970D6085A8E8238567A00F /* PhotoLibraryImageService.swift */,
 				B08149271178F4875019EE97 /* RarityCalculator.swift */,
 				FBB3A68AC4EDA1BCAA85B612 /* StatsCalculator.swift */,
 				577AFC0A9959946421A42D3B /* TrackedNumberService.swift */,
@@ -676,6 +679,7 @@
 				3D6D2E01E784987E127E5FB1 /* OnThisDayView.swift in Sources */,
 				7DEAD5D909A25FE73307339F /* OnboardingScanOfferView.swift in Sources */,
 				E6C78B67E183F0DCD4397A4E /* PendingSightingService.swift in Sources */,
+				F0D56F60547D88D397E42CFC /* PhotoLibraryImageService.swift in Sources */,
 				6E13B1B65476F9694F2E8805 /* PhotoReviewView.swift in Sources */,
 				E6BFE03F9B0F4BED0AC0BFF9 /* PreviewSampleData.swift in Sources */,
 				5D40EDB6BE24FACEF4D6ABC1 /* RarityCalculator.swift in Sources */,
@@ -785,7 +789,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = BinaryCurious/BinaryCurious.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 8;
 				INFOPLIST_FILE = BinaryCurious/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -802,7 +806,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = BinaryCuriousShareExtension/BinaryCuriousShareExtension.entitlements;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 8;
 				INFOPLIST_FILE = BinaryCuriousShareExtension/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -877,7 +881,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = BinaryCuriousShareExtension/BinaryCuriousShareExtension.entitlements;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 8;
 				INFOPLIST_FILE = BinaryCuriousShareExtension/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -895,7 +899,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = BinaryCuriousWidget/BinaryCuriousWidget.entitlements;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 8;
 				INFOPLIST_FILE = BinaryCuriousWidget/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -916,7 +920,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = BinaryCurious/BinaryCurious.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 8;
 				INFOPLIST_FILE = BinaryCurious/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -933,7 +937,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = BinaryCuriousWidget/BinaryCuriousWidget.entitlements;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 8;
 				INFOPLIST_FILE = BinaryCuriousWidget/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

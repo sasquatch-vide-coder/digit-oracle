@@ -347,25 +347,23 @@ struct LibraryScannerView: View {
 
             let sightingID = UUID()
             do {
-                // Save first, then OCR the saved JPEG so results match any future rescan
-                let fileNames = try ImageStorageService.shared.saveImage(fullImage, id: sightingID)
-                guard let savedImage = ImageStorageService.shared.loadImage(fileName: fileNames.full) else {
-                    importProgress += 1
-                    continue
-                }
-                let detection = await OCRService.shared.detect(in: savedImage)
-                OCRService.shared.saveDetection(detection, for: fileNames.full)
+                let thumbFileName = try ImageStorageService.shared.saveThumbnailOnly(fullImage, id: sightingID)
+                let syntheticFullName = "\(sightingID.uuidString)\(Constants.ImageStorage.fullSuffix).jpg"
+
+                let detection = await OCRService.shared.detect(in: fullImage)
+                OCRService.shared.saveDetection(detection, for: syntheticFullName)
                 let ocrResult = detection.ocr
 
                 let sighting = Sighting(
                     ownerUserID: ownerID,
-                    imageFileName: fileNames.full,
+                    imageFileName: syntheticFullName,
                     captureDate: result.creationDate ?? .now,
                     sourceType: "library_scan",
                     latitude: result.asset.location?.coordinate.latitude,
                     longitude: result.asset.location?.coordinate.longitude
                 )
-                sighting.thumbnailFileName = fileNames.thumbnail
+                sighting.thumbnailFileName = thumbFileName
+                sighting.hasLocalFullImage = false
                 sighting.imageHash = ImageStorageService.perceptualHash(of: fullImage)
                 sighting.contains47 = ocrResult.matchedNumbers.contains(47)
                 sighting.matchedNumbers = ocrResult.matchedNumbers

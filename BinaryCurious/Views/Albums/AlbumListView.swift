@@ -4,6 +4,7 @@ import SwiftData
 struct AlbumListView: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \Album.updatedAt, order: .reverse) private var albums: [Album]
+    @Query(sort: \Sighting.captureDate, order: .reverse) private var allSightings: [Sighting]
     @State private var showingNewAlbum = false
     @State private var albumToDelete: Album?
     @State private var isSelecting = false
@@ -17,13 +18,7 @@ struct AlbumListView: View {
     ]
 
     var body: some View {
-        Group {
-            if albums.isEmpty {
-                emptyStateView
-            } else {
-                albumGrid
-            }
-        }
+        albumGrid
         .navigationTitle("Albums")
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
@@ -128,22 +123,17 @@ struct AlbumListView: View {
         }
     }
 
-    private var emptyStateView: some View {
-        ContentUnavailableView {
-            Label("No Albums Yet", systemImage: "rectangle.stack")
-        } description: {
-            Text("Create albums to organize your 47 sightings into collections.")
-        } actions: {
-            Button("Create Album") {
-                showingNewAlbum = true
-            }
-            .buttonStyle(.borderedProminent)
-        }
-    }
-
     private var albumGrid: some View {
         ScrollView {
             LazyVGrid(columns: columns, spacing: 16) {
+                // "All Sightings" virtual album — always first, never selectable
+                if !isSelecting {
+                    NavigationLink(value: "all_sightings") {
+                        AllSightingsCardView(sightings: allSightings)
+                    }
+                    .buttonStyle(.plain)
+                }
+
                 ForEach(albums) { album in
                     if isSelecting {
                         Button {
@@ -179,6 +169,11 @@ struct AlbumListView: View {
                 }
             }
             .padding()
+        }
+        .navigationDestination(for: String.self) { value in
+            if value == "all_sightings" {
+                AllSightingsAlbumView()
+            }
         }
         .navigationDestination(for: UUID.self) { albumID in
             if let album = albums.first(where: { $0.id == albumID }) {
@@ -281,10 +276,119 @@ struct AlbumCardView: View {
            let image = ImageStorageService.shared.loadImage(fileName: thumbName) {
             return image
         }
+        guard firstSighting.hasLocalFullImage else { return nil }
         return ImageStorageService.shared.loadImage(fileName: firstSighting.imageFileName)
     }
 
     private var totalMatchCount: Int {
         album.sightings.reduce(0) { $0 + $1.totalMatchCount }
+    }
+}
+
+// MARK: - All Sightings Card
+
+struct AllSightingsCardView: View {
+    let sightings: [Sighting]
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            ZStack {
+                if let coverImage = loadCoverImage() {
+                    Image(uiImage: coverImage)
+                        .resizable()
+                        .scaledToFill()
+                        .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
+                } else {
+                    Rectangle()
+                        .fill(Color(.systemGray5))
+                        .overlay {
+                            Image(systemName: "photo.on.rectangle.angled")
+                                .font(.system(size: 28))
+                                .foregroundStyle(.tertiary)
+                        }
+                }
+            }
+            .frame(height: 130)
+            .clipped()
+
+            VStack(alignment: .leading, spacing: 3) {
+                Text("All Sightings")
+                    .font(.subheadline.bold())
+                    .foregroundStyle(.primary)
+                    .lineLimit(1)
+                HStack(spacing: 8) {
+                    Text("\(sightings.count) sighting\(sightings.count == 1 ? "" : "s")")
+                        .foregroundStyle(.secondary)
+                    if totalMatchCount > 0 {
+                        Label("\(totalMatchCount)× matched", systemImage: "checkmark.seal.fill")
+                            .foregroundStyle(.green)
+                    }
+                }
+                .font(.caption)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.horizontal, 10)
+            .padding(.vertical, 8)
+            .background(Color(.secondarySystemGroupedBackground))
+        }
+        .clipShape(RoundedRectangle(cornerRadius: 14))
+        .shadow(color: .black.opacity(0.1), radius: 5, y: 2)
+    }
+
+    private func loadCoverImage() -> UIImage? {
+        guard let first = sightings.first else { return nil }
+        if let thumbName = first.thumbnailFileName,
+           let image = ImageStorageService.shared.loadImage(fileName: thumbName) {
+            return image
+        }
+        guard first.hasLocalFullImage else { return nil }
+        return ImageStorageService.shared.loadImage(fileName: first.imageFileName)
+    }
+
+    private var totalMatchCount: Int {
+        sightings.reduce(0) { $0 + $1.totalMatchCount }
+    }
+}
+
+// MARK: - All Sightings Album View
+
+struct AllSightingsAlbumView: View {
+    @Query(sort: \Sighting.captureDate, order: .reverse) private var sightings: [Sighting]
+
+    private let columns = [
+        GridItem(.flexible(), spacing: 4),
+        GridItem(.flexible(), spacing: 4),
+        GridItem(.flexible(), spacing: 4)
+    ]
+
+    var body: some View {
+        ScrollView {
+            if sightings.isEmpty {
+                ContentUnavailableView(
+                    "No Sightings",
+                    systemImage: "eye.slash",
+                    description: Text("Capture your first sighting to see it here.")
+                )
+                .padding(.top, 60)
+            } else {
+                LazyVGrid(columns: columns, spacing: 4) {
+                    ForEach(sightings) { sighting in
+                        NavigationLink(value: SightingNavigationID(id: sighting.id)) {
+                            SightingThumbnailView(sighting: sighting, size: 120)
+                                .frame(height: 120)
+                                .clipped()
+                        }
+                    }
+                }
+                .padding(4)
+            }
+        }
+        .navigationTitle("All Sightings")
+        .navigationBarTitleDisplayMode(.inline)
+        .navigationDestination(for: SightingNavigationID.self) { nav in
+            if let sighting = sightings.first(where: { $0.id == nav.id }) {
+                SightingDetailView(sighting: sighting)
+            }
+        }
     }
 }

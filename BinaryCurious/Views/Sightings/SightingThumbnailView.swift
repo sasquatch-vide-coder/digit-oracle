@@ -11,7 +11,8 @@ struct SightingThumbnailView: View {
                 Image(uiImage: image)
                     .resizable()
                     .scaledToFill()
-            } else if let image = ImageStorageService.shared.loadImage(fileName: sighting.imageFileName) {
+            } else if sighting.hasLocalFullImage,
+                      let image = ImageStorageService.shared.loadImage(fileName: sighting.imageFileName) {
                 Image(uiImage: image)
                     .resizable()
                     .scaledToFill()

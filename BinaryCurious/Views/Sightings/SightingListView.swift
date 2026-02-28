@@ -203,13 +203,12 @@ struct SightingListView: View {
         ) {
             Button("Delete", role: .destructive) {
                 if let sighting = sightingToDelete {
-                    try? ImageStorageService.shared.deleteImages(for: sighting.id)
-                    modelContext.delete(sighting)
+                    deleteSighting(sighting)
                     sightingToDelete = nil
                 }
             }
         } message: {
-            Text("This sighting will be permanently deleted.")
+            Text("This sighting will be removed. Your original photo will not be deleted.")
         }
         .confirmationDialog(
             "Delete \(selectedSightingIDs.count) Sighting\(selectedSightingIDs.count == 1 ? "" : "s")?",
@@ -220,7 +219,7 @@ struct SightingListView: View {
                 deleteSelectedSightings()
             }
         } message: {
-            Text("The selected sighting\(selectedSightingIDs.count == 1 ? "" : "s") will be permanently deleted.")
+            Text("The selected sighting\(selectedSightingIDs.count == 1 ? "" : "s") will be removed. Your original photos will not be deleted.")
         }
         .confirmationDialog(
             "Delete All \(filteredSightings.count) Sighting\(filteredSightings.count == 1 ? "" : "s")?",
@@ -231,7 +230,7 @@ struct SightingListView: View {
                 deleteAllSightings()
             }
         } message: {
-            Text("All sightings will be permanently deleted. This cannot be undone.")
+            Text("All sightings will be removed. Your original photos will not be deleted.")
         }
         .environment(\.editMode, $editMode)
     }
@@ -275,7 +274,11 @@ struct SightingListView: View {
     }
 
     private func deleteSighting(_ sighting: Sighting) {
-        try? ImageStorageService.shared.deleteImages(for: sighting.id)
+        if sighting.hasLocalFullImage {
+            try? ImageStorageService.shared.deleteImages(for: sighting.id)
+        } else if let thumbName = sighting.thumbnailFileName {
+            try? ImageStorageService.shared.deleteImage(fileName: thumbName)
+        }
         modelContext.delete(sighting)
     }
 

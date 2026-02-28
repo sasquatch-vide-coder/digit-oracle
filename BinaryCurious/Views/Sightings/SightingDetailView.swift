@@ -12,6 +12,9 @@ struct SightingDetailView: View {
     @State private var detectedRects: [CGRect] = []
     @State private var isDetecting = true
     @State private var isRescanning = false
+    @State private var fullImage: UIImage?
+    @State private var isLoadingImage = true
+    @State private var imageUnavailable = false
 
     var body: some View {
         ScrollView {
@@ -63,7 +66,12 @@ struct SightingDetailView: View {
 
     private var imageSection: some View {
         Group {
-            if let image = ImageStorageService.shared.loadImage(fileName: sighting.imageFileName) {
+            if isLoadingImage {
+                RoundedRectangle(cornerRadius: 16)
+                    .fill(Color(.systemGray6))
+                    .frame(height: 300)
+                    .overlay { ProgressView() }
+            } else if let image = fullImage {
                 ZStack(alignment: .bottomTrailing) {
                     Image(uiImage: image)
                         .resizable()
@@ -96,23 +104,27 @@ struct SightingDetailView: View {
                     }
                     .padding(10)
                 }
-                .task {
-                    // Load cached detection — fall back to running detect if no cache exists
-                    if let cached = OCRService.shared.loadDetection(for: sighting.imageFileName) {
-                        detectedRects = cached.locationRects
-                    } else {
-                        let detection = await OCRService.shared.detect(in: image)
-                        OCRService.shared.saveDetection(detection, for: sighting.imageFileName)
-                        detectedRects = detection.locationRects
-                    }
-                    isDetecting = false
-                }
                 .fullScreenCover(isPresented: $showingFullScreenImage) {
                     FullScreenImageView(
                         image: image,
                         detectedRects: detectedRects,
                         showHighlights: $showHighlights
                     )
+                }
+            } else if imageUnavailable, let thumbName = sighting.thumbnailFileName,
+                      let thumb = ImageStorageService.shared.loadImage(fileName: thumbName) {
+                ZStack {
+                    Image(uiImage: thumb)
+                        .resizable()
+                        .scaledToFit()
+                        .blur(radius: 3)
+                        .clipShape(RoundedRectangle(cornerRadius: 16))
+                    Text("Photo no longer available")
+                        .font(.caption.bold())
+                        .foregroundStyle(.white)
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 6)
+                        .background(.black.opacity(0.6), in: Capsule())
                 }
             } else {
                 RoundedRectangle(cornerRadius: 16)
@@ -130,6 +142,41 @@ struct SightingDetailView: View {
                     }
             }
         }
+        .task {
+            await loadFullImage()
+        }
+        .onChange(of: fullImage) { _, newImage in
+            guard let newImage else { return }
+            Task { await loadDetection(for: newImage) }
+        }
+    }
+
+    private func loadFullImage() async {
+        if sighting.hasLocalFullImage {
+            fullImage = ImageStorageService.shared.loadImage(fileName: sighting.imageFileName)
+            if fullImage == nil {
+                imageUnavailable = true
+            }
+        } else if let identifier = sighting.sourceIdentifier {
+            fullImage = await PhotoLibraryImageService.shared.loadFullImage(identifier: identifier)
+            if fullImage == nil {
+                imageUnavailable = true
+            }
+        } else {
+            imageUnavailable = true
+        }
+        isLoadingImage = false
+    }
+
+    private func loadDetection(for image: UIImage) async {
+        if let cached = OCRService.shared.loadDetection(for: sighting.imageFileName) {
+            detectedRects = cached.locationRects
+        } else {
+            let detection = await OCRService.shared.detect(in: image)
+            OCRService.shared.saveDetection(detection, for: sighting.imageFileName)
+            detectedRects = detection.locationRects
+        }
+        isDetecting = false
     }
 
     // MARK: - Metadata Section
@@ -174,7 +221,15 @@ struct SightingDetailView: View {
     // MARK: - Rescan
 
     private func rescanSighting() async {
-        guard let image = ImageStorageService.shared.loadImage(fileName: sighting.imageFileName) else { return }
+        let image: UIImage?
+        if sighting.hasLocalFullImage {
+            image = ImageStorageService.shared.loadImage(fileName: sighting.imageFileName)
+        } else if let identifier = sighting.sourceIdentifier {
+            image = await PhotoLibraryImageService.shared.loadFullImage(identifier: identifier)
+        } else {
+            image = nil
+        }
+        guard let image else { return }
         isRescanning = true
         let detection = await OCRService.shared.detect(in: image)
         OCRService.shared.saveDetection(detection, for: sighting.imageFileName)

@@ -204,21 +204,46 @@ struct PhotoReviewView: View {
         let ownerID = Constants.defaultOwnerID
 
         do {
-            let fileNames = try ImageStorageService.shared.saveImage(image, id: sightingID)
+            let imageFileName: String
+            let thumbFileName: String
+            var hasLocalFull = true
+            var resolvedSourceIdentifier = assetIdentifier
 
-            // Run OCR on saved JPEG and cache results so detail view never re-runs Vision
-            let savedOCR: OCRResult
-            if let savedImage = ImageStorageService.shared.loadImage(fileName: fileNames.full) {
-                let detection = await OCRService.shared.detect(in: savedImage)
-                OCRService.shared.saveDetection(detection, for: fileNames.full)
-                savedOCR = detection.ocr
+            if sourceType == "camera" {
+                // Camera: try saving to Photo Library, fall back to full on-disk copy
+                do {
+                    let phID = try await PhotoLibraryImageService.shared.saveToPhotoLibrary(image)
+                    resolvedSourceIdentifier = phID
+                    thumbFileName = try ImageStorageService.shared.saveThumbnailOnly(image, id: sightingID)
+                    imageFileName = "\(sightingID.uuidString)\(Constants.ImageStorage.fullSuffix).jpg"
+                    hasLocalFull = false
+                } catch {
+                    let fileNames = try ImageStorageService.shared.saveImage(image, id: sightingID)
+                    imageFileName = fileNames.full
+                    thumbFileName = fileNames.thumbnail
+                    hasLocalFull = true
+                }
+            } else if sourceType == "library", assetIdentifier != nil {
+                // Library pick: asset already in Photo Library
+                thumbFileName = try ImageStorageService.shared.saveThumbnailOnly(image, id: sightingID)
+                imageFileName = "\(sightingID.uuidString)\(Constants.ImageStorage.fullSuffix).jpg"
+                hasLocalFull = false
             } else {
-                savedOCR = ocrResult ?? OCRResult(fullText: nil, contains47: false, matchCount: 0, matchedNumbers: [], matchCounts: [:])
+                // Fallback: full save
+                let fileNames = try ImageStorageService.shared.saveImage(image, id: sightingID)
+                imageFileName = fileNames.full
+                thumbFileName = fileNames.thumbnail
             }
+
+            // Run OCR on in-memory image and cache
+            let savedOCR: OCRResult
+            let detection = await OCRService.shared.detect(in: image)
+            OCRService.shared.saveDetection(detection, for: imageFileName)
+            savedOCR = detection.ocr
 
             let sighting = Sighting(
                 ownerUserID: ownerID,
-                imageFileName: fileNames.full,
+                imageFileName: imageFileName,
                 captureDate: .now,
                 notes: notes,
                 sourceType: sourceType,
@@ -226,8 +251,9 @@ struct PhotoReviewView: View {
                 latitude: locationService.lastLocation?.coordinate.latitude,
                 longitude: locationService.lastLocation?.coordinate.longitude
             )
-            sighting.thumbnailFileName = fileNames.thumbnail
-            sighting.sourceIdentifier = assetIdentifier
+            sighting.thumbnailFileName = thumbFileName
+            sighting.hasLocalFullImage = hasLocalFull
+            sighting.sourceIdentifier = resolvedSourceIdentifier
             sighting.imageHash = ImageStorageService.perceptualHash(of: image)
             sighting.locationName = locationText
             sighting.contains47 = savedOCR.matchedNumbers.contains(47)
