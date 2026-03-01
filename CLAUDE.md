@@ -9,24 +9,24 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 xcodegen generate
 
 # Build main app (includes widget + share extension)
-xcodebuild -project BinaryCurious.xcodeproj -scheme BinaryCurious -destination 'platform=iOS Simulator,name=iPhone 17 Pro' build
+xcodebuild -project DigitOracle.xcodeproj -scheme DigitOracle -destination 'platform=iOS Simulator,name=iPhone 17 Pro' build
 
 # Install and run on booted simulator
 xcrun simctl install booted <path-to-built-.app>
-xcrun simctl launch booted com.binarycurious.app
+xcrun simctl launch booted com.digitoracle.app
 ```
 
-The project uses **xcodegen** — the Xcode project is generated from `project.yml`. Never edit `BinaryCurious.xcodeproj` directly; always modify `project.yml` and regenerate.
+The project uses **xcodegen** — the Xcode project is generated from `project.yml`. Never edit `DigitOracle.xcodeproj` directly; always modify `project.yml` and regenerate.
 
 ## Architecture
 
-**Binary Curious** is an iOS 18+ app (Swift 5.9, SwiftUI, SwiftData) for tracking sightings of the number 47. It has three targets sharing an App Group (`group.com.binarycurious.app`):
+**Digit Oracle** is an iOS 18+ app (Swift 5.9, SwiftUI, SwiftData) for tracking sightings of a user's sacred number. It has three targets sharing an App Group (`group.com.digitoracle.app`):
 
 | Target | Bundle ID | Purpose |
 |--------|-----------|---------|
-| BinaryCurious | com.binarycurious.app | Main app |
-| BinaryCuriousWidget | com.binarycurious.app.widget | Home/Lock Screen widgets |
-| BinaryCuriousShareExtension | com.binarycurious.app.share | Share sheet for importing images |
+| DigitOracle | com.digitoracle.app | Main app |
+| DigitOracleWidget | com.digitoracle.app.widget | Home/Lock Screen widgets |
+| DigitOracleShareExtension | com.digitoracle.app.share | Share sheet for importing images |
 
 ### Data Flow Between Targets
 
@@ -37,7 +37,7 @@ Extensions **cannot** access the main app's Documents directory or SwiftData sto
 
 ### SwiftData Models
 
-Schema defined in `BinaryCuriousApp.swift`: `Sighting`, `Album`, `Tag`, `UserProfile`, `Achievement`, `Challenge`, `TimeCapsule`. Relationships use `deleteRule: .nullify` with explicit inverse paths.
+Schema defined in `DigitOracleApp.swift`: `Sighting`, `Album`, `Tag`, `UserProfile`, `Achievement`, `Challenge`, `TimeCapsule`. Relationships use `deleteRule: .nullify` with explicit inverse paths.
 
 ### Image Storage
 
@@ -47,7 +47,7 @@ Images are stored on disk at `Documents/SightingImages/`, **not** in SwiftData. 
 
 `CaptureView` → `PhotoReviewView` → save:
 1. `ImageStorageService.saveImage()` — writes full + thumbnail
-2. `OCRService.detectText()` — Vision framework, detects "47"
+2. `OCRService.detectText()` — Vision framework, detects sacred number
 3. Create `Sighting` with metadata, insert into SwiftData
 4. `WidgetDataService.update()` + `WidgetCenter.shared.reloadAllTimelines()`
 5. `AchievementEngine.checkAll()` + `ChallengeEngine.checkCompletion()`
@@ -66,7 +66,7 @@ Images are stored on disk at `Documents/SightingImages/`, **not** in SwiftData. 
 
 ### Navigation
 
-`ContentView` uses `TabView` with `AppTab` enum: `.sightings`, `.capture`, `.albums`, `.profile`. Deep links via `binarycurious://` scheme handled in `BinaryCuriousApp.handleDeepLink()`.
+`ContentView` uses `TabView` with `AppTab` enum: `.sightings`, `.capture`, `.albums`, `.profile`. Deep links via `digitoracle://` scheme handled in `DigitOracleApp.handleDeepLink()`.
 
 ## Patterns to Follow
 
@@ -87,9 +87,9 @@ Repository: `sasquatch-vide-coder/binary-curious` (private)
 git push origin main
 
 # Build and install on physical device (iPhone 15 Pro Max)
-xcodebuild -project BinaryCurious.xcodeproj -scheme BinaryCurious -destination 'generic/platform=iOS' build
+xcodebuild -project DigitOracle.xcodeproj -scheme DigitOracle -destination 'generic/platform=iOS' build
 xcrun devicectl device install app --device 68D99626-BCE0-5D39-B6A8-153B921C4DFE <path-to-built-.app>
-xcrun devicectl device process launch --device 68D99626-BCE0-5D39-B6A8-153B921C4DFE com.binarycurious.app
+xcrun devicectl device process launch --device 68D99626-BCE0-5D39-B6A8-153B921C4DFE com.digitoracle.app
 ```
 
 Secrets are stored in `.env` (gitignored). Never commit `.env` or hardcode tokens.

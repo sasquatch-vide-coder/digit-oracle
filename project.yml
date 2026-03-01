@@ -1,6 +1,6 @@
-name: BinaryCurious
+name: DigitOracle
 options:
-  bundleIdPrefix: com.binarycurious
+  bundleIdPrefix: com.digitoracle
   deploymentTarget:
     iOS: "18.0"
   xcodeVersion: "15.0"
@@ -12,30 +12,30 @@ settings:
     DEVELOPMENT_TEAM: "NCGL2D534N"
 
 targets:
-  BinaryCurious:
+  DigitOracle:
     type: application
     platform: iOS
     sources:
-      - path: BinaryCurious
-      - path: BinaryCuriousIntents
+      - path: DigitOracle
+      - path: DigitOracleIntents
     entitlements:
-      path: BinaryCurious/BinaryCurious.entitlements
+      path: DigitOracle/DigitOracle.entitlements
       properties:
         com.apple.security.application-groups:
-          - group.com.binarycurious.app
+          - group.com.digitoracle.app
     settings:
       base:
-        INFOPLIST_FILE: BinaryCurious/Info.plist
-        PRODUCT_BUNDLE_IDENTIFIER: com.binarycurious.app
+        INFOPLIST_FILE: DigitOracle/Info.plist
+        PRODUCT_BUNDLE_IDENTIFIER: com.digitoracle.app
         MARKETING_VERSION: "0.47.0"
-        CURRENT_PROJECT_VERSION: "9"
+        CURRENT_PROJECT_VERSION: "10"
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
     info:
-      path: BinaryCurious/Info.plist
+      path: DigitOracle/Info.plist
       properties:
         CFBundleDevelopmentRegion: en
-        CFBundleDisplayName: Binary Curious
+        CFBundleDisplayName: Digit Oracle
         CFBundleExecutable: $(EXECUTABLE_NAME)
         CFBundleIdentifier: $(PRODUCT_BUNDLE_IDENTIFIER)
         CFBundleInfoDictionaryVersion: "6.0"
@@ -53,38 +53,40 @@ targets:
           - UIInterfaceOrientationPortraitUpsideDown
           - UIInterfaceOrientationLandscapeLeft
           - UIInterfaceOrientationLandscapeRight
+        UIAppFonts:
+          - Cinzel.ttf
         UILaunchScreen: {}
-        NSCameraUsageDescription: "Binary Curious needs camera access to capture number sightings"
-        NSPhotoLibraryUsageDescription: "Binary Curious needs photo library access to import number sightings"
-        NSPhotoLibraryAddUsageDescription: "Binary Curious saves captured photos to your library so originals are preserved without duplicating storage"
-        NSLocationWhenInUseUsageDescription: "Binary Curious uses your location to tag where you spotted a number"
+        NSCameraUsageDescription: "Digit Oracle needs camera access to divine number visions"
+        NSPhotoLibraryUsageDescription: "Digit Oracle needs photo library access to peer into thy visions"
+        NSPhotoLibraryAddUsageDescription: "Digit Oracle saves captured visions to your library so originals are preserved without duplicating storage"
+        NSLocationWhenInUseUsageDescription: "Digit Oracle uses your location to divine where you encountered a number"
     dependencies:
-      - target: BinaryCuriousWidget
+      - target: DigitOracleWidget
         embed: true
-      - target: BinaryCuriousShareExtension
+      - target: DigitOracleShareExtension
         embed: true
 
-  BinaryCuriousWidget:
+  DigitOracleWidget:
     type: app-extension
     platform: iOS
     sources:
-      - path: BinaryCuriousWidget
+      - path: DigitOracleWidget
     entitlements:
-      path: BinaryCuriousWidget/BinaryCuriousWidget.entitlements
+      path: DigitOracleWidget/DigitOracleWidget.entitlements
       properties:
         com.apple.security.application-groups:
-          - group.com.binarycurious.app
+          - group.com.digitoracle.app
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.binarycurious.app.widget
+        PRODUCT_BUNDLE_IDENTIFIER: com.digitoracle.app.widget
         MARKETING_VERSION: "0.47.0"
-        CURRENT_PROJECT_VERSION: "9"
-        INFOPLIST_FILE: BinaryCuriousWidget/Info.plist
+        CURRENT_PROJECT_VERSION: "10"
+        INFOPLIST_FILE: DigitOracleWidget/Info.plist
     info:
-      path: BinaryCuriousWidget/Info.plist
+      path: DigitOracleWidget/Info.plist
       properties:
         CFBundleDevelopmentRegion: en
-        CFBundleDisplayName: Binary Curious Widgets
+        CFBundleDisplayName: Digit Oracle Widgets
         CFBundleExecutable: $(EXECUTABLE_NAME)
         CFBundleIdentifier: $(PRODUCT_BUNDLE_IDENTIFIER)
         CFBundleInfoDictionaryVersion: "6.0"
@@ -95,29 +97,29 @@ targets:
         NSExtension:
           NSExtensionPointIdentifier: com.apple.widgetkit-extension
 
-  BinaryCuriousShareExtension:
+  DigitOracleShareExtension:
     type: app-extension
     platform: iOS
     sources:
-      - path: BinaryCuriousShareExtension
-      - path: BinaryCurious/Services/PendingSightingService.swift
-      - path: BinaryCurious/Utilities/Constants.swift
+      - path: DigitOracleShareExtension
+      - path: DigitOracle/Services/PendingSightingService.swift
+      - path: DigitOracle/Utilities/Constants.swift
     entitlements:
-      path: BinaryCuriousShareExtension/BinaryCuriousShareExtension.entitlements
+      path: DigitOracleShareExtension/DigitOracleShareExtension.entitlements
       properties:
         com.apple.security.application-groups:
-          - group.com.binarycurious.app
+          - group.com.digitoracle.app
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.binarycurious.app.share
+        PRODUCT_BUNDLE_IDENTIFIER: com.digitoracle.app.share
         MARKETING_VERSION: "0.47.0"
-        CURRENT_PROJECT_VERSION: "9"
-        INFOPLIST_FILE: BinaryCuriousShareExtension/Info.plist
+        CURRENT_PROJECT_VERSION: "10"
+        INFOPLIST_FILE: DigitOracleShareExtension/Info.plist
     info:
-      path: BinaryCuriousShareExtension/Info.plist
+      path: DigitOracleShareExtension/Info.plist
       properties:
         CFBundleDevelopmentRegion: en
-        CFBundleDisplayName: Binary Curious
+        CFBundleDisplayName: Digit Oracle
         CFBundleExecutable: $(EXECUTABLE_NAME)
         CFBundleIdentifier: $(PRODUCT_BUNDLE_IDENTIFIER)
         CFBundleInfoDictionaryVersion: "6.0"
