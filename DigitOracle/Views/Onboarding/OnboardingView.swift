@@ -6,6 +6,8 @@ struct OnboardingView: View {
     @State private var sacredNumberText = ""
     @State private var service = TrackedNumberService.shared
     @State private var showError = false
+    @State private var showingScanner = false
+    @State private var hasScanned = false
 
     var body: some View {
         ZStack {
@@ -23,6 +25,9 @@ struct OnboardingView: View {
                     .transition(.opacity.animation(.easeInOut(duration: 0.8)))
             case 3:
                 confirmationScreen
+                    .transition(.opacity.animation(.easeInOut(duration: 0.8)))
+            case 4:
+                seekingScreen
                     .transition(.opacity.animation(.easeInOut(duration: 0.8)))
             default:
                 EmptyView()
@@ -185,12 +190,57 @@ struct OnboardingView: View {
 
             Spacer()
 
-            Button("Begin the Search") {
-                service.hasCompletedOnboarding = true
+            Button("Continue") {
+                withAnimation(.easeInOut(duration: 0.8)) {
+                    currentScreen = 4
+                }
             }
             .buttonStyle(OraclePrimaryButtonStyle())
             .padding(.bottom, 60)
         }
         .padding()
+    }
+
+    // MARK: - Screen 5: The Seeking
+
+    private var seekingScreen: some View {
+        VStack(spacing: 24) {
+            Spacer()
+
+            Text("Dost thou already possess visions of thy sacred number?")
+                .font(.oracleProphecy(size: 20))
+                .foregroundColor(.goldPrimary)
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, 32)
+
+            Text("The Oracle can peer into thy archive and seek them out.")
+                .font(.oracleBody(size: 16))
+                .foregroundColor(.textSecondary)
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, 40)
+
+            Spacer()
+
+            Button("Peer into the Archive") {
+                showingScanner = true
+            }
+            .buttonStyle(OraclePrimaryButtonStyle())
+
+            Button {
+                service.hasOfferedLibraryScan = true
+                service.hasCompletedOnboarding = true
+            } label: {
+                Text(hasScanned ? "Continue" : "Skip")
+                    .font(.oracleUI())
+                    .foregroundColor(.goldPrimary)
+            }
+            .padding(.bottom, 60)
+        }
+        .padding()
+        .sheet(isPresented: $showingScanner, onDismiss: {
+            hasScanned = true
+        }) {
+            LibraryScannerView()
+        }
     }
 }

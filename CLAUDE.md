@@ -80,7 +80,7 @@ Images are stored on disk at `Documents/SightingImages/`, **not** in SwiftData. 
 
 ## GitHub
 
-Repository: `sasquatch-vide-coder/binary-curious` (private)
+Repository: `sasquatch-vide-coder/digit-oracle` (private)
 
 ```bash
 # Push to GitHub (credentials from .env are already configured in the git remote)

@@ -21,7 +21,6 @@
 		23D5A75006D2A460EA3F92F1 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0D258239A40D63FDEE0A9FF /* Constants.swift */; };
 		277D2F63807F72DB8C483C74 /* NotificationSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EA9D2131051683CB85947ED /* NotificationSettingsView.swift */; };
 		2947E43B7A3549A9132F6CFA /* ChallengeTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F045DD1A19C7C820A0D164D /* ChallengeTemplates.swift */; };
-		29BE503FC56B5447CCB5A7D6 /* OnboardingScanOfferView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C3BACCC17816D98777140E /* OnboardingScanOfferView.swift */; };
 		2C29F5A20F927DA3374A0AF1 /* TrackedNumberService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 982DD53435ED55744AC48BDE /* TrackedNumberService.swift */; };
 		309EB94006E74B335868AF3C /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 220135F0FDEF8B3CCB58A2A0 /* UserProfile.swift */; };
 		359BDB7DA6FC6E934DBE1578 /* StatsOverviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFDE526C61C75F4FD9AB4A2E /* StatsOverviewView.swift */; };
@@ -191,7 +190,6 @@
 		AC3244E54909751EC4361C01 /* IlluminatedTextModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IlluminatedTextModifier.swift; sourceTree = "<group>"; };
 		ACB384B72824458B3527BE9D /* CameraService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraService.swift; sourceTree = "<group>"; };
 		B036D1F5C87A513ADD0856B3 /* OracleTextService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OracleTextService.swift; sourceTree = "<group>"; };
-		B6C3BACCC17816D98777140E /* OnboardingScanOfferView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingScanOfferView.swift; sourceTree = "<group>"; };
 		BDA77D4D2B2D85F7E7F51363 /* OracleLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OracleLoadingView.swift; sourceTree = "<group>"; };
 		BF0D81766465BC2A0FD5306D /* SightingThumbnailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SightingThumbnailView.swift; sourceTree = "<group>"; };
 		C3D50FBF3D2E0DF4BA75ADF9 /* DigitOracleShortcuts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DigitOracleShortcuts.swift; sourceTree = "<group>"; };
@@ -346,7 +344,6 @@
 			isa = PBXGroup;
 			children = (
 				733A8DEA98E07A22CBD1A7C2 /* NumberSelectionView.swift */,
-				B6C3BACCC17816D98777140E /* OnboardingScanOfferView.swift */,
 				2C01A7A6542B1AF2763864D4 /* OnboardingView.swift */,
 			);
 			path = Onboarding;
@@ -664,7 +661,6 @@
 				EAE412770FC5F7607280086D /* OCRService.swift in Sources */,
 				97579BDDF9E93796204AB344 /* OCRSettingsView.swift in Sources */,
 				9B743E2ACB38EB27D4D771C1 /* OnThisDayView.swift in Sources */,
-				29BE503FC56B5447CCB5A7D6 /* OnboardingScanOfferView.swift in Sources */,
 				7F19FACE0421D69FAC7AC706 /* OnboardingView.swift in Sources */,
 				9C482960E601CACF0642FEA7 /* OracleButtonStyle.swift in Sources */,
 				666D6BE109220D549B7410F3 /* OracleLoadingView.swift in Sources */,
@@ -738,7 +734,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = DigitOracleWidget/DigitOracleWidget.entitlements;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 11;
 				INFOPLIST_FILE = DigitOracleWidget/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -880,7 +876,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = DigitOracle/DigitOracle.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 11;
 				INFOPLIST_FILE = DigitOracle/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -897,7 +893,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = DigitOracleShareExtension/DigitOracleShareExtension.entitlements;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 11;
 				INFOPLIST_FILE = DigitOracleShareExtension/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -918,7 +914,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = DigitOracle/DigitOracle.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 11;
 				INFOPLIST_FILE = DigitOracle/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -935,7 +931,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = DigitOracleShareExtension/DigitOracleShareExtension.entitlements;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 11;
 				INFOPLIST_FILE = DigitOracleShareExtension/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -953,7 +949,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = DigitOracleWidget/DigitOracleWidget.entitlements;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 11;
 				INFOPLIST_FILE = DigitOracleWidget/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

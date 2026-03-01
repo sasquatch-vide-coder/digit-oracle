@@ -28,18 +28,14 @@ struct DigitOracleApp: App {
         WindowGroup {
             Group {
                 if TrackedNumberService.shared.hasCompletedOnboarding {
-                    if TrackedNumberService.shared.hasOfferedLibraryScan {
-                        ContentView(selectedTab: $selectedTab)
-                            .onOpenURL { url in
-                                handleDeepLink(url)
-                            }
-                            .onAppear {
-                                backfillSightings()
-                                migrateFullImagesToPhotoLibrary()
-                            }
-                    } else {
-                        OnboardingScanOfferView()
-                    }
+                    ContentView(selectedTab: $selectedTab)
+                        .onOpenURL { url in
+                            handleDeepLink(url)
+                        }
+                        .onAppear {
+                            backfillSightings()
+                            migrateFullImagesToPhotoLibrary()
+                        }
                 } else {
                     OnboardingView()
                 }
