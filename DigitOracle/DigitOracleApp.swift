@@ -7,6 +7,7 @@ struct DigitOracleApp: App {
     let container: ModelContainer
 
     @State private var selectedTab: AppTab = .capture
+    @Environment(\.scenePhase) private var scenePhase
 
     init() {
         let schema = Schema([
@@ -36,8 +37,12 @@ struct DigitOracleApp: App {
                         .onAppear {
                             backfillSightings()
                             migrateFullImagesToPhotoLibrary()
-                            navigateToVisionsIfSightingsExist()
                             backfillLocationNames()
+                        }
+                        .onChange(of: scenePhase) { _, newPhase in
+                            if newPhase == .active {
+                                selectedTab = .capture
+                            }
                         }
                 } else {
                     OnboardingView()

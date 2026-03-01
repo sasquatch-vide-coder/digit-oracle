@@ -44,18 +44,13 @@ struct StatsOverviewView: View {
                 }
                 .buttonStyle(.plain)
 
-                NavigationLink(value: StatsDestination.calendar) {
-                    calendarPreview
+                NavigationLink(value: StatsDestination.vessels) {
+                    vesselsCard
                 }
                 .buttonStyle(.plain)
 
-                NavigationLink(value: StatsDestination.categories) {
-                    categoryCard
-                }
-                .buttonStyle(.plain)
-
-                NavigationLink(value: StatsDestination.wrapped) {
-                    wrappedCard
+                NavigationLink(value: StatsDestination.devotions) {
+                    devotionsCard
                 }
                 .buttonStyle(.plain)
 
@@ -64,8 +59,18 @@ struct StatsOverviewView: View {
                 }
                 .buttonStyle(.plain)
 
+                NavigationLink(value: StatsDestination.wrapped) {
+                    wrappedCard
+                }
+                .buttonStyle(.plain)
+
                 NavigationLink(value: StatsDestination.digest) {
                     digestCard
+                }
+                .buttonStyle(.plain)
+
+                NavigationLink(value: StatsDestination.calendar) {
+                    calendarPreview
                 }
                 .buttonStyle(.plain)
 
@@ -87,8 +92,10 @@ struct StatsOverviewView: View {
             switch dest {
             case .calendar:
                 CalendarHeatmapView()
-            case .categories:
-                CategoryBreakdownView()
+            case .vessels:
+                VesselsView()
+            case .devotions:
+                DevotionsView()
             case .heatmap:
                 HeatmapView()
             case .achievements:
@@ -188,7 +195,7 @@ struct StatsOverviewView: View {
     private var calendarPreview: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
-                Label("Activity", systemImage: "calendar")
+                Label("Sacred Calendar", systemImage: "calendar")
                     .font(.headline)
                 Spacer()
                 Image(systemName: "chevron.right")
@@ -201,12 +208,12 @@ struct StatsOverviewView: View {
         .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16))
     }
 
-    // MARK: - Category Card
+    // MARK: - Vessels Card
 
-    private var categoryCard: some View {
+    private var vesselsCard: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
-                Label("Categories", systemImage: "chart.pie.fill")
+                Label("Vessels", systemImage: "chart.pie.fill")
                     .font(.headline)
                 Spacer()
                 Image(systemName: "chevron.right")
@@ -235,27 +242,53 @@ struct StatsOverviewView: View {
         .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16))
     }
 
-    // MARK: - Wrapped Card
+    // MARK: - Devotions Card
 
-    private var wrappedCard: some View {
-        HStack(spacing: 12) {
-            ZStack {
-                RoundedRectangle(cornerRadius: 12)
-                    .fill(LinearGradient(colors: [.goldDark, .goldPrimary, .goldLight], startPoint: .topLeading, endPoint: .bottomTrailing))
-                    .frame(width: 50, height: 50)
-                Text("\(TrackedNumberService.shared.primaryNumber)")
-                    .font(.headline.bold())
-                    .foregroundStyle(.white)
-            }
-            VStack(alignment: .leading, spacing: 2) {
-                Text("Monthly Wrapped")
-                    .font(.subheadline.bold())
-                Text("Your \(Date.now.formatted(.dateTime.month(.wide))) story")
+    private var devotionsCard: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack {
+                Label("Devotions", systemImage: "chart.bar.fill")
+                    .font(.headline)
+                Spacer()
+                Image(systemName: "chevron.right")
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
-            Spacer()
-            Image(systemName: "chevron.right")
+
+            if stats.rarityBreakdown.isEmpty {
+                Text("No visions yet")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            } else {
+                ForEach(stats.rarityBreakdown.prefix(4), id: \.rarity) { item in
+                    HStack {
+                        Text(Constants.Rarity.label(for: item.rarity))
+                            .font(.subheadline)
+                        Spacer()
+                        Text("\(item.count)")
+                            .font(.subheadline.bold())
+                            .foregroundStyle(.secondary)
+                    }
+                }
+            }
+        }
+        .padding()
+        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16))
+    }
+
+    // MARK: - Wrapped Card
+
+    private var wrappedCard: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack {
+                Label("The Unveiling", systemImage: "sparkles.rectangle.stack")
+                    .font(.headline)
+                Spacer()
+                Image(systemName: "chevron.right")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+            Text("Thy \(Date.now.formatted(.dateTime.month(.wide))) unveiled")
                 .font(.caption)
                 .foregroundStyle(.secondary)
         }
@@ -268,7 +301,7 @@ struct StatsOverviewView: View {
     private var memoriesCard: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
-                Label("On This Day", systemImage: "clock.arrow.circlepath")
+                Label("Déjà Vu", systemImage: "clock.arrow.circlepath")
                     .font(.headline)
                 Spacer()
                 Image(systemName: "chevron.right")
@@ -288,14 +321,14 @@ struct StatsOverviewView: View {
     private var digestCard: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
-                Label("Monthly Digest", systemImage: "doc.text.magnifyingglass")
+                Label("The Codex", systemImage: "doc.text.magnifyingglass")
                     .font(.headline)
                 Spacer()
                 Image(systemName: "chevron.right")
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
-            Text("Browse month-by-month summaries")
+            Text("Sacred records by moon cycle")
                 .font(.caption)
                 .foregroundStyle(.secondary)
         }
@@ -421,7 +454,8 @@ struct StatCard: View {
 
 enum StatsDestination: Hashable {
     case calendar
-    case categories
+    case vessels
+    case devotions
     case heatmap
     case achievements
     case challenges

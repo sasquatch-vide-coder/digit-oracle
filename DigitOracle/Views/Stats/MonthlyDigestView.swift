@@ -58,7 +58,7 @@ struct MonthlyDigestView: View {
             }
             .padding()
         }
-        .navigationTitle("Monthly Digest")
+        .navigationTitle("The Codex")
         .navigationBarTitleDisplayMode(.inline)
     }
 
@@ -84,7 +84,7 @@ struct MonthlyDigestView: View {
                 StatCard(title: "Locations", value: "\(locations)", icon: "mappin.circle.fill", color: .orange)
 
                 let categories = Set(monthSightings.compactMap(\.category)).count
-                StatCard(title: "Categories", value: "\(categories)", icon: "tag.fill", color: .purple)
+                StatCard(title: "Vessels", value: "\(categories)", icon: "tag.fill", color: .purple)
             }
 
             // Top sighting
@@ -107,7 +107,7 @@ struct MonthlyDigestView: View {
 
             if !catCounts.isEmpty {
                 VStack(alignment: .leading, spacing: 8) {
-                    Text("Categories")
+                    Text("Vessels")
                         .font(.headline)
 
                     ForEach(catCounts, id: \.key) { cat, count in

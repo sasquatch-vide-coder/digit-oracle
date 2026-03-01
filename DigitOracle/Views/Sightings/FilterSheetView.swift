@@ -47,7 +47,7 @@ struct FilterSheetView: View {
                     .pickerStyle(.menu)
                 }
 
-                Section("Category") {
+                Section("Vessel") {
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 8) {
                             FilterChip(label: "All", icon: "line.3.horizontal.decrease", isSelected: filter.category == nil) {
@@ -64,8 +64,8 @@ struct FilterSheetView: View {
                     .padding(.horizontal)
                 }
 
-                Section("Minimum Rarity") {
-                    Picker("Rarity", selection: Binding(
+                Section("Minimum Devotion") {
+                    Picker("Devotion", selection: Binding(
                         get: { filter.minRarity ?? 0 },
                         set: { filter.minRarity = $0 == 0 ? nil : $0 }
                     )) {

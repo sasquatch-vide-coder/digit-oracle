@@ -21,9 +21,9 @@ struct MetadataFormView: View {
                     .textFieldStyle(.roundedBorder)
             }
 
-            // Category
+            // Vessel
             VStack(alignment: .leading, spacing: 8) {
-                Text("Category")
+                Text("Vessel")
                     .font(.headline)
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: 8) {

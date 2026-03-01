@@ -4,36 +4,51 @@ import SwiftData
 struct WrappedView: View {
     @Query(sort: \Sighting.captureDate, order: .reverse) private var sightings: [Sighting]
     @State private var currentPage = 0
+    @State private var selectedMonth: Date = Date()
 
     private let calendar = Calendar.current
 
-    private var currentMonth: Int { calendar.component(.month, from: .now) }
-    private var currentYear: Int { calendar.component(.year, from: .now) }
+    private var displayMonth: Int { calendar.component(.month, from: selectedMonth) }
+    private var displayYear: Int { calendar.component(.year, from: selectedMonth) }
 
     private var monthSightings: [Sighting] {
         sightings.filter {
-            calendar.component(.month, from: $0.captureDate) == currentMonth &&
-            calendar.component(.year, from: $0.captureDate) == currentYear
+            calendar.component(.month, from: $0.captureDate) == displayMonth &&
+            calendar.component(.year, from: $0.captureDate) == displayYear
         }
     }
 
     private var yearSightings: [Sighting] {
         sightings.filter {
-            calendar.component(.year, from: $0.captureDate) == currentYear
+            calendar.component(.year, from: $0.captureDate) == displayYear
         }
     }
 
     private var monthName: String {
         let formatter = DateFormatter()
         formatter.dateFormat = "MMMM"
-        return formatter.string(from: .now)
+        return formatter.string(from: selectedMonth)
+    }
+
+    private var isCurrentMonth: Bool {
+        calendar.component(.month, from: selectedMonth) == calendar.component(.month, from: .now) &&
+        calendar.component(.year, from: selectedMonth) == calendar.component(.year, from: .now)
+    }
+
+    private var hasPriorMonth: Bool {
+        guard let earliest = sightings.last?.captureDate else { return false }
+        guard let prevMonth = calendar.date(byAdding: .month, value: -1, to: selectedMonth) else { return false }
+        let comps = calendar.dateComponents([.year, .month], from: prevMonth)
+        guard let prevStart = calendar.date(from: comps),
+              let prevEnd = calendar.date(byAdding: .month, value: 1, to: prevStart) else { return false }
+        return earliest < prevEnd
     }
 
     private var pages: [WrappedPage] {
         var result: [WrappedPage] = []
 
         // Page 1: Month title
-        result.append(.title(monthName, currentYear))
+        result.append(.title(monthName, displayYear))
 
         // Page 2: Total count this month
         result.append(.stat(
@@ -61,7 +76,7 @@ struct WrappedView: View {
         if let top = catCounts.first {
             result.append(.stat(
                 top.key.capitalized,
-                "was your top category with \(top.value) vision\(top.value == 1 ? "" : "s")",
+                "was your top vessel with \(top.value) vision\(top.value == 1 ? "" : "s")",
                 SightingCategory(rawValue: top.key)?.iconName ?? "tag.fill",
                 SightingCategory(rawValue: top.key)?.color ?? .gray
             ))
@@ -88,21 +103,23 @@ struct WrappedView: View {
             ))
         }
 
-        // Page 7: Streak
-        let streak = StatsCalculator.currentStreak(from: Array(sightings))
-        if streak > 0 {
-            result.append(.stat(
-                "\(streak)",
-                "day streak — keep it going!",
-                "flame.fill",
-                .goldLight
-            ))
+        // Page 7: Streak (only for current month)
+        if isCurrentMonth {
+            let streak = StatsCalculator.currentStreak(from: Array(sightings))
+            if streak > 0 {
+                result.append(.stat(
+                    "\(streak)",
+                    "day streak — keep it going!",
+                    "flame.fill",
+                    .goldLight
+                ))
+            }
         }
 
         // Page 8: Year total
         result.append(.stat(
             "\(yearSightings.count)",
-            "visions in \(currentYear) so far",
+            "visions in \(displayYear)\(isCurrentMonth ? " so far" : "")",
             "calendar",
             .purpleAccent
         ))
@@ -133,6 +150,20 @@ struct WrappedView: View {
         .toolbarColorScheme(.dark, for: .navigationBar)
     }
 
+    private func goToPriorMonth() {
+        if let prev = calendar.date(byAdding: .month, value: -1, to: selectedMonth) {
+            currentPage = 0
+            selectedMonth = prev
+        }
+    }
+
+    private func goToNextMonth() {
+        if let next = calendar.date(byAdding: .month, value: 1, to: selectedMonth) {
+            currentPage = 0
+            selectedMonth = next
+        }
+    }
+
     @ViewBuilder
     private func wrappedPageView(_ page: WrappedPage) -> some View {
         switch page {
@@ -142,10 +173,34 @@ struct WrappedView: View {
                 Text("Your")
                     .font(.oracleBody)
                     .foregroundStyle(Color.textSecondary)
-                Text("\(month)")
-                    .font(.oracleHeading)
-                    .foregroundStyle(Color.goldLight)
-                Text("Wrapped")
+
+                HStack(spacing: 20) {
+                    if hasPriorMonth {
+                        Button { goToPriorMonth() } label: {
+                            Image(systemName: "chevron.left.circle.fill")
+                                .font(.title)
+                                .foregroundStyle(Color.goldLight.opacity(0.7))
+                        }
+                    } else {
+                        Color.clear.frame(width: 28)
+                    }
+
+                    Text("\(month)")
+                        .font(.oracleHeading)
+                        .foregroundStyle(Color.goldLight)
+
+                    if !isCurrentMonth {
+                        Button { goToNextMonth() } label: {
+                            Image(systemName: "chevron.right.circle.fill")
+                                .font(.title)
+                                .foregroundStyle(Color.goldLight.opacity(0.7))
+                        }
+                    } else {
+                        Color.clear.frame(width: 28)
+                    }
+                }
+
+                Text("Unveiled")
                     .font(.oracleHeading)
                     .foregroundStyle(Color.goldPrimary)
                 Text("\(String(year))")
@@ -178,9 +233,13 @@ struct WrappedView: View {
         case .finale:
             VStack(spacing: 20) {
                 Spacer()
-                Text("\(TrackedNumberService.shared.primaryNumber)")
-                    .font(.sacredNumber)
-                    .foregroundStyle(Color.goldPrimary)
+                HStack(spacing: 16) {
+                    ForEach(TrackedNumberService.shared.trackedNumbers, id: \.self) { number in
+                        Text("\(number)")
+                            .font(.sacredNumber)
+                            .foregroundStyle(Color.goldPrimary)
+                    }
+                }
                 Text("The Oracle watches.")
                     .font(.oracleProphecy)
                     .foregroundStyle(Color.goldLight)

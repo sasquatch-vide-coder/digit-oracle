@@ -221,7 +221,7 @@ class NotificationService {
         let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: false)
 
         let content = UNMutableNotificationContent()
-        content.title = "On This Day"
+        content.title = "Déjà Vu"
         content.body = message
         content.sound = .default
 

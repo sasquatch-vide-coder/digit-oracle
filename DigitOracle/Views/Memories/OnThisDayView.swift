@@ -36,7 +36,7 @@ struct OnThisDayView: View {
                     Image(systemName: "clock.arrow.circlepath")
                         .font(.system(size: 40))
                         .foregroundColor(.accentColor)
-                    Text("On This Day")
+                    Text("Déjà Vu")
                         .font(.title2.bold())
                     Text(Date.now.formatted(.dateTime.month(.wide).day()))
                         .font(.subheadline)
