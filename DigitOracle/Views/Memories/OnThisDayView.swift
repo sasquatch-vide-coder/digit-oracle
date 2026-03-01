@@ -86,7 +86,10 @@ struct OnThisDayView: View {
                 .font(.headline)
 
             ForEach(sightings) { sighting in
-                MemoryCard(sighting: sighting)
+                NavigationLink(destination: SightingDetailView(sighting: sighting)) {
+                    MemoryCard(sighting: sighting)
+                }
+                .buttonStyle(.plain)
             }
         }
     }

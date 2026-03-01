@@ -60,6 +60,7 @@
 		9FA1CFB4C13A953F608B3CC9 /* CategoryBreakdownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974E38F10C6E4CD9C0F011DA /* CategoryBreakdownView.swift */; };
 		A192E6E759E743B1C2F09270 /* FilterSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B7694FB9394579E3B20AE4 /* FilterSheetView.swift */; };
 		A568E0E27B079E12CB074B1A /* RecentSightingWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF6EF5E0D85040D003CC3B5F /* RecentSightingWidget.swift */; };
+		A63C0963B365440566A1B2C3 /* ShareCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B03D3F57EE15F4901208F7EA /* ShareCardView.swift */; };
 		A74ABF374CE43BD18193E9D2 /* CameraService.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACB384B72824458B3527BE9D /* CameraService.swift */; };
 		A789E3AA0119BFD3B7B9229E /* AchievementDefinitions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63749C1155CA1D9BB9094D32 /* AchievementDefinitions.swift */; };
 		A9A2D776CF86A252541759AC /* LiveDetectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3279707BD4F9A91F6A1E95B /* LiveDetectorView.swift */; };
@@ -70,12 +71,14 @@
 		B82E52245473B2E52E8D90F4 /* CameraPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50E56B24E60D81C4DCB8BDE /* CameraPreviewView.swift */; };
 		BDD4C4DFD4171DF36E24E286 /* WidgetData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 438BE36773A997788D22F258 /* WidgetData.swift */; };
 		C244E07526E2CE7FE11D11B3 /* Challenge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 095C65BD6160CDCF24760DCC /* Challenge.swift */; };
+		C4017C6723D23C76A75B4936 /* ShareCardRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2B349234CFE2C19B69711F6 /* ShareCardRenderer.swift */; };
 		C46D3652B0687978B32C8FFF /* OracleTextService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B036D1F5C87A513ADD0856B3 /* OracleTextService.swift */; };
 		C5CD27A25BB651F936CC2230 /* CalendarHeatmapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F12343B82CABF6448A4EA501 /* CalendarHeatmapView.swift */; };
 		C7E8D816BA27AA0423A39FFA /* PendingSightingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1F6E112BF6F191762DEA12 /* PendingSightingService.swift */; };
 		C8F6BCA78874D3779E5929F5 /* PhotoLibraryImageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73BA0A0AE9980FAD8FA14A1F /* PhotoLibraryImageService.swift */; };
 		CBAB9ABAD3A7AC7527C4E340 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D426A7009C1AA83E597CE595 /* ContentView.swift */; };
 		CC734AFAC909F858F0A2D267 /* Cinzel.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6E1FF6395D203056F5E5CADD /* Cinzel.ttf */; };
+		CD323EB3031352F2308980A1 /* ActivityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDD0352ED27BA9DB658A9538 /* ActivityViewController.swift */; };
 		D6839CAB0EC41D174A590E5A /* WidgetDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3413A731B4E979C9A3ADEF0E /* WidgetDataService.swift */; };
 		D84CEEFF708E0B8E3F1AFCD7 /* PhotoReviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB9B230A5690337B83219420 /* PhotoReviewView.swift */; };
 		D8C502A750EE908893801E6E /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F12E5B5BFAE2C2A97A635B4 /* ShareViewController.swift */; };
@@ -190,8 +193,10 @@
 		AC3244E54909751EC4361C01 /* IlluminatedTextModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IlluminatedTextModifier.swift; sourceTree = "<group>"; };
 		ACB384B72824458B3527BE9D /* CameraService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraService.swift; sourceTree = "<group>"; };
 		B036D1F5C87A513ADD0856B3 /* OracleTextService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OracleTextService.swift; sourceTree = "<group>"; };
+		B03D3F57EE15F4901208F7EA /* ShareCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareCardView.swift; sourceTree = "<group>"; };
 		BDA77D4D2B2D85F7E7F51363 /* OracleLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OracleLoadingView.swift; sourceTree = "<group>"; };
 		BF0D81766465BC2A0FD5306D /* SightingThumbnailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SightingThumbnailView.swift; sourceTree = "<group>"; };
+		C2B349234CFE2C19B69711F6 /* ShareCardRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareCardRenderer.swift; sourceTree = "<group>"; };
 		C3D50FBF3D2E0DF4BA75ADF9 /* DigitOracleShortcuts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DigitOracleShortcuts.swift; sourceTree = "<group>"; };
 		C50E56B24E60D81C4DCB8BDE /* CameraPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraPreviewView.swift; sourceTree = "<group>"; };
 		C53FD7295FE8C69D396251A6 /* ShareExtensionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareExtensionView.swift; sourceTree = "<group>"; };
@@ -203,6 +208,7 @@
 		D426A7009C1AA83E597CE595 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		D77E3485B881C197EE9F0223 /* AlbumFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumFormView.swift; sourceTree = "<group>"; };
 		DD259032946F6CCAAD59CEBC /* SightingListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SightingListView.swift; sourceTree = "<group>"; };
+		DDD0352ED27BA9DB658A9538 /* ActivityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityViewController.swift; sourceTree = "<group>"; };
 		E0D258239A40D63FDEE0A9FF /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		E6B667D92EB61CC3A1E53711 /* LiveDetectorService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveDetectorService.swift; sourceTree = "<group>"; };
 		EB3739EFD92744D9DB020C62 /* DigitOracleWidgets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DigitOracleWidgets.swift; sourceTree = "<group>"; };
@@ -261,6 +267,7 @@
 				71347448BC227C234D8DEAF5 /* Onboarding */,
 				426953C3A097DC96F6E61682 /* Scanner */,
 				9C1B8A95F4A9DDE906C61EBC /* Settings */,
+				9F7F6467F2A1C2231DE8D50F /* Sharing */,
 				1CC42EEBAF8B5897CE273B8B /* Sightings */,
 				80FC85271DA79DA07AA64300 /* Stats */,
 			);
@@ -457,6 +464,16 @@
 			path = Settings;
 			sourceTree = "<group>";
 		};
+		9F7F6467F2A1C2231DE8D50F /* Sharing */ = {
+			isa = PBXGroup;
+			children = (
+				DDD0352ED27BA9DB658A9538 /* ActivityViewController.swift */,
+				C2B349234CFE2C19B69711F6 /* ShareCardRenderer.swift */,
+				B03D3F57EE15F4901208F7EA /* ShareCardView.swift */,
+			);
+			path = Sharing;
+			sourceTree = "<group>";
+		};
 		DB7F47D7F0B79DA6ED2889E9 /* Navigation */ = {
 			isa = PBXGroup;
 			children = (
@@ -620,6 +637,7 @@
 				A789E3AA0119BFD3B7B9229E /* AchievementDefinitions.swift in Sources */,
 				9F79C067C630C34525B0A1BE /* AchievementEngine.swift in Sources */,
 				3B5C9CF0067AAD2A364A8E9B /* AchievementsView.swift in Sources */,
+				CD323EB3031352F2308980A1 /* ActivityViewController.swift in Sources */,
 				7A23367ED02C0E09E2B394D2 /* Album.swift in Sources */,
 				3631D8F9F8FDC28B07BE3D3F /* AlbumDetailView.swift in Sources */,
 				6EEE46DCAD67440D7DCEC50B /* AlbumFormView.swift in Sources */,
@@ -673,6 +691,8 @@
 				1ACA75D63F12A6FE7DAD09C4 /* RarityCalculator.swift in Sources */,
 				15ECE549E21EF9FD2CAE1039 /* ScanResultCard.swift in Sources */,
 				EF4DA1B0F6FED1395F383405 /* SettingsView.swift in Sources */,
+				C4017C6723D23C76A75B4936 /* ShareCardRenderer.swift in Sources */,
+				A63C0963B365440566A1B2C3 /* ShareCardView.swift in Sources */,
 				FB042085A3B24CDB4C93C791 /* Sighting.swift in Sources */,
 				382B72FB51E144347C1BD19B /* SightingDetailView.swift in Sources */,
 				50BE28444F39BD19E71D1701 /* SightingEditView.swift in Sources */,
@@ -734,7 +754,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = DigitOracleWidget/DigitOracleWidget.entitlements;
-				CURRENT_PROJECT_VERSION = 13;
+				CURRENT_PROJECT_VERSION = 14;
 				INFOPLIST_FILE = DigitOracleWidget/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -876,7 +896,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = DigitOracle/DigitOracle.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 13;
+				CURRENT_PROJECT_VERSION = 14;
 				INFOPLIST_FILE = DigitOracle/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -893,7 +913,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = DigitOracleShareExtension/DigitOracleShareExtension.entitlements;
-				CURRENT_PROJECT_VERSION = 13;
+				CURRENT_PROJECT_VERSION = 14;
 				INFOPLIST_FILE = DigitOracleShareExtension/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -914,7 +934,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = DigitOracle/DigitOracle.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 13;
+				CURRENT_PROJECT_VERSION = 14;
 				INFOPLIST_FILE = DigitOracle/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -931,7 +951,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = DigitOracleShareExtension/DigitOracleShareExtension.entitlements;
-				CURRENT_PROJECT_VERSION = 13;
+				CURRENT_PROJECT_VERSION = 14;
 				INFOPLIST_FILE = DigitOracleShareExtension/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -949,7 +969,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = DigitOracleWidget/DigitOracleWidget.entitlements;
-				CURRENT_PROJECT_VERSION = 13;
+				CURRENT_PROJECT_VERSION = 14;
 				INFOPLIST_FILE = DigitOracleWidget/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

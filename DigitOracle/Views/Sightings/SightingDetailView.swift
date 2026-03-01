@@ -35,6 +35,11 @@ struct SightingDetailView: View {
             ToolbarItem(placement: .primaryAction) {
                 HStack(spacing: 16) {
                     Button {
+                        generateShareCard()
+                    } label: {
+                        Image(systemName: "square.and.arrow.up")
+                    }
+                    Button {
                         showingEditor = true
                     } label: {
                         Image(systemName: "square.and.pencil")
@@ -61,6 +66,15 @@ struct SightingDetailView: View {
         .sheet(isPresented: $showingEditor) {
             SightingEditView(sighting: sighting)
         }
+    }
+
+    private func generateShareCard() {
+        let image = fullImage
+            ?? ImageStorageService.shared.loadImage(fileName: sighting.thumbnailFileName ?? "")
+            ?? ImageStorageService.shared.loadImage(fileName: sighting.imageFileName)
+        guard let image else { return }
+        guard let cardImage = ShareCardRenderer.render(sighting: sighting, image: image) else { return }
+        SharePresenter.present(items: [cardImage])
     }
 
     // MARK: - Image Section

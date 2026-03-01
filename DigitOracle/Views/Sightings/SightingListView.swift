@@ -257,6 +257,26 @@ struct SightingListView: View {
                 NavigationLink(value: sighting.id) {
                     SightingRowView(sighting: sighting)
                 }
+                .contextMenu {
+                    Button {
+                        generateShareCard(for: sighting)
+                    } label: {
+                        Label("Share Vision", systemImage: "square.and.arrow.up")
+                    }
+                    Button {
+                        sighting.isFavorite.toggle()
+                    } label: {
+                        Label(
+                            sighting.isFavorite ? "Unfavorite" : "Favorite",
+                            systemImage: sighting.isFavorite ? "heart.slash" : "heart"
+                        )
+                    }
+                    Button(role: .destructive) {
+                        sightingToDelete = sighting
+                    } label: {
+                        Label("Delete", systemImage: "trash")
+                    }
+                }
                 .swipeActions(edge: .trailing, allowsFullSwipe: false) {
                     Button(role: .destructive) {
                         sightingToDelete = sighting
@@ -271,6 +291,14 @@ struct SightingListView: View {
                 SightingDetailView(sighting: sighting)
             }
         }
+    }
+
+    private func generateShareCard(for sighting: Sighting) {
+        let image = ImageStorageService.shared.loadImage(fileName: sighting.imageFileName)
+            ?? ImageStorageService.shared.loadImage(fileName: sighting.thumbnailFileName ?? "")
+        guard let image else { return }
+        guard let cardImage = ShareCardRenderer.render(sighting: sighting, image: image) else { return }
+        SharePresenter.present(items: [cardImage])
     }
 
     private func deleteSighting(_ sighting: Sighting) {

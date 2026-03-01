@@ -93,7 +93,10 @@ struct MonthlyDigestView: View {
                     Text("Rarest Find")
                         .font(.headline)
 
-                    MemoryCard(sighting: best)
+                    NavigationLink(destination: SightingDetailView(sighting: best)) {
+                        MemoryCard(sighting: best)
+                    }
+                    .buttonStyle(.plain)
                 }
             }
 
