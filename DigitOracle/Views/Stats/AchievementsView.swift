@@ -2,7 +2,9 @@ import SwiftUI
 import SwiftData
 
 struct AchievementsView: View {
+    @Environment(\.modelContext) private var modelContext
     @Query(sort: \Achievement.key) private var achievements: [Achievement]
+    @State private var selectedAchievement: Achievement?
 
     private let columns = [
         GridItem(.flexible(), spacing: 16),
@@ -21,22 +23,117 @@ struct AchievementsView: View {
                 Text("\(unlockedCount) / \(achievements.count)")
                     .font(.system(size: 36, weight: .bold, design: .rounded))
                     .foregroundColor(.accentColor)
-                Text("Commendations Unlocked")
+                Text("Rites of Passage Unlocked")
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
 
                 // Grid
                 LazyVGrid(columns: columns, spacing: 16) {
                     ForEach(achievements) { achievement in
-                        AchievementBadge(achievement: achievement)
+                        Button {
+                            selectedAchievement = achievement
+                        } label: {
+                            AchievementBadge(achievement: achievement)
+                        }
+                        .buttonStyle(.plain)
                     }
                 }
                 .padding(.horizontal)
             }
             .padding(.vertical)
         }
-        .navigationTitle("Commendations")
+        .navigationTitle("Rites of Passage")
         .navigationBarTitleDisplayMode(.inline)
+        .sheet(item: $selectedAchievement) { achievement in
+            AchievementDetailSheet(achievement: achievement)
+        }
+        .task {
+            AchievementEngine.syncDefinitions(context: modelContext)
+        }
+    }
+}
+
+// MARK: - Detail Sheet
+
+struct AchievementDetailSheet: View {
+    let achievement: Achievement
+    @Environment(\.dismiss) private var dismiss
+
+    private var definition: AchievementDef? {
+        AchievementDefinitions.definition(for: achievement.key)
+    }
+
+    var body: some View {
+        ScrollView {
+            VStack(spacing: 24) {
+                // Large icon in gold circle
+                ZStack {
+                    Circle()
+                        .fill(achievement.isUnlocked ? Color.goldPrimary.opacity(0.2) : Color.secondary.opacity(0.1))
+                        .frame(width: 120, height: 120)
+
+                    Circle()
+                        .stroke(achievement.isUnlocked ? Color.goldPrimary : Color.secondary.opacity(0.3), lineWidth: 3)
+                        .frame(width: 120, height: 120)
+
+                    Image(systemName: achievement.iconName)
+                        .font(.system(size: 48))
+                        .foregroundColor(achievement.isUnlocked ? .goldPrimary : .secondary)
+                }
+                .padding(.top, 32)
+
+                // Name
+                Text(achievement.name)
+                    .font(.oracleProphecy(size: 24))
+                    .foregroundColor(achievement.isUnlocked ? .goldPrimary : .textPrimary)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 24)
+
+                // Description
+                Text(achievement.descriptionText)
+                    .font(.oracleBody())
+                    .foregroundColor(.textSecondary)
+                    .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .padding(.horizontal, 32)
+
+                // Progress or unlock date
+                if achievement.isUnlocked {
+                    Label {
+                        Text("Unlocked \(achievement.unlockedAt?.formatted(date: .long, time: .omitted) ?? "")")
+                            .font(.subheadline)
+                    } icon: {
+                        Image(systemName: "checkmark.seal.fill")
+                    }
+                    .foregroundColor(.goldPrimary)
+                } else if let def = definition, def.target > 1 {
+                    VStack(spacing: 8) {
+                        ProgressView(value: achievement.progress)
+                            .tint(.goldPrimary)
+                            .padding(.horizontal, 48)
+
+                        Text("\(Int(achievement.progress * Double(def.target))) / \(def.target)")
+                            .font(.subheadline.bold())
+                            .foregroundColor(.textSecondary)
+                    }
+                } else {
+                    Text("Not yet unlocked")
+                        .font(.subheadline)
+                        .foregroundColor(.textDimmed)
+                }
+
+                Button("Dismiss") {
+                    dismiss()
+                }
+                .buttonStyle(.borderedProminent)
+                .tint(.goldPrimary)
+                .padding(.top, 8)
+                .padding(.bottom, 32)
+            }
+            .frame(maxWidth: .infinity)
+        }
+        .presentationDetents([.medium, .large])
+        .presentationDragIndicator(.visible)
     }
 }
 
@@ -112,7 +209,7 @@ struct AchievementCelebrationView: View {
                 .onTapGesture { onDismiss() }
 
             VStack(spacing: 16) {
-                Text("Commendation Unlocked!")
+                Text("Rite of Passage Unlocked!")
                     .font(.headline)
                     .foregroundStyle(.secondary)
 

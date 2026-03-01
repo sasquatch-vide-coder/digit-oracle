@@ -356,7 +356,7 @@ struct StatsOverviewView: View {
     private var achievementsCard: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
-                Label("Commendations", systemImage: "trophy.fill")
+                Label("Rites of Passage", systemImage: "trophy.fill")
                     .font(.headline)
                 Spacer()
                 Image(systemName: "chevron.right")

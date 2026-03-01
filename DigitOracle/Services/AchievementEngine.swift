@@ -6,11 +6,28 @@ class AchievementEngine {
     /// Recently unlocked achievement keys from the last check, for triggering celebrations.
     var recentlyUnlocked: [Achievement] = []
 
-    /// Check all achievements against current data and unlock any that are earned.
-    func checkAll(context: ModelContext) {
-        let sightings = (try? context.fetch(FetchDescriptor<Sighting>())) ?? []
-        let albums = (try? context.fetch(FetchDescriptor<Album>())) ?? []
+    /// Sync achievement records with current definitions (migrate keys, update names/icons, seed missing).
+    static func syncDefinitions(context: ModelContext) {
         var achievements = (try? context.fetch(FetchDescriptor<Achievement>())) ?? []
+
+        // Migrate renamed keys
+        if let arSpotter = achievements.first(where: { $0.key == "ar_spotter" }) {
+            if let def = AchievementDefinitions.definition(for: "archivist") {
+                arSpotter.key = def.key
+                arSpotter.name = def.name
+                arSpotter.descriptionText = def.description
+                arSpotter.iconName = def.icon
+            }
+        }
+
+        // Update names/descriptions for existing achievements to match current definitions
+        for achievement in achievements {
+            if let def = AchievementDefinitions.definition(for: achievement.key) {
+                achievement.name = def.name
+                achievement.descriptionText = def.description
+                achievement.iconName = def.icon
+            }
+        }
 
         // Seed missing achievements
         let existingKeys = Set(achievements.map(\.key))
@@ -19,6 +36,17 @@ class AchievementEngine {
             context.insert(a)
             achievements.append(a)
         }
+
+        try? context.save()
+    }
+
+    /// Check all achievements against current data and unlock any that are earned.
+    func checkAll(context: ModelContext) {
+        Self.syncDefinitions(context: context)
+
+        let sightings = (try? context.fetch(FetchDescriptor<Sighting>())) ?? []
+        let albums = (try? context.fetch(FetchDescriptor<Album>())) ?? []
+        let achievements = (try? context.fetch(FetchDescriptor<Achievement>())) ?? []
 
         recentlyUnlocked = []
 
@@ -111,9 +139,9 @@ class AchievementEngine {
             let count = Double(albums.count)
             return (count >= target, target > 0 ? min(1.0, count / target) : 0)
 
-        // Capture modes
-        case "ar_spotter":
-            let has = sightings.contains { $0.sourceType == "ar_scan" }
+        // Archive
+        case "archivist":
+            let has = sightings.contains { $0.sourceType == "library_scan" }
             return (has, has ? 1.0 : 0.0)
 
         default:
