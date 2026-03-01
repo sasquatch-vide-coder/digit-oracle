@@ -14,15 +14,15 @@ struct AlbumFormView: View {
     var body: some View {
         NavigationStack {
             Form {
-                Section("Album Name") {
-                    TextField("My 47s Collection", text: $name)
+                Section("Scroll Name") {
+                    TextField("Ancient Whispers", text: $name)
                 }
                 Section("Description") {
                     TextField("Optional description", text: $description, axis: .vertical)
                         .lineLimit(2...4)
                 }
             }
-            .navigationTitle(isEditing ? "Edit Album" : "New Album")
+            .navigationTitle(isEditing ? "Edit Scroll" : "New Scroll")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {

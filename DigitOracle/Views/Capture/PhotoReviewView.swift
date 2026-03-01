@@ -108,14 +108,14 @@ struct PhotoReviewView: View {
 
             if let ocrResult, ocrResult.containsTrackedNumber {
                 HStack(spacing: 4) {
-                    Image(systemName: "checkmark.seal.fill")
+                    Image(systemName: "sparkles")
                     Text(matchedNumbersLabel(ocrResult.matchedNumbers) + " divined!")
                 }
                 .font(.caption.bold())
-                .foregroundStyle(.white)
+                .foregroundStyle(Color.textPrimary)
                 .padding(.horizontal, 10)
                 .padding(.vertical, 6)
-                .background(.green, in: Capsule())
+                .background(Color.goldDark, in: Capsule())
                 .padding(8)
             }
         }
@@ -157,11 +157,11 @@ struct PhotoReviewView: View {
                         .foregroundStyle(.secondary)
                 } else if let ocrResult {
                     if ocrResult.containsTrackedNumber {
-                        Image(systemName: "checkmark.seal.fill")
-                            .foregroundStyle(.green)
+                        Image(systemName: "sparkles")
+                            .foregroundStyle(Color.goldPrimary)
                         Text("\(ocrResult.matchCount) revelation\(ocrResult.matchCount == 1 ? "" : "s")")
                             .font(.caption)
-                            .foregroundStyle(.green)
+                            .foregroundStyle(Color.goldPrimary)
                     } else {
                         Image(systemName: "text.magnifyingglass")
                             .foregroundStyle(.secondary)

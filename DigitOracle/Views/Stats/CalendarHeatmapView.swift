@@ -137,10 +137,10 @@ struct CalendarHeatmapView: View {
     private func intensityColor(for count: Int) -> Color {
         switch count {
         case 0: return Color.secondary.opacity(0.15)
-        case 1: return Color.green.opacity(0.4)
-        case 2: return Color.green.opacity(0.6)
-        case 3: return Color.green.opacity(0.8)
-        default: return Color.green
+        case 1: return Color.goldPrimary.opacity(0.4)
+        case 2: return Color.goldPrimary.opacity(0.6)
+        case 3: return Color.goldPrimary.opacity(0.8)
+        default: return Color.goldPrimary
         }
     }
 }

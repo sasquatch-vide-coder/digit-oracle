@@ -77,16 +77,16 @@ struct LiveDetectorView: View {
                 .background(.ultraThinMaterial, in: Capsule())
             } else if detectorService.matchCount > 0 {
                 HStack(spacing: 6) {
-                    Image(systemName: "checkmark.circle.fill")
-                        .foregroundColor(.green)
+                    Image(systemName: "sparkles")
+                        .foregroundColor(Color.goldPrimary)
                     Text("The sacred digits emerge!")
                 }
                 .font(.subheadline.weight(.medium))
                 .foregroundStyle(.white)
                 .padding(.horizontal, 16)
                 .padding(.vertical, 8)
-                .background(.green.opacity(0.3), in: Capsule())
-                .overlay(Capsule().stroke(.green, lineWidth: 1))
+                .background(Color.goldDark.opacity(0.3), in: Capsule())
+                .overlay(Capsule().stroke(Color.goldPrimary, lineWidth: 1))
             } else {
                 HStack(spacing: 6) {
                     scanningDot
@@ -103,7 +103,7 @@ struct LiveDetectorView: View {
 
     private var scanningDot: some View {
         Circle()
-            .fill(.green)
+            .fill(Color.goldPrimary)
             .frame(width: 8, height: 8)
             .modifier(PulsingModifier())
     }
@@ -143,7 +143,7 @@ struct LiveDetectorView: View {
     private var scanningRing: some View {
         Circle()
             .trim(from: 0, to: 0.3)
-            .stroke(.green, lineWidth: 3)
+            .stroke(Color.goldPrimary, lineWidth: 3)
             .frame(width: 90, height: 90)
             .rotationEffect(.degrees(detectorService.isInCooldown ? 0 : 360))
             .animation(

@@ -35,6 +35,7 @@ struct DigitOracleApp: App {
                         .onAppear {
                             backfillSightings()
                             migrateFullImagesToPhotoLibrary()
+                            navigateToVisionsIfSightingsExist()
                         }
                 } else {
                     OnboardingView()
@@ -85,6 +86,14 @@ struct DigitOracleApp: App {
             await MainActor.run {
                 UserDefaults.standard.set(true, forKey: key)
             }
+        }
+    }
+
+    private func navigateToVisionsIfSightingsExist() {
+        let context = container.mainContext
+        let count = (try? context.fetchCount(FetchDescriptor<Sighting>())) ?? 0
+        if count > 0 {
+            selectedTab = .sightings
         }
     }
 

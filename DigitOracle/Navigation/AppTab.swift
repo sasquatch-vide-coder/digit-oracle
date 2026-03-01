@@ -10,7 +10,7 @@ enum AppTab: String, CaseIterable {
         switch self {
         case .sightings: "Visions"
         case .capture: "Capture"
-        case .albums: "Albums"
+        case .albums: "Scrolls"
         case .profile: "Profile"
         }
     }

@@ -7,15 +7,14 @@ struct LibraryScannerView: View {
     @Environment(\.dismiss) private var dismiss
 
     @State private var scanner = LibraryScannerService()
-    @State private var selectedIDs: Set<String> = []
-    @State private var isImporting = false
-    @State private var importedCount: Int?
-    @State private var importTotal: Int = 0
-    @State private var importProgress: Int = 0
     @State private var achievementEngine = AchievementEngine()
     @State private var importedIdentifiers: Set<String> = []
     @State private var importedHashes: Set<String> = []
     @State private var isFullRescan = false
+    @State private var savedCount = 0
+    @State private var unsavedCount = 0
+
+    var autoStart = false
 
     var body: some View {
         NavigationStack {
@@ -26,7 +25,7 @@ struct LibraryScannerView: View {
                 case .scanning:
                     scanningView
                 case .completed, .cancelled:
-                    resultsView
+                    completedView
                 }
             }
             .navigationTitle("Peer into the Archive")
@@ -35,20 +34,14 @@ struct LibraryScannerView: View {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Close") {
                         scanner.cancel()
+                        finalizeScan()
                         dismiss()
                     }
                 }
             }
-            .alert("Visions Received", isPresented: .init(
-                get: { importedCount != nil },
-                set: { if !$0 { importedCount = nil } }
-            )) {
-                Button("Done") {
-                    dismiss()
-                }
-            } message: {
-                if let count = importedCount {
-                    Text("Received \(count) vision\(count == 1 ? "" : "s") from the ether.")
+            .task {
+                if autoStart && scanner.state == .idle {
+                    await startScan()
                 }
             }
         }
@@ -125,10 +118,10 @@ struct LibraryScannerView: View {
         }
     }
 
-    // MARK: - Results
+    // MARK: - Completed
 
-    private var resultsView: some View {
-        VStack(spacing: 0) {
+    private var completedView: some View {
+        Group {
             if scanner.matches.isEmpty {
                 VStack(spacing: 24) {
                     Spacer()
@@ -142,12 +135,35 @@ struct LibraryScannerView: View {
                         .foregroundStyle(.secondary)
                         .multilineTextAlignment(.center)
                         .padding(.horizontal, 40)
+                    Button("Done") {
+                        dismiss()
+                    }
+                    .buttonStyle(.borderedProminent)
                     Spacer()
                 }
             } else {
-                resultsHeader
-                matchesGrid
-                importBar
+                VStack(spacing: 16) {
+                    VStack(spacing: 8) {
+                        Image(systemName: "checkmark.circle.fill")
+                            .font(.system(size: 48))
+                            .foregroundColor(.successGreen)
+
+                        Text("\(savedCount) vision\(savedCount == 1 ? "" : "s") saved")
+                            .font(.headline)
+                    }
+                    .padding()
+
+                    matchesGrid
+
+                    Button("Done") {
+                        dismiss()
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .padding()
+                }
+                .onAppear {
+                    finalizeScan()
+                }
             }
         }
     }
@@ -164,9 +180,9 @@ struct LibraryScannerView: View {
                     .font(.caption)
                     .foregroundStyle(.secondary)
                 Spacer()
-                Text("\(scanner.matches.count) revelation\(scanner.matches.count == 1 ? "" : "s")")
+                Text("\(savedCount) saved")
                     .font(.caption.bold())
-                    .foregroundStyle(.green)
+                    .foregroundStyle(Color.goldPrimary)
             }
 
             if let startDate = scanner.scanStartDate {
@@ -203,23 +219,6 @@ struct LibraryScannerView: View {
         return String(format: "%d:%02d", m, s)
     }
 
-    private var resultsHeader: some View {
-        HStack {
-            Text("\(scanner.matches.count) vision\(scanner.matches.count == 1 ? "" : "s") with revelations")
-                .font(.headline)
-            Spacer()
-            Button(selectedIDs.count == scanner.matches.count ? "Deselect All" : "Select All") {
-                if selectedIDs.count == scanner.matches.count {
-                    selectedIDs.removeAll()
-                } else {
-                    selectedIDs = Set(scanner.matches.map(\.id))
-                }
-            }
-            .font(.subheadline)
-        }
-        .padding()
-    }
-
     private var matchesGrid: some View {
         ScrollView {
             LazyVGrid(columns: [
@@ -228,45 +227,10 @@ struct LibraryScannerView: View {
                 GridItem(.flexible(), spacing: 8)
             ], spacing: 8) {
                 ForEach(scanner.matches) { result in
-                    ScanResultCard(
-                        result: result,
-                        isSelected: selectedIDs.contains(result.id),
-                        onToggle: { toggleSelection(result.id) }
-                    )
+                    ScanResultCard(result: result)
                 }
             }
             .padding(.horizontal)
-        }
-    }
-
-    private var importBar: some View {
-        VStack(spacing: 0) {
-            Divider()
-            if isImporting {
-                VStack(spacing: 8) {
-                    ProgressView(value: Double(importProgress), total: max(Double(importTotal), 1))
-                        .tint(.accentColor)
-                    Text("Receiving \(importProgress) of \(importTotal)...")
-                        .font(.subheadline.bold())
-                        .foregroundStyle(.primary)
-                }
-                .padding()
-                .background(.bar)
-            } else {
-                HStack(spacing: 12) {
-                    Button {
-                        Task { await importSelected() }
-                    } label: {
-                        Text("Receive \(selectedIDs.isEmpty ? "All" : "Selected") (\(selectedIDs.isEmpty ? scanner.matches.count : selectedIDs.count))")
-                            .font(.headline)
-                            .frame(maxWidth: .infinity)
-                            .padding(.vertical, 14)
-                    }
-                    .buttonStyle(.borderedProminent)
-                }
-                .padding()
-                .background(.bar)
-            }
         }
     }
 
@@ -294,102 +258,70 @@ struct LibraryScannerView: View {
         importedIdentifiers = Set(existing.compactMap(\.sourceIdentifier))
         importedHashes = Set(existing.compactMap(\.imageHash))
 
+        savedCount = 0
+        unsavedCount = 0
+
+        // Wire up auto-save callback
+        scanner.onMatch = { result in
+            saveSighting(from: result)
+        }
+
         scanner.startScan(excludingIdentifiers: importedIdentifiers, excludingHashes: importedHashes, sinceDate: isFullRescan ? nil : scanner.lastScanDate)
     }
 
-    private func toggleSelection(_ id: String) {
-        if selectedIDs.contains(id) {
-            selectedIDs.remove(id)
-        } else {
-            selectedIDs.insert(id)
+    private func saveSighting(from result: LibraryScanResult) {
+        let sightingID = UUID()
+        let ownerID = Constants.defaultOwnerID
+
+        do {
+            let thumbFileName = try ImageStorageService.shared.saveThumbnailOnly(result.scanImage, id: sightingID)
+            let syntheticFullName = "\(sightingID.uuidString)\(Constants.ImageStorage.fullSuffix).jpg"
+
+            OCRService.shared.saveDetection(result.detection, for: syntheticFullName)
+            let ocrResult = result.detection.ocr
+
+            let sighting = Sighting(
+                ownerUserID: ownerID,
+                imageFileName: syntheticFullName,
+                captureDate: result.creationDate ?? .now,
+                sourceType: "library_scan",
+                latitude: result.asset.location?.coordinate.latitude,
+                longitude: result.asset.location?.coordinate.longitude
+            )
+            sighting.thumbnailFileName = thumbFileName
+            sighting.hasLocalFullImage = false
+            sighting.imageHash = result.hash
+            sighting.contains47 = ocrResult.matchedNumbers.contains(47)
+            sighting.matchedNumbers = ocrResult.matchedNumbers
+            sighting.matchCounts = ocrResult.matchCounts
+            sighting.rarityScore = min(max(sighting.totalMatchCount, 1), 5)
+            sighting.sourceIdentifier = result.id
+            sighting.detectedText = ocrResult.fullText
+
+            modelContext.insert(sighting)
+            savedCount += 1
+            unsavedCount += 1
+
+            // Batch save every 20 sightings
+            if unsavedCount >= 20 {
+                try? modelContext.save()
+                unsavedCount = 0
+            }
+        } catch {
+            // thumbnail save failed, skip this sighting
         }
     }
 
-    private func importSelected() async {
-        isImporting = true
-        let toImport: [LibraryScanResult]
-        if selectedIDs.isEmpty {
-            toImport = scanner.matches
-        } else {
-            toImport = scanner.matches.filter { selectedIDs.contains($0.id) }
-        }
+    private func finalizeScan() {
+        guard savedCount > 0 else { return }
 
-        importTotal = toImport.count
-        importProgress = 0
+        try? modelContext.save()
+        unsavedCount = 0
 
-        // Fetch existing source identifiers and hashes to skip duplicates at import time
-        let existingDescriptor = FetchDescriptor<Sighting>()
-        let existingSightings = (try? modelContext.fetch(existingDescriptor)) ?? []
-        let alreadyImported = Set(existingSightings.compactMap(\.sourceIdentifier))
-        let existingHashes = Set(existingSightings.compactMap(\.imageHash))
+        let allSightings = (try? modelContext.fetch(FetchDescriptor<Sighting>())) ?? []
+        WidgetDataService.update(from: allSightings)
+        WidgetCenter.shared.reloadAllTimelines()
 
-        var count = 0
-        let ownerID = Constants.defaultOwnerID
-
-        for result in toImport {
-            // Skip if this asset was already imported
-            if alreadyImported.contains(result.id) {
-                importProgress += 1
-                continue
-            }
-
-            guard let fullImage = await scanner.loadFullImage(for: result) else {
-                importProgress += 1
-                continue
-            }
-
-            // Skip if a perceptually identical image already exists
-            if let hash = ImageStorageService.perceptualHash(of: fullImage),
-               existingHashes.contains(hash) {
-                importProgress += 1
-                continue
-            }
-
-            let sightingID = UUID()
-            do {
-                let thumbFileName = try ImageStorageService.shared.saveThumbnailOnly(fullImage, id: sightingID)
-                let syntheticFullName = "\(sightingID.uuidString)\(Constants.ImageStorage.fullSuffix).jpg"
-
-                let detection = await OCRService.shared.detect(in: fullImage)
-                OCRService.shared.saveDetection(detection, for: syntheticFullName)
-                let ocrResult = detection.ocr
-
-                let sighting = Sighting(
-                    ownerUserID: ownerID,
-                    imageFileName: syntheticFullName,
-                    captureDate: result.creationDate ?? .now,
-                    sourceType: "library_scan",
-                    latitude: result.asset.location?.coordinate.latitude,
-                    longitude: result.asset.location?.coordinate.longitude
-                )
-                sighting.thumbnailFileName = thumbFileName
-                sighting.hasLocalFullImage = false
-                sighting.imageHash = ImageStorageService.perceptualHash(of: fullImage)
-                sighting.contains47 = ocrResult.matchedNumbers.contains(47)
-                sighting.matchedNumbers = ocrResult.matchedNumbers
-                sighting.matchCounts = ocrResult.matchCounts
-                sighting.rarityScore = min(max(sighting.totalMatchCount, 1), 5)
-                sighting.sourceIdentifier = result.id
-
-                modelContext.insert(sighting)
-                count += 1
-            } catch {
-                // fall through to increment progress
-            }
-            importProgress += 1
-        }
-
-        if count > 0 {
-            try? modelContext.save()
-
-            let allSightings = (try? modelContext.fetch(FetchDescriptor<Sighting>())) ?? []
-            WidgetDataService.update(from: allSightings)
-            WidgetCenter.shared.reloadAllTimelines()
-
-            achievementEngine.checkAll(context: modelContext)
-        }
-
-        isImporting = false
-        importedCount = count
+        achievementEngine.checkAll(context: modelContext)
     }
 }

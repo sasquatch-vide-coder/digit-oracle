@@ -4,8 +4,10 @@ import UIKit
 struct LibraryScanResult: Identifiable {
     let id: String  // PHAsset localIdentifier
     let asset: PHAsset
-    let thumbnail: UIImage
-    let ocrResult: OCRResult
+    let scanImage: UIImage    // 600px image used for OCR/hash
+    let thumbnail: UIImage    // 300px display thumbnail
+    let detection: DetectionResult
+    let hash: String?
     let creationDate: Date?
 }
 
@@ -26,6 +28,7 @@ final class LibraryScannerService {
     var matches: [LibraryScanResult] = []
     var errorMessage: String?
     var scanStartDate: Date?
+    var onMatch: ((LibraryScanResult) -> Void)?
 
     var lastScanDate: Date? {
         UserDefaults.standard.object(forKey: Self.lastScanDateKey) as? Date
@@ -131,6 +134,7 @@ final class LibraryScannerService {
                     scannedCount += 1
                     if let result {
                         matches.append(result)
+                        onMatch?(result)
                     }
                 }
 
@@ -160,15 +164,16 @@ final class LibraryScannerService {
         }
 
         // Skip if a perceptually identical image was already imported
+        let hash = ImageStorageService.perceptualHash(of: image)
         if !excludedHashes.isEmpty,
-           let hash = ImageStorageService.perceptualHash(of: image),
+           let hash,
            excludedHashes.contains(hash) {
             return nil
         }
 
-        let ocrResult = (await OCRService.shared.detect(in: image)).ocr
+        let detection = await OCRService.shared.detect(in: image)
 
-        guard ocrResult.containsTrackedNumber else { return nil }
+        guard detection.ocr.containsTrackedNumber else { return nil }
 
         // Generate a smaller thumbnail for display
         let thumbnail = await loadImage(from: asset, targetSize: CGSize(width: 300, height: 300)) ?? image
@@ -176,8 +181,10 @@ final class LibraryScannerService {
         return LibraryScanResult(
             id: asset.localIdentifier,
             asset: asset,
+            scanImage: image,
             thumbnail: thumbnail,
-            ocrResult: ocrResult,
+            detection: detection,
+            hash: hash,
             creationDate: asset.creationDate
         )
     }
@@ -204,13 +211,4 @@ final class LibraryScannerService {
         }
     }
 
-    // MARK: - Import
-
-    func loadFullImage(for result: LibraryScanResult) async -> UIImage? {
-        let size = CGSize(
-            width: CGFloat(result.asset.pixelWidth),
-            height: CGFloat(result.asset.pixelHeight)
-        )
-        return await loadImage(from: result.asset, targetSize: size)
-    }
 }

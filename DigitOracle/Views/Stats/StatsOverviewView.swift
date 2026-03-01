@@ -126,10 +126,10 @@ struct StatsOverviewView: View {
 
     private var quickStats: some View {
         LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 12) {
-            StatCard(title: "Verified", value: "\(stats.verifiedCount)", icon: "checkmark.seal.fill", color: .green)
+            StatCard(title: "Revealed", value: "\(stats.verifiedCount)", icon: "sparkles", color: .goldPrimary)
             StatCard(title: "Favorites", value: "\(stats.favoriteCount)", icon: "heart.fill", color: .red)
-            StatCard(title: "Locations", value: "\(stats.citiesVisited)", icon: "mappin.circle.fill", color: .blue)
-            StatCard(title: "Avg / Week", value: String(format: "%.1f", stats.averagePerWeek), icon: "chart.line.uptrend.xyaxis", color: .purple)
+            StatCard(title: "Locations", value: "\(stats.citiesVisited)", icon: "mappin.circle.fill", color: .goldPrimary)
+            StatCard(title: "Avg / Week", value: String(format: "%.1f", stats.averagePerWeek), icon: "chart.line.uptrend.xyaxis", color: .goldPrimary)
         }
     }
 
@@ -235,7 +235,7 @@ struct StatsOverviewView: View {
         HStack(spacing: 12) {
             ZStack {
                 RoundedRectangle(cornerRadius: 12)
-                    .fill(LinearGradient(colors: [.indigo, .purple, .pink], startPoint: .topLeading, endPoint: .bottomTrailing))
+                    .fill(LinearGradient(colors: [.goldDark, .goldPrimary, .goldLight], startPoint: .topLeading, endPoint: .bottomTrailing))
                     .frame(width: 50, height: 50)
                 Text("\(TrackedNumberService.shared.primaryNumber)")
                     .font(.headline.bold())
@@ -452,10 +452,10 @@ struct MiniCalendarGrid: View {
     private func intensityColor(for count: Int) -> Color {
         switch count {
         case 0: return Color.secondary.opacity(0.15)
-        case 1: return Color.green.opacity(0.35)
-        case 2: return Color.green.opacity(0.55)
-        case 3: return Color.green.opacity(0.75)
-        default: return Color.green
+        case 1: return Color.goldPrimary.opacity(0.35)
+        case 2: return Color.goldPrimary.opacity(0.55)
+        case 3: return Color.goldPrimary.opacity(0.75)
+        default: return Color.goldPrimary
         }
     }
 }

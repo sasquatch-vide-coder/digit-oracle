@@ -27,7 +27,7 @@ enum AchievementDefinitions {
 
         // Category
         AchievementDef(key: "the_naturalist", name: "The Naturalist", description: "Record 10 natural visions", icon: "leaf.fill", target: 10),
-        AchievementDef(key: "sharpshooter", name: "Sharpshooter", description: "Gain 10 verified visions", icon: "scope", target: 10),
+        AchievementDef(key: "sharpshooter", name: "Sharpshooter", description: "Gain 10 revealed visions", icon: "scope", target: 10),
         // Streaks
         AchievementDef(key: "streak_7", name: "Lucky 7", description: "Maintain a 7-day streak", icon: "flame.fill", target: 7),
         AchievementDef(key: "streak_30", name: "Monthly Master", description: "Maintain a 30-day streak", icon: "flame.circle.fill", target: 30),
@@ -40,7 +40,7 @@ enum AchievementDefinitions {
 
         // Organization
         AchievementDef(key: "tagmaster", name: "Tag Enthusiast", description: "Use 10+ distinct tags", icon: "tag.fill", target: 10),
-        AchievementDef(key: "album_collector", name: "Collector", description: "Create 5+ albums", icon: "rectangle.stack.fill", target: 5),
+        AchievementDef(key: "album_collector", name: "Collector", description: "Create 5+ scrolls", icon: "rectangle.stack.fill", target: 5),
 
         // Capture modes
         AchievementDef(key: "ar_spotter", name: "AR Spotter", description: "Capture using AR scan mode", icon: "arkit", target: 1),

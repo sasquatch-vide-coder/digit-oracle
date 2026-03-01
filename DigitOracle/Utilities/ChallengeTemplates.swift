@@ -34,7 +34,7 @@ enum ChallengeTemplates {
 
     static let daily: [ChallengeTemplate] = [
         ChallengeTemplate(title: "Quick Spot", description: "Record any vision today", category: nil, requiresVerified: false, requiresLocation: false, minRarity: nil, timeWindow: "daily", reward: .none),
-        ChallengeTemplate(title: "Verified Find", description: "Record a verified vision", category: nil, requiresVerified: true, requiresLocation: false, minRarity: nil, timeWindow: "daily", reward: .streakFreeze(1)),
+        ChallengeTemplate(title: "Revealed Find", description: "Record a revealed vision", category: nil, requiresVerified: true, requiresLocation: false, minRarity: nil, timeWindow: "daily", reward: .streakFreeze(1)),
         ChallengeTemplate(title: "Print Spotter", description: "Find a number in printed text (book, receipt, sign)", category: "printed", requiresVerified: false, requiresLocation: false, minRarity: nil, timeWindow: "daily", reward: .none),
         ChallengeTemplate(title: "Digital Detective", description: "Spot a number on a screen or display", category: "digital", requiresVerified: false, requiresLocation: false, minRarity: nil, timeWindow: "daily", reward: .none),
         ChallengeTemplate(title: "Nature Walk", description: "Find a number in the natural world", category: "natural", requiresVerified: false, requiresLocation: false, minRarity: nil, timeWindow: "daily", reward: .streakFreeze(1)),

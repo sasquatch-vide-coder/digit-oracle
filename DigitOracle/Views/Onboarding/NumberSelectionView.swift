@@ -11,11 +11,7 @@ struct NumberSelectionView: View {
     @State private var tappedNumber: Int?
     @Environment(\.dismiss) private var dismiss
 
-    private let accentGradient = LinearGradient(
-        colors: [.blue, .cyan, .teal],
-        startPoint: .topLeading,
-        endPoint: .bottomTrailing
-    )
+    private let accentGradient = LinearGradient.goldShimmer
 
     var body: some View {
         let content = ScrollView {
@@ -35,7 +31,7 @@ struct NumberSelectionView: View {
             }
             .padding()
         }
-        .navigationTitle(isOnboarding ? "" : "Tracked Numbers")
+        .navigationTitle(isOnboarding ? "" : "Sacred Numbers")
         .navigationBarTitleDisplayMode(.inline)
         .sensoryFeedback(.selection, trigger: tappedNumber)
 
@@ -54,29 +50,29 @@ struct NumberSelectionView: View {
         VStack(spacing: 16) {
             ZStack {
                 Circle()
-                    .fill(.white.opacity(0.2))
+                    .fill(Color.goldDark.opacity(0.3))
                     .frame(width: 100, height: 100)
 
                 Image(systemName: "number.square.fill")
                     .font(.system(size: 48))
-                    .foregroundStyle(.white)
+                    .foregroundStyle(Color.goldPrimary)
             }
 
             Text("Which sacred numbers\ndost thou seek?")
-                .font(.system(size: 28, weight: .bold, design: .rounded))
-                .foregroundStyle(.white)
+                .font(.oracleHeading)
+                .foregroundStyle(Color.goldLight)
                 .multilineTextAlignment(.center)
 
             Text("Speak thy sacred numbers unto the Oracle.\nThou may alter them at any time.")
-                .font(.subheadline)
-                .foregroundStyle(.white.opacity(0.8))
+                .font(.oracleBody)
+                .foregroundStyle(Color.textSecondary)
                 .multilineTextAlignment(.center)
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, 32)
         .padding(.horizontal, 20)
         .background(
-            accentGradient
+            Color.backgroundSecondary
                 .clipShape(RoundedRectangle(cornerRadius: 24))
         )
         .opacity(headerVisible ? 1 : 0)
@@ -127,7 +123,7 @@ struct NumberSelectionView: View {
                             )
                             .foregroundStyle(isSelected ? .white : .primary)
                             .clipShape(RoundedRectangle(cornerRadius: 12))
-                            .shadow(color: isSelected ? .blue.opacity(0.3) : .clear, radius: 6, y: 3)
+                            .shadow(color: isSelected ? Color.goldPrimary.opacity(0.3) : .clear, radius: 6, y: 3)
                     }
                     .scaleEffect(tappedNumber == number ? 0.92 : 1.0)
                     .disabled(!isSelected && service.trackedNumbers.count >= Constants.TrackedNumbers.maxTrackedNumbers)
@@ -205,7 +201,7 @@ struct NumberSelectionView: View {
                     HStack(spacing: 12) {
                         Text(String(number))
                             .font(.title3.bold())
-                            .foregroundStyle(index == 0 ? .blue : .primary)
+                            .foregroundStyle(index == 0 ? Color.goldPrimary : .primary)
 
                         if index == 0 {
                             Text("Primary")
@@ -257,7 +253,7 @@ struct NumberSelectionView: View {
                     RoundedRectangle(cornerRadius: 16)
                         .fill(service.trackedNumbers.isEmpty ? AnyShapeStyle(Color.gray.opacity(0.4)) : AnyShapeStyle(accentGradient))
                 )
-                .shadow(color: service.trackedNumbers.isEmpty ? .clear : .blue.opacity(0.3), radius: 8, y: 4)
+                .shadow(color: service.trackedNumbers.isEmpty ? .clear : Color.goldPrimary.opacity(0.3), radius: 8, y: 4)
         }
         .disabled(service.trackedNumbers.isEmpty)
     }

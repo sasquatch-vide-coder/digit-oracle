@@ -40,17 +40,17 @@ struct WrappedView: View {
             "\(monthSightings.count)",
             "visions this \(monthName)",
             "eye.fill",
-            .blue
+            .goldLight
         ))
 
-        // Page 3: Verified count
-        let verified = monthSightings.filter(\.containsTrackedNumber).count
-        if verified > 0 {
+        // Page 3: Revealed count
+        let revealed = monthSightings.filter(\.containsTrackedNumber).count
+        if revealed > 0 {
             result.append(.stat(
-                "\(verified)",
-                "OCR-verified finds",
-                "checkmark.seal.fill",
-                .green
+                "\(revealed)",
+                "Revealed by the Oracle",
+                "sparkles",
+                .goldPrimary
             ))
         }
 
@@ -73,7 +73,7 @@ struct WrappedView: View {
                 Constants.Rarity.label(for: rarest.rarityScore),
                 "was your rarest find: \"\(rarest.notes.prefix(40))\"",
                 "diamond.fill",
-                .purple
+                .purpleLight
             ))
         }
 
@@ -84,7 +84,7 @@ struct WrappedView: View {
                 "\(locations.count)",
                 "unique location\(locations.count == 1 ? "" : "s") visited",
                 "mappin.circle.fill",
-                .red
+                .goldDark
             ))
         }
 
@@ -95,7 +95,7 @@ struct WrappedView: View {
                 "\(streak)",
                 "day streak — keep it going!",
                 "flame.fill",
-                .orange
+                .goldLight
             ))
         }
 
@@ -104,7 +104,7 @@ struct WrappedView: View {
             "\(yearSightings.count)",
             "visions in \(currentYear) so far",
             "calendar",
-            .indigo
+            .purpleAccent
         ))
 
         // Final page
@@ -140,21 +140,21 @@ struct WrappedView: View {
             VStack(spacing: 16) {
                 Spacer()
                 Text("Your")
-                    .font(.title2)
-                    .foregroundStyle(.white.opacity(0.7))
+                    .font(.oracleBody)
+                    .foregroundStyle(Color.textSecondary)
                 Text("\(month)")
-                    .font(.system(size: 48, weight: .bold, design: .rounded))
-                    .foregroundStyle(.white)
+                    .font(.oracleHeading)
+                    .foregroundStyle(Color.goldLight)
                 Text("Wrapped")
-                    .font(.system(size: 48, weight: .bold, design: .rounded))
-                    .foregroundStyle(.white)
+                    .font(.oracleHeading)
+                    .foregroundStyle(Color.goldPrimary)
                 Text("\(String(year))")
-                    .font(.title2)
-                    .foregroundStyle(.white.opacity(0.7))
+                    .font(.oracleBody)
+                    .foregroundStyle(Color.textSecondary)
                 Spacer()
                 Text("Swipe to begin →")
-                    .font(.caption)
-                    .foregroundStyle(.white.opacity(0.5))
+                    .font(.oracleCaption)
+                    .foregroundStyle(Color.textDimmed)
                     .padding(.bottom, 40)
             }
 
@@ -163,13 +163,13 @@ struct WrappedView: View {
                 Spacer()
                 Image(systemName: icon)
                     .font(.system(size: 50))
-                    .foregroundStyle(.white.opacity(0.8))
+                    .foregroundStyle(Color.goldDark)
                 Text(value)
-                    .font(.system(size: 72, weight: .bold, design: .rounded))
-                    .foregroundStyle(.white)
+                    .font(.sacredNumber)
+                    .foregroundStyle(Color.goldLight)
                 Text(label)
-                    .font(.title3)
-                    .foregroundStyle(.white.opacity(0.8))
+                    .font(.oracleBody)
+                    .foregroundStyle(Color.textSecondary)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 40)
                 Spacer()
@@ -179,14 +179,14 @@ struct WrappedView: View {
             VStack(spacing: 20) {
                 Spacer()
                 Text("\(TrackedNumberService.shared.primaryNumber)")
-                    .font(.system(size: 100, weight: .bold, design: .rounded))
-                    .foregroundStyle(.white)
-                Text("Keep spotting!")
-                    .font(.title2)
-                    .foregroundStyle(.white.opacity(0.8))
+                    .font(.sacredNumber)
+                    .foregroundStyle(Color.goldPrimary)
+                Text("The Oracle watches.")
+                    .font(.oracleProphecy)
+                    .foregroundStyle(Color.goldLight)
                 Text("Every number tells a story.")
-                    .font(.subheadline)
-                    .foregroundStyle(.white.opacity(0.6))
+                    .font(.oracleBody)
+                    .foregroundStyle(Color.textSecondary)
                 Spacer()
             }
         }
@@ -194,11 +194,16 @@ struct WrappedView: View {
 
     private var gradientColors: [Color] {
         let palettes: [[Color]] = [
-            [.indigo, .purple, .pink],
-            [.blue, .cyan, .teal],
-            [.orange, .red, .pink],
-            [.purple, .blue, .indigo],
-            [.teal, .green, .mint],
+            // Oracle's Chamber — deep void with purple undertone
+            [.backgroundPrimary, Color(red: 0.12, green: 0.06, blue: 0.22), .backgroundSecondary],
+            // Golden Prophecy — dark with warm gold glow
+            [Color(red: 0.1, green: 0.08, blue: 0.04), Color(red: 0.22, green: 0.17, blue: 0.06), .backgroundPrimary],
+            // Mystic Depths — ethereal purple light
+            [Color(red: 0.08, green: 0.04, blue: 0.18), .purpleAccent.opacity(0.5), Color(red: 0.06, green: 0.03, blue: 0.12)],
+            // Ember Ritual — warm bronze-amber darkness
+            [.backgroundPrimary, Color(red: 0.2, green: 0.12, blue: 0.05), Color(red: 0.12, green: 0.06, blue: 0.02)],
+            // Midnight Revelation — cool dark with faint gold edge
+            [Color(red: 0.05, green: 0.04, blue: 0.1), .backgroundTertiary, Color(red: 0.14, green: 0.11, blue: 0.05)],
         ]
         let index = currentPage % palettes.count
         return palettes[index]

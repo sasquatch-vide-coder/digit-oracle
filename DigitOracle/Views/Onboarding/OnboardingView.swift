@@ -239,8 +239,10 @@ struct OnboardingView: View {
         .padding()
         .sheet(isPresented: $showingScanner, onDismiss: {
             hasScanned = true
+            service.hasOfferedLibraryScan = true
+            service.hasCompletedOnboarding = true
         }) {
-            LibraryScannerView()
+            LibraryScannerView(autoStart: true)
         }
     }
 }

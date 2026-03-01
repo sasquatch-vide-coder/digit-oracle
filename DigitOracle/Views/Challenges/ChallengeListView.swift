@@ -121,7 +121,7 @@ struct ChallengeRow: View {
     }
 
     private var statusColor: Color {
-        if challenge.isCompleted { return .green }
+        if challenge.isCompleted { return .goldPrimary }
         if challenge.isExpired { return .secondary }
         return .orange
     }

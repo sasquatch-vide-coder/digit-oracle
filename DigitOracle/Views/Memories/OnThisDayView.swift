@@ -127,9 +127,9 @@ struct MemoryCard: View {
                     .foregroundStyle(.tertiary)
 
                 if sighting.containsTrackedNumber {
-                    Label("Verified", systemImage: "checkmark.seal.fill")
+                    Label("Revealed", systemImage: "sparkles")
                         .font(.caption2)
-                        .foregroundStyle(.green)
+                        .foregroundStyle(Color.goldPrimary)
                 }
             }
 

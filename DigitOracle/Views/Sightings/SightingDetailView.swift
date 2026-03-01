@@ -188,12 +188,12 @@ struct SightingDetailView: View {
                 rarityBadge
 
                 if sighting.containsTrackedNumber {
-                    Label("Verified", systemImage: "checkmark.seal.fill")
+                    Label("Revealed", systemImage: "sparkles")
                         .font(.caption.bold())
                         .foregroundColor(.textPrimary)
-                        .padding(.horizontal, 10)
-                        .padding(.vertical, 5)
-                        .background(Color.successGreen, in: Capsule())
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 6)
+                        .background(Color.goldDark, in: Capsule())
                 }
 
                 Spacer()
@@ -249,7 +249,7 @@ struct SightingDetailView: View {
         let counts = sighting.matchCounts
         VStack(alignment: .leading, spacing: 12) {
             HStack {
-                Text("Matches")
+                Text("Revelations")
                     .font(.headline)
                 Spacer()
                 Button {
@@ -270,20 +270,20 @@ struct SightingDetailView: View {
                     ForEach(counts.sorted(by: { $0.key < $1.key }), id: \.key) { number, count in
                         HStack(spacing: 6) {
                             Text(number)
-                                .font(.subheadline.bold().monospacedDigit())
+                                .font(.caption.bold().monospacedDigit())
                             Text("×")
-                                .font(.caption)
+                                .font(.caption2)
                             Text("\(count)")
-                                .font(.subheadline.bold().monospacedDigit())
+                                .font(.caption.bold().monospacedDigit())
                         }
                         .foregroundColor(.textPrimary)
-                        .padding(.horizontal, 14)
-                        .padding(.vertical, 8)
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 6)
                         .background(Color.goldDark, in: Capsule())
                     }
                 }
             } else if !isRescanning {
-                Text("No matches found")
+                Text("No revelations found")
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
             }
@@ -360,7 +360,7 @@ struct SightingDetailView: View {
     private var albumsSection: some View {
         if !sighting.albums.isEmpty {
             VStack(alignment: .leading, spacing: 8) {
-                Text("Albums")
+                Text("Scrolls")
                     .font(.headline)
                 FlowLayout(spacing: 8) {
                     ForEach(sighting.albums) { album in
@@ -640,7 +640,7 @@ struct AlbumPickerView: View {
                     }
                 }
             }
-            .navigationTitle("Albums")
+            .navigationTitle("Scrolls")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .primaryAction) {

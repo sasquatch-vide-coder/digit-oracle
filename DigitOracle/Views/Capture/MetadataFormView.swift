@@ -42,7 +42,7 @@ struct MetadataFormView: View {
             // Albums
             if !albums.isEmpty {
                 VStack(alignment: .leading, spacing: 8) {
-                    Text("Albums")
+                    Text("Scrolls")
                         .font(.headline)
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 8) {

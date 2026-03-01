@@ -74,8 +74,8 @@ struct MonthlyDigestView: View {
 
             // Highlights grid
             LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 12) {
-                let verified = monthSightings.filter(\.containsTrackedNumber).count
-                StatCard(title: "Verified", value: "\(verified)", icon: "checkmark.seal.fill", color: .green)
+                let revealed = monthSightings.filter(\.containsTrackedNumber).count
+                StatCard(title: "Revealed", value: "\(revealed)", icon: "sparkles", color: .goldPrimary)
 
                 let favorites = monthSightings.filter(\.isFavorite).count
                 StatCard(title: "Favorites", value: "\(favorites)", icon: "heart.fill", color: .red)

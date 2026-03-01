@@ -22,7 +22,7 @@ struct SightingFilter {
     }
 
     enum SortOption: String, CaseIterable {
-        case mostMatches = "Most Matches"
+        case mostMatches = "Most Revelations"
         case dateNewest = "Newest First"
         case dateOldest = "Oldest First"
         case rarityHighest = "Rarest First"
@@ -79,17 +79,17 @@ struct FilterSheetView: View {
                 }
 
                 Section("Filters") {
-                    Toggle("Verified (OCR) Only", isOn: $filter.verifiedOnly)
+                    Toggle("Revealed (OCR) Only", isOn: $filter.verifiedOnly)
                     Toggle("Favorites Only", isOn: $filter.favoritesOnly)
                 }
 
                 if !albums.isEmpty {
-                    Section("Album") {
-                        Picker("Album", selection: Binding(
+                    Section("Scroll") {
+                        Picker("Scroll", selection: Binding(
                             get: { filter.albumID },
                             set: { filter.albumID = $0 }
                         )) {
-                            Text("All Albums").tag(UUID?.none)
+                            Text("All Scrolls").tag(UUID?.none)
                             ForEach(albums) { album in
                                 Text(album.name).tag(UUID?.some(album.id))
                             }

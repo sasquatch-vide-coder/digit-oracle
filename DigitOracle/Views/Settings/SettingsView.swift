@@ -4,6 +4,7 @@ import SwiftData
 struct SettingsView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var profiles: [UserProfile]
+    @Query private var sightings: [Sighting]
     @State private var showingDeleteConfirmation = false
     @State private var showingResetConfirmation = false
     @State private var showingScanner = false
@@ -32,7 +33,7 @@ struct SettingsView: View {
 
             Section("Preferences") {
                 NavigationLink(value: SettingsDestination.trackedNumbers) {
-                    Label("Tracked Numbers", systemImage: "number.square")
+                    Label("Sacred Numbers", systemImage: "number.square")
                 }
                 NavigationLink(value: SettingsDestination.notifications) {
                     Label("Notifications", systemImage: "bell.badge")
@@ -43,17 +44,17 @@ struct SettingsView: View {
             }
 
             Section("Data") {
-                if let stats = storageStats {
-                    HStack {
-                        Text("Images")
-                        Spacer()
-                        Text("\(stats.fileCount)")
-                            .foregroundStyle(.secondary)
-                    }
+                HStack {
+                    Text("Visions")
+                    Spacer()
+                    Text("\(sightings.count)")
+                        .foregroundStyle(.secondary)
+                }
+                if let stats = storageStats, stats.totalBytes > 0 {
                     HStack {
                         Text("Storage Used")
                         Spacer()
-                        Text(stats.totalBytes == 0 ? "0" : ByteCountFormatter.string(fromByteCount: stats.totalBytes, countStyle: .file))
+                        Text(ByteCountFormatter.string(fromByteCount: stats.totalBytes, countStyle: .file))
                             .foregroundStyle(.secondary)
                     }
                 }

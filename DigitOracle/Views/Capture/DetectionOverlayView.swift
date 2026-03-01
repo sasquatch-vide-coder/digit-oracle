@@ -9,10 +9,10 @@ struct DetectionOverlayView: View {
             ForEach(Array(detections.enumerated()), id: \.offset) { _, rect in
                 let converted = convertRect(rect, in: size)
                 RoundedRectangle(cornerRadius: 4)
-                    .stroke(Color.green, lineWidth: 2.5)
+                    .stroke(Color.goldPrimary, lineWidth: 2.5)
                     .background(
                         RoundedRectangle(cornerRadius: 4)
-                            .fill(Color.green.opacity(0.1))
+                            .fill(Color.goldPrimary.opacity(0.1))
                     )
                     .frame(width: converted.width, height: converted.height)
                     .position(x: converted.midX, y: converted.midY)

@@ -109,12 +109,12 @@ struct HeatmapView: View {
 
     private func markerColor(for score: Int) -> Color {
         switch score {
-        case 1: .green
-        case 2: .green
+        case 1: .goldDark
+        case 2: .goldPrimary
         case 3: .blue
         case 4: .purple
         case 5: .orange
-        default: .green
+        default: .goldDark
         }
     }
 
@@ -137,7 +137,7 @@ struct HeatmapView: View {
                         if sighting.totalMatchCount > 0 {
                             Text("\(sighting.totalMatchCount) revelation\(sighting.totalMatchCount == 1 ? "" : "s")")
                                 .font(.caption.bold())
-                                .foregroundColor(.green)
+                                .foregroundColor(.goldPrimary)
                         }
 
                         Text(Constants.Rarity.label(for: sighting.rarityScore))
@@ -172,12 +172,12 @@ private struct SightingMarkerView: View {
 
     private var color: Color {
         switch rarityScore {
-        case 1: .green
-        case 2: .green
+        case 1: .goldDark
+        case 2: .goldPrimary
         case 3: .blue
         case 4: .purple
         case 5: .orange
-        default: .green
+        default: .goldDark
         }
     }
 

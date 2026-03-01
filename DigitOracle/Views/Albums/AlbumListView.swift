@@ -19,7 +19,7 @@ struct AlbumListView: View {
 
     var body: some View {
         albumGrid
-        .navigationTitle("Albums")
+        .navigationTitle("Scrolls")
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 if isSelecting {
@@ -255,8 +255,8 @@ struct AlbumCardView: View {
                     Text("\(album.sightings.count) vision\(album.sightings.count == 1 ? "" : "s")")
                         .foregroundStyle(.secondary)
                     if totalMatchCount > 0 {
-                        Label("\(totalMatchCount)× matched", systemImage: "checkmark.seal.fill")
-                            .foregroundStyle(.green)
+                        Label("\(totalMatchCount)× revealed", systemImage: "sparkles")
+                            .foregroundStyle(Color.goldPrimary)
                     }
                 }
                 .font(.caption)
@@ -320,8 +320,8 @@ struct AllSightingsCardView: View {
                     Text("\(sightings.count) vision\(sightings.count == 1 ? "" : "s")")
                         .foregroundStyle(.secondary)
                     if totalMatchCount > 0 {
-                        Label("\(totalMatchCount)× matched", systemImage: "checkmark.seal.fill")
-                            .foregroundStyle(.green)
+                        Label("\(totalMatchCount)× revealed", systemImage: "sparkles")
+                            .foregroundStyle(Color.goldPrimary)
                     }
                 }
                 .font(.caption)
