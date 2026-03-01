@@ -27,6 +27,13 @@ struct StatsOverviewView: View {
                 quickStats
                 streakCard
 
+                if sightings.contains(where: { $0.coordinate != nil }) {
+                    NavigationLink(value: StatsDestination.heatmap) {
+                        mapPreviewCard
+                    }
+                    .buttonStyle(.plain)
+                }
+
                 NavigationLink(value: StatsDestination.challenges) {
                     challengesCard
                 }
@@ -62,12 +69,6 @@ struct StatsOverviewView: View {
                 }
                 .buttonStyle(.plain)
 
-                if sightings.contains(where: { $0.coordinate != nil }) {
-                    NavigationLink(value: StatsDestination.heatmap) {
-                        mapPreviewCard
-                    }
-                    .buttonStyle(.plain)
-                }
             }
             .padding()
         }
@@ -110,6 +111,11 @@ struct StatsOverviewView: View {
 
     private var heroCard: some View {
         VStack(spacing: 8) {
+            if let name = profiles.first?.displayName {
+                Text(name)
+                    .font(.oracleHeading(size: 22))
+                    .foregroundColor(.goldPrimary)
+            }
             Text("\(stats.totalCount)")
                 .font(.system(size: 72, weight: .bold, design: .rounded))
                 .foregroundColor(.accentColor)

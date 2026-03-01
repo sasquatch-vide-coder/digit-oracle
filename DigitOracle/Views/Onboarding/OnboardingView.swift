@@ -1,9 +1,13 @@
 import SwiftUI
+import SwiftData
 import Photos
 
 struct OnboardingView: View {
+    @Environment(\.modelContext) private var modelContext
+    @Query private var profiles: [UserProfile]
     @State private var currentScreen = 0
     @State private var sacredNumberText = ""
+    @State private var seekerNameText = ""
     @State private var service = TrackedNumberService.shared
     @State private var showError = false
     @State private var showingScanner = false
@@ -27,6 +31,9 @@ struct OnboardingView: View {
                 confirmationScreen
                     .transition(.opacity.animation(.easeInOut(duration: 0.8)))
             case 4:
+                namingScreen
+                    .transition(.opacity.animation(.easeInOut(duration: 0.8)))
+            case 5:
                 seekingScreen
                     .transition(.opacity.animation(.easeInOut(duration: 0.8)))
             default:
@@ -201,7 +208,60 @@ struct OnboardingView: View {
         .padding()
     }
 
-    // MARK: - Screen 5: The Seeking
+    // MARK: - Screen 5: The Naming
+
+    private var namingScreen: some View {
+        VStack(spacing: 24) {
+            Spacer()
+
+            Text("By what name shall the Oracle know thee?")
+                .font(.oracleProphecy(size: 20))
+                .foregroundColor(.goldPrimary)
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, 32)
+
+            Text("Inscribe thy name, seeker, that the Oracle may address thee properly.")
+                .font(.oracleBody(size: 16))
+                .foregroundColor(.textSecondary)
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, 40)
+
+            TextField("", text: $seekerNameText)
+                .font(.oracleHeading(size: 28))
+                .foregroundColor(.goldPrimary)
+                .multilineTextAlignment(.center)
+                .autocorrectionDisabled()
+                .textInputAutocapitalization(.words)
+                .frame(maxWidth: 280)
+                .padding(.vertical, 16)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 12)
+                        .stroke(Color.goldPrimary, lineWidth: 2)
+                )
+
+            Spacer()
+
+            Button("Inscribe thy Name") {
+                let trimmedName = seekerNameText.trimmingCharacters(in: .whitespaces)
+                if let existing = profiles.first {
+                    existing.displayName = trimmedName
+                } else {
+                    let profile = UserProfile(displayName: trimmedName)
+                    modelContext.insert(profile)
+                }
+                withAnimation(.easeInOut(duration: 0.8)) {
+                    currentScreen = 5
+                }
+            }
+            .buttonStyle(OraclePrimaryButtonStyle())
+            .disabled(seekerNameText.trimmingCharacters(in: .whitespaces).isEmpty)
+            .opacity(seekerNameText.trimmingCharacters(in: .whitespaces).isEmpty ? 0.5 : 1.0)
+            .padding(.bottom, 60)
+        }
+        .padding()
+    }
+
+    // MARK: - Screen 6: The Seeking
 
     private var seekingScreen: some View {
         VStack(spacing: 24) {

@@ -255,7 +255,7 @@ struct AlbumCardView: View {
                     Text("\(album.sightings.count) vision\(album.sightings.count == 1 ? "" : "s")")
                         .foregroundStyle(.secondary)
                     if totalMatchCount > 0 {
-                        Label("\(totalMatchCount)× revealed", systemImage: "sparkles")
+                        Label("\(totalMatchCount)×", systemImage: "sparkles")
                             .foregroundStyle(Color.goldPrimary)
                     }
                 }
@@ -320,7 +320,7 @@ struct AllSightingsCardView: View {
                     Text("\(sightings.count) vision\(sightings.count == 1 ? "" : "s")")
                         .foregroundStyle(.secondary)
                     if totalMatchCount > 0 {
-                        Label("\(totalMatchCount)× revealed", systemImage: "sparkles")
+                        Label("\(totalMatchCount)×", systemImage: "sparkles")
                             .foregroundStyle(Color.goldPrimary)
                     }
                 }
