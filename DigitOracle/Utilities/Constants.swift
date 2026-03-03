@@ -58,6 +58,12 @@ enum Constants {
         }
     }
 
+    enum AppLock {
+        static let enabledKey = "applock_enabled"
+        static let timeoutKey = "applock_timeout"
+        static let defaultTimeout = 0  // immediate
+    }
+
     enum TrackedNumbers {
         static let maxTrackedNumbers = 10
         static let defaultNumbers: [Int] = [47]

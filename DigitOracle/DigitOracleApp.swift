@@ -26,24 +26,41 @@ struct DigitOracleApp: App {
         }
     }
 
+    private var appLockService = AppLockService.shared
+
     var body: some Scene {
         WindowGroup {
             Group {
                 if TrackedNumberService.shared.hasCompletedOnboarding {
-                    ContentView(selectedTab: $selectedTab)
-                        .onOpenURL { url in
-                            handleDeepLink(url)
-                        }
-                        .onAppear {
-                            backfillSightings()
-                            migrateFullImagesToPhotoLibrary()
-                            backfillLocationNames()
-                        }
-                        .onChange(of: scenePhase) { _, newPhase in
-                            if newPhase == .active {
-                                selectedTab = .capture
+                    ZStack {
+                        ContentView(selectedTab: $selectedTab)
+                            .onOpenURL { url in
+                                handleDeepLink(url)
                             }
+                            .onAppear {
+                                backfillSightings()
+                                migrateFullImagesToPhotoLibrary()
+                                backfillLocationNames()
+                            }
+
+                        if appLockService.isEnabled && (appLockService.isLocked || appLockService.showPrivacyOverlay) {
+                            AppLockView(appLockService: appLockService)
+                                .transition(.opacity)
                         }
+                    }
+                    .onChange(of: scenePhase) { _, newPhase in
+                        switch newPhase {
+                        case .active:
+                            selectedTab = .capture
+                            appLockService.handleSceneActive()
+                        case .inactive:
+                            appLockService.handleSceneInactive()
+                        case .background:
+                            appLockService.handleSceneBackground()
+                        @unknown default:
+                            break
+                        }
+                    }
                 } else {
                     OnboardingView()
                 }

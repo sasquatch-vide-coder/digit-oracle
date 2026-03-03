@@ -1,6 +1,7 @@
 import SwiftUI
 import SwiftData
 import Photos
+import LocalAuthentication
 
 struct OnboardingView: View {
     @Environment(\.modelContext) private var modelContext
@@ -34,6 +35,9 @@ struct OnboardingView: View {
                 namingScreen
                     .transition(.opacity.animation(.easeInOut(duration: 0.8)))
             case 5:
+                secretCombinationScreen
+                    .transition(.opacity.animation(.easeInOut(duration: 0.8)))
+            case 6:
                 seekingScreen
                     .transition(.opacity.animation(.easeInOut(duration: 0.8)))
             default:
@@ -261,7 +265,76 @@ struct OnboardingView: View {
         .padding()
     }
 
-    // MARK: - Screen 6: The Seeking
+    // MARK: - Screen 6: Secret Combination
+
+    private var secretCombinationScreen: some View {
+        VStack(spacing: 24) {
+            Spacer()
+
+            Image(systemName: "lock.shield.fill")
+                .font(.system(size: 56))
+                .foregroundColor(.goldPrimary)
+
+            Text("Seal the Sanctum")
+                .font(.oracleHeading(size: 28))
+                .foregroundColor(.goldPrimary)
+                .multilineTextAlignment(.center)
+
+            Text("Protect thy visions from prying eyes. The Oracle can seal itself behind Face ID or thy device passcode.")
+                .font(.oracleBody(size: 16))
+                .foregroundColor(.textSecondary)
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, 40)
+
+            Spacer()
+
+            if AppLockService.canUseBiometrics() {
+                Button {
+                    Task {
+                        let appLock = AppLockService.shared
+                        let success = await appLock.authenticate()
+                        await MainActor.run {
+                            if success {
+                                appLock.isEnabled = true
+                            }
+                            withAnimation(.easeInOut(duration: 0.8)) {
+                                currentScreen = 6
+                            }
+                        }
+                    }
+                } label: {
+                    HStack(spacing: 10) {
+                        Image(systemName: biometricIcon)
+                        Text("Seal the Sanctum")
+                    }
+                }
+                .buttonStyle(OraclePrimaryButtonStyle())
+            }
+
+            Button {
+                withAnimation(.easeInOut(duration: 0.8)) {
+                    currentScreen = 6
+                }
+            } label: {
+                Text(AppLockService.canUseBiometrics() ? "Skip" : "Continue")
+                    .font(.oracleUI())
+                    .foregroundColor(.goldPrimary)
+            }
+            .padding(.bottom, 60)
+        }
+        .padding()
+    }
+
+    private var biometricIcon: String {
+        switch AppLockService.biometricType() {
+        case .faceID: "faceid"
+        case .touchID: "touchid"
+        case .opticID: "opticid"
+        default: "lock.shield"
+        }
+    }
+
+    // MARK: - Screen 7: The Seeking
 
     private var seekingScreen: some View {
         VStack(spacing: 24) {

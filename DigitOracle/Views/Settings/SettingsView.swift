@@ -41,6 +41,9 @@ struct SettingsView: View {
                 NavigationLink(value: SettingsDestination.detection) {
                     Label("The Oracle's Eye", systemImage: "eye")
                 }
+                NavigationLink(value: SettingsDestination.security) {
+                    Label("Secret Combination", systemImage: "lock.shield")
+                }
             }
 
             Section("The Archive") {
@@ -104,6 +107,8 @@ struct SettingsView: View {
                 NotificationSettingsView()
             case .detection:
                 OCRSettingsView()
+            case .security:
+                SecuritySettingsView()
             }
         }
         .alert("Erase All Visions?", isPresented: $showingDeleteConfirmation) {
@@ -124,6 +129,10 @@ struct SettingsView: View {
                 UserDefaults.standard.removeObject(forKey: Constants.LiveDetector.throttleIntervalKey)
                 UserDefaults.standard.removeObject(forKey: Constants.LiveDetector.cooldownDurationKey)
                 UserDefaults.standard.removeObject(forKey: Constants.LiveDetector.confirmationFramesKey)
+                UserDefaults.standard.removeObject(forKey: Constants.AppLock.enabledKey)
+                UserDefaults.standard.removeObject(forKey: Constants.AppLock.timeoutKey)
+                AppLockService.shared.isEnabled = false
+                AppLockService.shared.isLocked = false
             }
         } message: {
             Text("This shall erase all visions and silence the Oracle. Thou shalt begin the ritual anew.")
@@ -149,4 +158,5 @@ enum SettingsDestination: Hashable {
     case trackedNumbers
     case notifications
     case detection
+    case security
 }

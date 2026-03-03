@@ -54,8 +54,10 @@
 		7A23367ED02C0E09E2B394D2 /* Album.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A476D8DE4BCA73338AAAAC0 /* Album.swift */; };
 		7A33D5C4FADCBA15886A9816 /* SightingRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2910F7C424AFEC8525CD96C8 /* SightingRowView.swift */; };
 		7F19FACE0421D69FAC7AC706 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C01A7A6542B1AF2763864D4 /* OnboardingView.swift */; };
+		8BAF450F0FAA7E37A3D2D7A6 /* AppLockService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CB7C64985AB4C71683D3336 /* AppLockService.swift */; };
 		97579BDDF9E93796204AB344 /* OCRSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FA58F4B6EBCC727B2A0523D /* OCRSettingsView.swift */; };
 		9B743E2ACB38EB27D4D771C1 /* OnThisDayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF25BE85B36EE52EB6392A8B /* OnThisDayView.swift */; };
+		9BE624E93A7E455F7FE5E6EE /* SecuritySettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE3E8A9B16523FC4B065222E /* SecuritySettingsView.swift */; };
 		9C482960E601CACF0642FEA7 /* OracleButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AA2DB411E743FF1FAAD1E21 /* OracleButtonStyle.swift */; };
 		9F79C067C630C34525B0A1BE /* AchievementEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCF622FCB4C508A4DD8F8C63 /* AchievementEngine.swift */; };
 		9FA1CFB4C13A953F608B3CC9 /* CategoryBreakdownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 974E38F10C6E4CD9C0F011DA /* CategoryBreakdownView.swift */; };
@@ -83,6 +85,7 @@
 		D6839CAB0EC41D174A590E5A /* WidgetDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3413A731B4E979C9A3ADEF0E /* WidgetDataService.swift */; };
 		D84CEEFF708E0B8E3F1AFCD7 /* PhotoReviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB9B230A5690337B83219420 /* PhotoReviewView.swift */; };
 		D8C502A750EE908893801E6E /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F12E5B5BFAE2C2A97A635B4 /* ShareViewController.swift */; };
+		DBB92C92B4CDEAE7E42BC2EB /* AppLockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5AB61D2B6092B62387ADCCB /* AppLockView.swift */; };
 		DFC16786B9237A2D155F9E84 /* Tag.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFA9D6BF683D22B317191CD0 /* Tag.swift */; };
 		E21F297BDA3CD418BF4F3E9F /* PreviewSampleData.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFE7297DD78AC9725913067D /* PreviewSampleData.swift */; };
 		E25D3E6DBB21CC6A97CDDCF1 /* ChallengeListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8245DC043E587AEFD55CC43A /* ChallengeListView.swift */; };
@@ -134,6 +137,7 @@
 		0305FEBBA7C043B97BA89952 /* DigitOracle.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DigitOracle.entitlements; sourceTree = "<group>"; };
 		04C8D59984FEC6089BABFF2C /* CountWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountWidget.swift; sourceTree = "<group>"; };
 		095C65BD6160CDCF24760DCC /* Challenge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Challenge.swift; sourceTree = "<group>"; };
+		0CB7C64985AB4C71683D3336 /* AppLockService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLockService.swift; sourceTree = "<group>"; };
 		0E9122EB157E66C9231B7529 /* CaptureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureView.swift; sourceTree = "<group>"; };
 		0F045DD1A19C7C820A0D164D /* ChallengeTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeTemplates.swift; sourceTree = "<group>"; };
 		17B5E092267166231E5EBAC1 /* ScanResultCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanResultCard.swift; sourceTree = "<group>"; };
@@ -195,6 +199,7 @@
 		ACB384B72824458B3527BE9D /* CameraService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraService.swift; sourceTree = "<group>"; };
 		B036D1F5C87A513ADD0856B3 /* OracleTextService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OracleTextService.swift; sourceTree = "<group>"; };
 		B03D3F57EE15F4901208F7EA /* ShareCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareCardView.swift; sourceTree = "<group>"; };
+		B5AB61D2B6092B62387ADCCB /* AppLockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLockView.swift; sourceTree = "<group>"; };
 		BDA77D4D2B2D85F7E7F51363 /* OracleLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OracleLoadingView.swift; sourceTree = "<group>"; };
 		BF0D81766465BC2A0FD5306D /* SightingThumbnailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SightingThumbnailView.swift; sourceTree = "<group>"; };
 		C0AD8AC0A38A43ED6549ED57 /* DevotionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevotionsView.swift; sourceTree = "<group>"; };
@@ -211,6 +216,7 @@
 		D77E3485B881C197EE9F0223 /* AlbumFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumFormView.swift; sourceTree = "<group>"; };
 		DD259032946F6CCAAD59CEBC /* SightingListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SightingListView.swift; sourceTree = "<group>"; };
 		DDD0352ED27BA9DB658A9538 /* ActivityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityViewController.swift; sourceTree = "<group>"; };
+		DE3E8A9B16523FC4B065222E /* SecuritySettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecuritySettingsView.swift; sourceTree = "<group>"; };
 		E0D258239A40D63FDEE0A9FF /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		E6B667D92EB61CC3A1E53711 /* LiveDetectorService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveDetectorService.swift; sourceTree = "<group>"; };
 		EB3739EFD92744D9DB020C62 /* DigitOracleWidgets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DigitOracleWidgets.swift; sourceTree = "<group>"; };
@@ -262,6 +268,7 @@
 			children = (
 				D426A7009C1AA83E597CE595 /* ContentView.swift */,
 				81D30D5496B15D7282E9B7DF /* Albums */,
+				96B730ED72F92A859776C89B /* AppLock */,
 				90C2745BC45E4014C2888BDA /* Capture */,
 				4777EBD3FA1C4F2DB36CBB95 /* Challenges */,
 				8EF47B5AB538563A14B11DDC /* Components */,
@@ -377,6 +384,7 @@
 			isa = PBXGroup;
 			children = (
 				FCF622FCB4C508A4DD8F8C63 /* AchievementEngine.swift */,
+				0CB7C64985AB4C71683D3336 /* AppLockService.swift */,
 				ACB384B72824458B3527BE9D /* CameraService.swift */,
 				45FA7A46D7D8CD60C95A0343 /* ChallengeEngine.swift */,
 				29ECAACB58622A48204E9D79 /* ImageStorageService.swift */,
@@ -457,11 +465,20 @@
 			path = Capture;
 			sourceTree = "<group>";
 		};
+		96B730ED72F92A859776C89B /* AppLock */ = {
+			isa = PBXGroup;
+			children = (
+				B5AB61D2B6092B62387ADCCB /* AppLockView.swift */,
+			);
+			path = AppLock;
+			sourceTree = "<group>";
+		};
 		9C1B8A95F4A9DDE906C61EBC /* Settings */ = {
 			isa = PBXGroup;
 			children = (
 				9EA9D2131051683CB85947ED /* NotificationSettingsView.swift */,
 				6FA58F4B6EBCC727B2A0523D /* OCRSettingsView.swift */,
+				DE3E8A9B16523FC4B065222E /* SecuritySettingsView.swift */,
 				2CA0DAC8BAB649B62B325420 /* SettingsView.swift */,
 			);
 			path = Settings;
@@ -645,6 +662,8 @@
 				3631D8F9F8FDC28B07BE3D3F /* AlbumDetailView.swift in Sources */,
 				6EEE46DCAD67440D7DCEC50B /* AlbumFormView.swift in Sources */,
 				0B3CE8CF6920D236677F35B8 /* AlbumListView.swift in Sources */,
+				8BAF450F0FAA7E37A3D2D7A6 /* AppLockService.swift in Sources */,
+				DBB92C92B4CDEAE7E42BC2EB /* AppLockView.swift in Sources */,
 				FA9BD93AF69945CFB1BA1E13 /* AppTab.swift in Sources */,
 				C5CD27A25BB651F936CC2230 /* CalendarHeatmapView.swift in Sources */,
 				EE8CF87800476D7D3578D3DC /* CameraControlsView.swift in Sources */,
@@ -694,6 +713,7 @@
 				4BE1C6A1F33F61F0F93F3953 /* RarityBorderModifier.swift in Sources */,
 				1ACA75D63F12A6FE7DAD09C4 /* RarityCalculator.swift in Sources */,
 				15ECE549E21EF9FD2CAE1039 /* ScanResultCard.swift in Sources */,
+				9BE624E93A7E455F7FE5E6EE /* SecuritySettingsView.swift in Sources */,
 				EF4DA1B0F6FED1395F383405 /* SettingsView.swift in Sources */,
 				C4017C6723D23C76A75B4936 /* ShareCardRenderer.swift in Sources */,
 				A63C0963B365440566A1B2C3 /* ShareCardView.swift in Sources */,
@@ -758,7 +778,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = DigitOracleWidget/DigitOracleWidget.entitlements;
-				CURRENT_PROJECT_VERSION = 18;
+				CURRENT_PROJECT_VERSION = 19;
 				INFOPLIST_FILE = DigitOracleWidget/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -900,7 +920,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = DigitOracle/DigitOracle.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 18;
+				CURRENT_PROJECT_VERSION = 19;
 				INFOPLIST_FILE = DigitOracle/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -917,7 +937,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = DigitOracleShareExtension/DigitOracleShareExtension.entitlements;
-				CURRENT_PROJECT_VERSION = 18;
+				CURRENT_PROJECT_VERSION = 19;
 				INFOPLIST_FILE = DigitOracleShareExtension/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -938,7 +958,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = DigitOracle/DigitOracle.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 18;
+				CURRENT_PROJECT_VERSION = 19;
 				INFOPLIST_FILE = DigitOracle/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -955,7 +975,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = DigitOracleShareExtension/DigitOracleShareExtension.entitlements;
-				CURRENT_PROJECT_VERSION = 18;
+				CURRENT_PROJECT_VERSION = 19;
 				INFOPLIST_FILE = DigitOracleShareExtension/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -973,7 +993,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = DigitOracleWidget/DigitOracleWidget.entitlements;
-				CURRENT_PROJECT_VERSION = 18;
+				CURRENT_PROJECT_VERSION = 19;
 				INFOPLIST_FILE = DigitOracleWidget/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

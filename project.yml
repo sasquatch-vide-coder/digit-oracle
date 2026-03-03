@@ -28,7 +28,7 @@ targets:
         INFOPLIST_FILE: DigitOracle/Info.plist
         PRODUCT_BUNDLE_IDENTIFIER: com.digitoracle.app
         MARKETING_VERSION: "0.47.0"
-        CURRENT_PROJECT_VERSION: "18"
+        CURRENT_PROJECT_VERSION: "19"
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
     info:
@@ -60,6 +60,7 @@ targets:
         NSPhotoLibraryUsageDescription: "Digit Oracle needs photo library access to peer into thy visions"
         NSPhotoLibraryAddUsageDescription: "Digit Oracle saves captured visions to your library so originals are preserved without duplicating storage"
         NSLocationWhenInUseUsageDescription: "Digit Oracle uses your location to divine where you encountered a number"
+        NSFaceIDUsageDescription: "Digit Oracle uses Face ID to unseal thy Sanctum"
     dependencies:
       - target: DigitOracleWidget
         embed: true
@@ -80,7 +81,7 @@ targets:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.digitoracle.app.widget
         MARKETING_VERSION: "0.47.0"
-        CURRENT_PROJECT_VERSION: "18"
+        CURRENT_PROJECT_VERSION: "19"
         INFOPLIST_FILE: DigitOracleWidget/Info.plist
     info:
       path: DigitOracleWidget/Info.plist
@@ -113,7 +114,7 @@ targets:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.digitoracle.app.share
         MARKETING_VERSION: "0.47.0"
-        CURRENT_PROJECT_VERSION: "18"
+        CURRENT_PROJECT_VERSION: "19"
         INFOPLIST_FILE: DigitOracleShareExtension/Info.plist
     info:
       path: DigitOracleShareExtension/Info.plist
