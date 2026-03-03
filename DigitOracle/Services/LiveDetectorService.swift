@@ -63,12 +63,18 @@ final class LiveDetectorService: NSObject, AVCaptureVideoDataOutputSampleBufferD
                 return
             }
             let remaining = self.cooldownUntil.timeIntervalSinceNow
-            if remaining <= 0 {
-                self.isInCooldown = false
-                self.cooldownRemaining = 0
+            let shouldStop = remaining <= 0
+            Task { @MainActor [weak self] in
+                guard let self else { return }
+                if shouldStop {
+                    self.isInCooldown = false
+                    self.cooldownRemaining = 0
+                } else {
+                    self.cooldownRemaining = remaining
+                }
+            }
+            if shouldStop {
                 timer.invalidate()
-            } else {
-                self.cooldownRemaining = remaining
             }
         }
     }

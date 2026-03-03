@@ -758,7 +758,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = DigitOracleWidget/DigitOracleWidget.entitlements;
-				CURRENT_PROJECT_VERSION = 16;
+				CURRENT_PROJECT_VERSION = 17;
 				INFOPLIST_FILE = DigitOracleWidget/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -900,7 +900,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = DigitOracle/DigitOracle.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 16;
+				CURRENT_PROJECT_VERSION = 17;
 				INFOPLIST_FILE = DigitOracle/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -917,7 +917,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = DigitOracleShareExtension/DigitOracleShareExtension.entitlements;
-				CURRENT_PROJECT_VERSION = 16;
+				CURRENT_PROJECT_VERSION = 17;
 				INFOPLIST_FILE = DigitOracleShareExtension/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -938,7 +938,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = DigitOracle/DigitOracle.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 16;
+				CURRENT_PROJECT_VERSION = 17;
 				INFOPLIST_FILE = DigitOracle/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -955,7 +955,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = DigitOracleShareExtension/DigitOracleShareExtension.entitlements;
-				CURRENT_PROJECT_VERSION = 16;
+				CURRENT_PROJECT_VERSION = 17;
 				INFOPLIST_FILE = DigitOracleShareExtension/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -973,7 +973,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = DigitOracleWidget/DigitOracleWidget.entitlements;
-				CURRENT_PROJECT_VERSION = 16;
+				CURRENT_PROJECT_VERSION = 17;
 				INFOPLIST_FILE = DigitOracleWidget/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

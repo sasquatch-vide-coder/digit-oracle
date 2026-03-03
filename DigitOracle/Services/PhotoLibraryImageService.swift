@@ -4,7 +4,15 @@ import UIKit
 final class PhotoLibraryImageService {
     static let shared = PhotoLibraryImageService()
 
+    private func assetHasResources(_ identifier: String) -> Bool {
+        let result = PHAsset.fetchAssets(withLocalIdentifiers: [identifier], options: nil)
+        guard let asset = result.firstObject else { return false }
+        return !PHAssetResource.assetResources(for: asset).isEmpty
+    }
+
     func loadFullImage(identifier: String) async -> UIImage? {
+        guard assetHasResources(identifier) else { return nil }
+
         let result = PHAsset.fetchAssets(withLocalIdentifiers: [identifier], options: nil)
         guard let asset = result.firstObject else { return nil }
 
@@ -52,7 +60,29 @@ final class PhotoLibraryImageService {
 
     func assetExists(identifier: String) -> Bool {
         let result = PHAsset.fetchAssets(withLocalIdentifiers: [identifier], options: nil)
-        return result.count > 0
+        return result.count > 0 && assetHasResources(identifier)
+    }
+
+    func findMissingIdentifiers(from identifiers: [String]) -> Set<String> {
+        guard !identifiers.isEmpty else { return [] }
+
+        // Pass 1: find assets not returned by fetchAssets at all (permanently deleted)
+        let found = PHAsset.fetchAssets(withLocalIdentifiers: identifiers, options: nil)
+        var foundIDs = Set<String>()
+        found.enumerateObjects { asset, _, _ in
+            foundIDs.insert(asset.localIdentifier)
+        }
+        var missing = Set(identifiers).subtracting(foundIDs)
+
+        // Pass 2: check each found asset actually has resources
+        // (catches Recently Deleted — asset exists but resources are empty)
+        for id in foundIDs {
+            if !assetHasResources(id) {
+                missing.insert(id)
+            }
+        }
+
+        return missing
     }
 }
 

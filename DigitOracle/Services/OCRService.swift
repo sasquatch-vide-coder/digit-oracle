@@ -1,6 +1,5 @@
 import Vision
 import UIKit
-import CoreImage
 
 struct OCRResult: Codable {
     let fullText: String?
@@ -75,8 +74,7 @@ final class OCRService {
         guard let cgImage = upright.cgImage else { return .empty }
 
         let patterns = TrackedNumberService.shared.patterns
-        let enhanced = enhancedForOCR(cgImage)
-        let raw = await performDetection(cgImage: enhanced, patterns: patterns)
+        let raw = await performDetection(cgImage: cgImage, patterns: patterns)
         return DetectionResult(ocr: raw.ocrResult, rects: raw.rects)
     }
 
@@ -102,32 +100,32 @@ final class OCRService {
 
                     var allTextParts: [String] = []
                     var rects: [CGRect] = []
+                    var perNumberCounts: [String: Int] = [:]
 
                     for observation in observations {
                         let candidates = observation.topCandidates(5)
-                        guard !candidates.isEmpty else { continue }
+                        guard let top = candidates.first else { continue }
 
-                        let chosen = candidates.first(where: { c in
-                            patterns.contains(where: { c.string.contains($0) })
-                        }) ?? candidates.first!
+                        // Prefer a candidate that contains a pattern match,
+                        // but only if its confidence is at least 40% of the top candidate's.
+                        let matchingCandidate = candidates.first(where: { c in
+                            patterns.contains(where: { c.string.contains($0) }) && c.confidence >= top.confidence * 0.4
+                        })
+                        let chosen = matchingCandidate ?? top
 
                         let text = chosen.string
                         allTextParts.append(text)
 
-                        let charCount = text.count
-                        let box = observation.boundingBox
-
+                        // Collect bounding boxes and counts in a single pass
                         for pattern in patterns {
                             var searchRange = text.startIndex..<text.endIndex
                             while let range = text.range(of: pattern, range: searchRange) {
-                                let startFrac = CGFloat(text.distance(from: text.startIndex, to: range.lowerBound)) / CGFloat(charCount)
-                                let endFrac = CGFloat(text.distance(from: text.startIndex, to: range.upperBound)) / CGFloat(charCount)
-                                rects.append(CGRect(
-                                    x: box.origin.x + startFrac * box.width,
-                                    y: box.origin.y,
-                                    width: (endFrac - startFrac) * box.width,
-                                    height: box.height
-                                ))
+                                perNumberCounts[pattern, default: 0] += 1
+                                if let boundingBox = try? chosen.boundingBox(for: range) {
+                                    rects.append(boundingBox.boundingBox)
+                                } else {
+                                    rects.append(observation.boundingBox)
+                                }
                                 searchRange = range.upperBound..<text.endIndex
                             }
                         }
@@ -135,19 +133,9 @@ final class OCRService {
 
                     let allText = allTextParts.joined(separator: " ")
 
-                    var perNumberCounts: [String: Int] = [:]
                     var matched: [Int] = []
-                    for pattern in patterns {
-                        var count = 0
-                        var searchRange = allText.startIndex..<allText.endIndex
-                        while let range = allText.range(of: pattern, range: searchRange) {
-                            count += 1
-                            searchRange = range.upperBound..<allText.endIndex
-                        }
-                        if count > 0 {
-                            perNumberCounts[pattern] = count
-                            if let num = Int(pattern) { matched.append(num) }
-                        }
+                    for (pattern, count) in perNumberCounts where count > 0 {
+                        if let num = Int(pattern) { matched.append(num) }
                     }
 
                     let count47 = perNumberCounts["47"] ?? 0
@@ -190,17 +178,5 @@ final class OCRService {
         }
     }
 
-    private let ciContext = CIContext()
-
-    private func enhancedForOCR(_ source: CGImage) -> CGImage {
-        let ciImage = CIImage(cgImage: source)
-        guard let filter = CIFilter(name: "CIColorControls") else { return source }
-        filter.setValue(ciImage, forKey: kCIInputImageKey)
-        filter.setValue(0.0, forKey: kCIInputSaturationKey)
-        filter.setValue(2.0, forKey: kCIInputContrastKey)
-        guard let output = filter.outputImage,
-              let result = ciContext.createCGImage(output, from: output.extent) else { return source }
-        return result
-    }
 
 }

@@ -8,6 +8,8 @@ struct ContentView: View {
     @Environment(\.scenePhase) private var scenePhase
 
     @State private var importedShareCount: Int?
+    @State private var orphanedSightings: [Sighting] = []
+    @State private var showOrphanAlert = false
 
     var body: some View {
         TabView(selection: $selectedTab) {
@@ -43,7 +45,22 @@ struct ContentView: View {
         .onChange(of: scenePhase) { _, newPhase in
             if newPhase == .active {
                 Task { await importPendingShares() }
+                Task { await checkForOrphanedSightings() }
             }
+        }
+        .onChange(of: selectedTab) {
+            if selectedTab != .capture && !orphanedSightings.isEmpty {
+                showOrphanAlert = true
+            }
+        }
+        .alert("Lost Visions", isPresented: $showOrphanAlert) {
+            Button("Release", role: .destructive) {
+                deleteOrphanedSightings()
+            }
+            Button("Keep", role: .cancel) { }
+        } message: {
+            let count = orphanedSightings.count
+            Text("\(count) vision\(count == 1 ? " has" : "s have") faded from thy mortal gallery. Shall the Oracle release \(count == 1 ? "it" : "them")?")
         }
         .overlay(alignment: .top) {
             if let count = importedShareCount {
@@ -108,6 +125,44 @@ struct ContentView: View {
         }
 
         PendingSightingService.setHasPendingItems(false)
+    }
+
+    private func checkForOrphanedSightings() async {
+        let descriptor = FetchDescriptor<Sighting>(
+            predicate: #Predicate { $0.sourceIdentifier != nil }
+        )
+        guard let sightings = try? modelContext.fetch(descriptor),
+              !sightings.isEmpty else { return }
+
+        var identifierMap: [String: [Sighting]] = [:]
+        for sighting in sightings {
+            guard let id = sighting.sourceIdentifier else { continue }
+            identifierMap[id, default: []].append(sighting)
+        }
+        let allIdentifiers = Array(identifierMap.keys)
+        let missing = PhotoLibraryImageService.shared.findMissingIdentifiers(from: allIdentifiers)
+
+        guard !missing.isEmpty else { return }
+        orphanedSightings = missing.flatMap { identifierMap[$0] ?? [] }
+        if selectedTab != .capture {
+            showOrphanAlert = true
+        }
+    }
+
+    private func deleteOrphanedSightings() {
+        for sighting in orphanedSightings {
+            try? ImageStorageService.shared.deleteImages(for: sighting.id)
+            let jsonName = sighting.imageFileName.replacingOccurrences(of: "_full.jpg", with: "_detection.json")
+            let cacheURL = ImageStorageService.shared.thumbnailURL(for: jsonName)
+            try? FileManager.default.removeItem(at: cacheURL)
+            modelContext.delete(sighting)
+        }
+        try? modelContext.save()
+        orphanedSightings = []
+
+        Task {
+            await refreshWidgetData()
+        }
     }
 
     private func importBanner(count: Int) -> some View {

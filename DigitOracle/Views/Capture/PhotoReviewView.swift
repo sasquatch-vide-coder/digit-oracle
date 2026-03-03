@@ -27,6 +27,7 @@ struct PhotoReviewView: View {
     @State private var completedChallenge: Challenge?
     @State private var saveCompleted = false
     @State private var detectedRects: [CGRect] = []
+    @State private var cachedDetection: DetectionResult?
 
     var body: some View {
         ScrollView {
@@ -192,6 +193,7 @@ struct PhotoReviewView: View {
 
     private func runOCR() async {
         let detection = await OCRService.shared.detect(in: image)
+        cachedDetection = detection
         ocrResult = detection.ocr
         isScanning = false
         detectedRects = detection.locationRects
@@ -235,11 +237,15 @@ struct PhotoReviewView: View {
                 thumbFileName = fileNames.thumbnail
             }
 
-            // Run OCR on in-memory image and cache
-            let savedOCR: OCRResult
-            let detection = await OCRService.shared.detect(in: image)
+            // Reuse cached detection from review, or run OCR if not yet available
+            let detection: DetectionResult
+            if let cached = cachedDetection {
+                detection = cached
+            } else {
+                detection = await OCRService.shared.detect(in: image)
+            }
             OCRService.shared.saveDetection(detection, for: imageFileName)
-            savedOCR = detection.ocr
+            let savedOCR = detection.ocr
 
             let sighting = Sighting(
                 ownerUserID: ownerID,
