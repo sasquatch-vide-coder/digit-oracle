@@ -272,7 +272,7 @@ struct SightingDetailView: View {
                     if isRescanning {
                         ProgressView()
                     } else {
-                        Label("Rescan", systemImage: "arrow.clockwise")
+                        Label("Re-divine", systemImage: "arrow.clockwise")
                             .font(.subheadline)
                     }
                 }
@@ -332,7 +332,7 @@ struct SightingDetailView: View {
                     .clipShape(RoundedRectangle(cornerRadius: 12))
                     .allowsHitTesting(false)
                     .overlay(alignment: .bottomTrailing) {
-                        Text("View Full Map")
+                        Text("See Full Map")
                             .font(.caption.bold())
                             .foregroundStyle(.white)
                             .padding(.horizontal, 10)

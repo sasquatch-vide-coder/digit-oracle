@@ -231,7 +231,7 @@ struct AchievementCelebrationView: View {
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
 
-                Button("Awesome!") { onDismiss() }
+                Button("The Oracle Rejoices!") { onDismiss() }
                     .buttonStyle(.borderedProminent)
                     .padding(.top, 8)
             }

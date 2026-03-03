@@ -16,7 +16,7 @@ struct VesselsView: View {
                     vesselChart
                 } else {
                     ContentUnavailableView(
-                        "No Data Yet",
+                        "The Void Awaits",
                         systemImage: "chart.pie",
                         description: Text("Begin divining visions to see thy vessels.")
                     )

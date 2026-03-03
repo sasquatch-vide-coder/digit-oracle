@@ -14,7 +14,7 @@ struct SettingsView: View {
 
     var body: some View {
         Form {
-            Section("Profile") {
+            Section("The Seeker") {
                 HStack {
                     Image(systemName: "person.circle.fill")
                         .font(.system(size: 44))
@@ -31,19 +31,19 @@ struct SettingsView: View {
                 }
             }
 
-            Section("Preferences") {
+            Section("Rituals") {
                 NavigationLink(value: SettingsDestination.trackedNumbers) {
                     Label("Sacred Numbers", systemImage: "number.square")
                 }
                 NavigationLink(value: SettingsDestination.notifications) {
-                    Label("Notifications", systemImage: "bell.badge")
+                    Label("Omens & Whispers", systemImage: "bell.badge")
                 }
                 NavigationLink(value: SettingsDestination.detection) {
-                    Label("Detection", systemImage: "eye")
+                    Label("The Oracle's Eye", systemImage: "eye")
                 }
             }
 
-            Section("Data") {
+            Section("The Archive") {
                 HStack {
                     Text("Visions")
                     Spacer()
@@ -65,7 +65,7 @@ struct SettingsView: View {
                 }
             }
 
-            Section("About") {
+            Section("The Inscription") {
                 HStack {
                     Text("Version")
                     Spacer()
@@ -94,7 +94,7 @@ struct SettingsView: View {
             LibraryScannerView()
         }
         .onAppear { refreshStorageStats() }
-        .navigationTitle("Settings")
+        .navigationTitle("Sanctum")
         .navigationBarTitleDisplayMode(.inline)
         .navigationDestination(for: SettingsDestination.self) { dest in
             switch dest {

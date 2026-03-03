@@ -47,7 +47,7 @@ struct CaptureView: View {
                 permissionRequestView
             }
         }
-        .navigationTitle("Capture")
+        .navigationTitle("Summon")
         .navigationBarTitleDisplayMode(.inline)
         .onAppear {
             cameraService.checkPermission()
@@ -57,7 +57,7 @@ struct CaptureView: View {
                 PhotoReviewView(image: review.image, sourceType: review.sourceType, assetIdentifier: review.assetIdentifier)
             }
         }
-        .alert("Already Recorded", isPresented: $showDuplicateAlert) {
+        .alert("Already Witnessed", isPresented: $showDuplicateAlert) {
             Button("OK", role: .cancel) { }
         } message: {
             Text("This vision hath already been recorded.")
@@ -194,7 +194,7 @@ struct CaptureView: View {
             modeButton(title: "Vision", icon: "camera.fill", isSelected: !isLiveDetectorMode) {
                 withAnimation(.easeInOut(duration: 0.2)) { isLiveDetectorMode = false }
             }
-            modeButton(title: "Live Detect", icon: "viewfinder", isSelected: isLiveDetectorMode) {
+            modeButton(title: "Scrying", icon: "viewfinder", isSelected: isLiveDetectorMode) {
                 withAnimation(.easeInOut(duration: 0.2)) { isLiveDetectorMode = true }
             }
         }
@@ -288,7 +288,7 @@ struct CaptureView: View {
             Image(systemName: "camera.fill")
                 .font(.system(size: 64))
                 .foregroundStyle(.secondary)
-            Text("Camera Access")
+            Text("The Oracle's Sight")
                 .font(.title2.bold())
             Text("Digit Oracle needs camera access to divine number visions.")
                 .font(.subheadline)
@@ -296,7 +296,7 @@ struct CaptureView: View {
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 40)
 
-            Button("Enable Camera") {
+            Button("Open the Eye") {
                 Task {
                     let granted = await cameraService.requestPermission()
                     if granted {
@@ -319,7 +319,7 @@ struct CaptureView: View {
             Image(systemName: "camera.badge.ellipsis")
                 .font(.system(size: 64))
                 .foregroundStyle(.secondary)
-            Text("Camera Access Denied")
+            Text("The Eye Is Sealed")
                 .font(.title2.bold())
             Text("Enable camera access in Settings to divine number visions.")
                 .font(.subheadline)
@@ -327,7 +327,7 @@ struct CaptureView: View {
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 40)
 
-            Button("Open Settings") {
+            Button("Unseal in Settings") {
                 if let url = URL(string: UIApplication.openSettingsURLString) {
                     UIApplication.shared.open(url)
                 }

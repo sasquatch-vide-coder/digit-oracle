@@ -143,7 +143,7 @@ struct SightingListView: View {
                             VStack(spacing: 4) {
                                 Image(systemName: "trash")
                                     .font(.title3)
-                                Text("Delete")
+                                Text("Banish")
                                     .font(.caption2)
                             }
                             .frame(maxWidth: .infinity)
@@ -157,7 +157,7 @@ struct SightingListView: View {
                             VStack(spacing: 4) {
                                 Image(systemName: "rectangle.stack.badge.plus")
                                     .font(.title3)
-                                Text("Add to Album")
+                                Text("Add to Scroll")
                                     .font(.caption2)
                             }
                             .frame(maxWidth: .infinity)
@@ -170,7 +170,7 @@ struct SightingListView: View {
                             VStack(spacing: 4) {
                                 Image(systemName: "trash.slash")
                                     .font(.title3)
-                                Text("Delete All")
+                                Text("Banish All")
                                     .font(.caption2)
                             }
                             .frame(maxWidth: .infinity)
@@ -201,7 +201,7 @@ struct SightingListView: View {
             ),
             titleVisibility: .visible
         ) {
-            Button("Delete", role: .destructive) {
+            Button("Banish", role: .destructive) {
                 if let sighting = sightingToDelete {
                     deleteSighting(sighting)
                     sightingToDelete = nil
@@ -215,22 +215,22 @@ struct SightingListView: View {
             isPresented: $showingDeleteSelected,
             titleVisibility: .visible
         ) {
-            Button("Delete", role: .destructive) {
+            Button("Banish", role: .destructive) {
                 deleteSelectedSightings()
             }
         } message: {
-            Text("The selected vision\(selectedSightingIDs.count == 1 ? "" : "s") shall be cast into the void. Your original photos will not be deleted.")
+            Text("The selected vision\(selectedSightingIDs.count == 1 ? "" : "s") shall be cast into the void. Thy original photos shall endure.")
         }
         .confirmationDialog(
             "Erase All \(filteredSightings.count) Vision\(filteredSightings.count == 1 ? "" : "s")?",
             isPresented: $showingDeleteAll,
             titleVisibility: .visible
         ) {
-            Button("Delete All", role: .destructive) {
+            Button("Banish All", role: .destructive) {
                 deleteAllSightings()
             }
         } message: {
-            Text("All visions shall be cast into the void. Your original photos will not be deleted.")
+            Text("All visions shall be cast into the void. Thy original photos shall endure.")
         }
         .environment(\.editMode, $editMode)
     }
@@ -267,21 +267,21 @@ struct SightingListView: View {
                         sighting.isFavorite.toggle()
                     } label: {
                         Label(
-                            sighting.isFavorite ? "Unfavorite" : "Favorite",
+                            sighting.isFavorite ? "Unconsecrate" : "Consecrate",
                             systemImage: sighting.isFavorite ? "heart.slash" : "heart"
                         )
                     }
                     Button(role: .destructive) {
                         sightingToDelete = sighting
                     } label: {
-                        Label("Delete", systemImage: "trash")
+                        Label("Banish", systemImage: "trash")
                     }
                 }
                 .swipeActions(edge: .trailing, allowsFullSwipe: false) {
                     Button(role: .destructive) {
                         sightingToDelete = sighting
                     } label: {
-                        Label("Delete", systemImage: "trash")
+                        Label("Banish", systemImage: "trash")
                     }
                 }
             }
@@ -351,9 +351,9 @@ private struct BulkAlbumPickerView: View {
             Group {
                 if albums.isEmpty {
                     ContentUnavailableView(
-                        "No Albums",
+                        "No Scrolls",
                         systemImage: "rectangle.stack",
-                        description: Text("Create an album first from the Albums tab.")
+                        description: Text("Thou must first create a Scroll from the Scrolls tab.")
                     )
                 } else {
                     List(albums) { album in
@@ -367,7 +367,7 @@ private struct BulkAlbumPickerView: View {
                     }
                 }
             }
-            .navigationTitle("Add to Album")
+            .navigationTitle("Add to Scroll")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {

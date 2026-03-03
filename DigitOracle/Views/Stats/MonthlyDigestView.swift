@@ -78,10 +78,10 @@ struct MonthlyDigestView: View {
                 StatCard(title: "Revealed", value: "\(revealed)", icon: "sparkles", color: .goldPrimary)
 
                 let favorites = monthSightings.filter(\.isFavorite).count
-                StatCard(title: "Favorites", value: "\(favorites)", icon: "heart.fill", color: .red)
+                StatCard(title: "Consecrated", value: "\(favorites)", icon: "heart.fill", color: .red)
 
                 let locations = Set(monthSightings.compactMap(\.locationName)).count
-                StatCard(title: "Locations", value: "\(locations)", icon: "mappin.circle.fill", color: .orange)
+                StatCard(title: "Pilgrimages", value: "\(locations)", icon: "mappin.circle.fill", color: .orange)
 
                 let categories = Set(monthSightings.compactMap(\.category)).count
                 StatCard(title: "Vessels", value: "\(categories)", icon: "tag.fill", color: .purple)

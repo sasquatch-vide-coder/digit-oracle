@@ -14,9 +14,9 @@ struct MetadataFormView: View {
         VStack(alignment: .leading, spacing: 20) {
             // Notes
             VStack(alignment: .leading, spacing: 8) {
-                Text("Notes")
+                Text("Chronicle")
                     .font(.headline)
-                TextField("What did you spot? Where was it?", text: $notes, axis: .vertical)
+                TextField("Describe the vision and where it appeared...", text: $notes, axis: .vertical)
                     .lineLimit(2...5)
                     .textFieldStyle(.roundedBorder)
             }
@@ -77,14 +77,14 @@ struct MetadataFormView: View {
 
             // Tags
             VStack(alignment: .leading, spacing: 8) {
-                Text("Tags")
+                Text("Sigils")
                     .font(.headline)
 
                 HStack {
-                    TextField("Add a tag", text: $newTagName)
+                    TextField("Inscribe a sigil", text: $newTagName)
                         .textFieldStyle(.roundedBorder)
                         .onSubmit { addTag() }
-                    Button("Add") { addTag() }
+                    Button("Inscribe") { addTag() }
                         .disabled(newTagName.trimmingCharacters(in: .whitespaces).isEmpty)
                 }
 

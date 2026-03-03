@@ -17,8 +17,8 @@ struct AlbumFormView: View {
                 Section("Scroll Name") {
                     TextField("Ancient Whispers", text: $name)
                 }
-                Section("Description") {
-                    TextField("Optional description", text: $description, axis: .vertical)
+                Section("Inscription") {
+                    TextField("Inscribe a purpose for this scroll...", text: $description, axis: .vertical)
                         .lineLimit(2...4)
                 }
             }

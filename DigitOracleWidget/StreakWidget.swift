@@ -9,7 +9,7 @@ struct StreakWidget: Widget {
             StreakWidgetView(entry: entry)
                 .containerBackground(.fill.tertiary, for: .widget)
         }
-        .configurationDisplayName("Streak")
+        .configurationDisplayName("Sacred Flame")
         .description("Shows thy current vision streak.")
         .supportedFamilies([.accessoryCircular, .accessoryRectangular])
     }
@@ -55,7 +55,7 @@ struct StreakWidgetView: View {
         case .accessoryRectangular:
             HStack {
                 VStack(alignment: .leading) {
-                    Label("Streak", systemImage: "flame.fill")
+                    Label("Vigil", systemImage: "flame.fill")
                         .font(.caption2)
                         .foregroundStyle(.secondary)
                     Text("\(entry.streak) day\(entry.streak == 1 ? "" : "s")")

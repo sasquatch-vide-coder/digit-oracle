@@ -76,7 +76,7 @@ struct OnThisDayView: View {
             }
             .padding()
         }
-        .navigationTitle("Memories")
+        .navigationTitle("Déjà Vu")
         .navigationBarTitleDisplayMode(.inline)
     }
 

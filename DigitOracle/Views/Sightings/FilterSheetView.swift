@@ -38,7 +38,7 @@ struct FilterSheetView: View {
     var body: some View {
         NavigationStack {
             Form {
-                Section("Sort By") {
+                Section("Order By") {
                     Picker("Sort", selection: $filter.sortOption) {
                         ForEach(SightingFilter.SortOption.allCases, id: \.self) { option in
                             Text(option.rawValue).tag(option)
@@ -78,9 +78,9 @@ struct FilterSheetView: View {
                     .pickerStyle(.menu)
                 }
 
-                Section("Filters") {
-                    Toggle("Revealed (OCR) Only", isOn: $filter.verifiedOnly)
-                    Toggle("Favorites Only", isOn: $filter.favoritesOnly)
+                Section("Sieve") {
+                    Toggle("Divined Only", isOn: $filter.verifiedOnly)
+                    Toggle("Consecrated Only", isOn: $filter.favoritesOnly)
                 }
 
                 if !albums.isEmpty {
@@ -99,13 +99,13 @@ struct FilterSheetView: View {
                 }
 
                 Section {
-                    Button("Reset All Filters", role: .destructive) {
+                    Button("Clear the Sieve", role: .destructive) {
                         filter.reset()
                     }
                     .disabled(!filter.isActive)
                 }
             }
-            .navigationTitle("Filter & Sort")
+            .navigationTitle("Sift & Order")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .primaryAction) {

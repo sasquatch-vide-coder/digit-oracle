@@ -37,13 +37,13 @@ struct NotificationSettingsView: View {
                         Image(systemName: "bell.badge")
                             .font(.largeTitle)
                             .foregroundColor(.accentColor)
-                        Text("Enable Notifications")
+                        Text("Awaken the Herald")
                             .font(.headline)
-                        Text("Allow Digit Oracle to send you number-themed alerts and reminders.")
+                        Text("Grant the Herald leave to whisper signs and summons unto thee.")
                             .font(.caption)
                             .foregroundStyle(.secondary)
                             .multilineTextAlignment(.center)
-                        Button("Enable Notifications") {
+                        Button("Awaken the Herald") {
                             Task {
                                 await notificationService.requestPermission()
                             }
@@ -67,40 +67,40 @@ struct NotificationSettingsView: View {
                         notificationService.scheduleHourlyAlerts(numbers: trackedNumbers.trackedNumbers, enabled: value)
                     }
             } header: {
-                Text("Time Alerts")
+                Text("Clock Omens")
             } footer: {
                 Text("Receive signs when the clock aligns with thy sacred numbers.")
             }
 
             Section {
-                Toggle("Special dates", isOn: $alertSpecialDates)
+                Toggle("Sacred dates", isOn: $alertSpecialDates)
                     .onChange(of: alertSpecialDates) { _, value in
                         notificationService.scheduleSpecialDates(numbers: trackedNumbers.trackedNumbers, enabled: value)
                     }
             } header: {
-                Text("Special Dates")
+                Text("Sacred Dates")
             } footer: {
                 Text("Annual signs on dates aligned with thy sacred numbers.")
             }
 
             Section {
-                Toggle("Daily streak reminder", isOn: $dailyReminder)
+                Toggle("Daily devotion whisper", isOn: $dailyReminder)
                     .onChange(of: dailyReminder) { _, value in
                         notificationService.scheduleDailyReminder(enabled: value)
                     }
 
-                Toggle("Monthly digest (1st of month)", isOn: $monthlyDigest)
+                Toggle("Codex dispatch (1st of month)", isOn: $monthlyDigest)
                     .onChange(of: monthlyDigest) { _, value in
                         notificationService.scheduleMonthlyDigest(enabled: value)
                     }
             } header: {
-                Text("Reminders")
+                Text("Whispers")
             } footer: {
                 Text("The Oracle reminds thee of thy sacred quest.")
             }
 
             Section {
-                Button("Reset All Notifications", role: .destructive) {
+                Button("Silence the Herald", role: .destructive) {
                     alertTimePM = false
                     alertTimeAM = false
                     alertHourly = false
@@ -111,7 +111,7 @@ struct NotificationSettingsView: View {
                 }
             }
         }
-        .navigationTitle("Notifications")
+        .navigationTitle("Omens & Whispers")
         .navigationBarTitleDisplayMode(.inline)
         .task {
             await notificationService.checkAuthorizationStatus()

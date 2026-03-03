@@ -21,7 +21,7 @@ struct ChallengeListView: View {
     var body: some View {
         List {
             if !activeChallenges.isEmpty {
-                Section("Active") {
+                Section("Underway") {
                     ForEach(activeChallenges) { challenge in
                         ChallengeRow(challenge: challenge)
                     }
@@ -29,7 +29,7 @@ struct ChallengeListView: View {
             }
 
             if !completedChallenges.isEmpty {
-                Section("Completed") {
+                Section("Conquered") {
                     ForEach(completedChallenges) { challenge in
                         ChallengeRow(challenge: challenge)
                     }
@@ -37,7 +37,7 @@ struct ChallengeListView: View {
             }
 
             if !expiredChallenges.isEmpty {
-                Section("Expired") {
+                Section("Forsaken") {
                     ForEach(expiredChallenges) { challenge in
                         ChallengeRow(challenge: challenge)
                     }
@@ -82,7 +82,7 @@ struct ChallengeRow: View {
                         .font(.subheadline.bold())
 
                     if challenge.challengeType == "weekly" {
-                        Text("WEEKLY")
+                        Text("7-DAY")
                             .font(.system(size: 9, weight: .bold))
                             .padding(.horizontal, 6)
                             .padding(.vertical, 2)
@@ -197,13 +197,13 @@ struct ChallengeCelebrationView: View {
                 if let template, case .streakFreeze(let count) = template.reward {
                     HStack(spacing: 4) {
                         Image(systemName: "snowflake")
-                        Text("+\(count) streak freeze\(count == 1 ? "" : "s") earned!")
+                        Text("+\(count) frost ward\(count == 1 ? "" : "s") earned!")
                     }
                     .font(.subheadline.bold())
                     .foregroundColor(.cyan)
                 }
 
-                Button("Nice!") { onDismiss() }
+                Button("So Mote It Be!") { onDismiss() }
                     .buttonStyle(.borderedProminent)
                     .tint(.orange)
                     .padding(.top, 8)

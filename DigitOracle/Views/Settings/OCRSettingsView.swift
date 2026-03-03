@@ -10,24 +10,24 @@ struct OCRSettingsView: View {
     var body: some View {
         Form {
             Section {
-                Toggle("Fast Mode", isOn: $useFastMode)
-                Toggle("Language Correction", isOn: $useLanguageCorrection)
+                Toggle("Hasty Gaze", isOn: $useFastMode)
+                Toggle("Runic Interpretation", isOn: $useLanguageCorrection)
             } header: {
-                Text("Recognition Quality")
+                Text("Clarity of Sight")
             } footer: {
                 Text(useFastMode
-                     ? "Fast mode processes images quicker but may miss some numbers. Also applies to library scanning."
-                     : "Accurate mode finds more numbers but takes longer to process.")
+                     ? "The Oracle's gaze sweeps swiftly but may overlook faint signs. This haste extends to archive scanning."
+                     : "The Oracle studies each vision with care, revealing more signs at the cost of patience.")
                 + Text("\n")
                 + Text(useLanguageCorrection
-                       ? "Language correction uses context to resolve ambiguous characters. Helps with messy handwriting but may occasionally correct numbers away."
-                       : "Language correction is off. More reliable for printed numbers.")
+                       ? "Runic interpretation channels ancient knowledge to decipher uncertain glyphs. It aids with scrawled markings but may occasionally transmute numbers."
+                       : "Runic interpretation is dormant. The Oracle reads printed numerals with greater fidelity.")
             }
 
             Section {
                 VStack(alignment: .leading) {
                     HStack {
-                        Text("Scan Rate")
+                        Text("Gaze Tempo")
                         Spacer()
                         Text("\(throttleInterval, specifier: "%.1f")s")
                             .foregroundStyle(.secondary)
@@ -37,7 +37,7 @@ struct OCRSettingsView: View {
 
                 VStack(alignment: .leading) {
                     HStack {
-                        Text("Cooldown")
+                        Text("Rest Between Gazes")
                         Spacer()
                         Text("\(cooldownDuration, specifier: "%.1f")s")
                             .foregroundStyle(.secondary)
@@ -45,16 +45,16 @@ struct OCRSettingsView: View {
                     Slider(value: $cooldownDuration, in: 1.0...10.0, step: 0.5)
                 }
 
-                Stepper("Confirmation Frames: \(confirmationFrames)",
+                Stepper("Certainty Threshold: \(confirmationFrames)",
                         value: $confirmationFrames, in: 1...5)
             } header: {
-                Text("Live Detection")
+                Text("The Living Eye")
             } footer: {
-                Text("Scan rate controls how often frames are analyzed. Lower values use more battery. Cooldown pauses after an auto-capture. Confirmation frames is how many consecutive detections trigger auto-capture.")
+                Text("Gaze Tempo governs how often the Oracle peers at the world. Swifter gazes drain more of the vessel's spirit. Rest Between Gazes is the pause after a capture. Certainty Threshold is how many consecutive signs are required before seizing a vision.")
             }
 
             Section {
-                Button("Reset to Defaults") {
+                Button("Restore the Ancient Ways") {
                     useFastMode = Constants.OCR.useFastMode
                     useLanguageCorrection = Constants.OCR.useLanguageCorrection
                     throttleInterval = Constants.LiveDetector.throttleInterval
@@ -63,7 +63,7 @@ struct OCRSettingsView: View {
                 }
             }
         }
-        .navigationTitle("Detection")
+        .navigationTitle("The Oracle's Eye")
         .navigationBarTitleDisplayMode(.inline)
     }
 }

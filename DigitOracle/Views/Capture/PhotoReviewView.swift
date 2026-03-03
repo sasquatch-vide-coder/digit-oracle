@@ -45,7 +45,7 @@ struct PhotoReviewView: View {
             .padding()
         }
         .background(Color(.systemBackground))
-        .navigationTitle("Review")
+        .navigationTitle("Appraisal")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .cancellationAction) {
@@ -60,7 +60,7 @@ struct PhotoReviewView: View {
                     if isSaving {
                         ProgressView()
                     } else {
-                        Text("Save").bold()
+                        Text("Enshrine").bold()
                     }
                 }
                 .disabled(isSaving)
@@ -130,7 +130,7 @@ struct PhotoReviewView: View {
                 if isFetchingLocation {
                     ProgressView()
                         .controlSize(.small)
-                    Text("Getting location...")
+                    Text("Divining thy whereabouts...")
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 } else if let locationText {

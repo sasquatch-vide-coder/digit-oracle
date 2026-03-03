@@ -77,7 +77,7 @@ struct StatsOverviewView: View {
             }
             .padding()
         }
-        .navigationTitle("Profile")
+        .navigationTitle("Oracle's Eye")
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
                 NavigationLink(value: StatsDestination.settings) {
@@ -140,9 +140,9 @@ struct StatsOverviewView: View {
     private var quickStats: some View {
         LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 12) {
             StatCard(title: "Revealed", value: "\(stats.verifiedCount)", icon: "sparkles", color: .goldPrimary)
-            StatCard(title: "Favorites", value: "\(stats.favoriteCount)", icon: "heart.fill", color: .red)
-            StatCard(title: "Locations", value: "\(stats.citiesVisited)", icon: "mappin.circle.fill", color: .goldPrimary)
-            StatCard(title: "Avg / Week", value: String(format: "%.1f", stats.averagePerWeek), icon: "chart.line.uptrend.xyaxis", color: .goldPrimary)
+            StatCard(title: "Consecrated", value: "\(stats.favoriteCount)", icon: "heart.fill", color: .red)
+            StatCard(title: "Pilgrimages", value: "\(stats.citiesVisited)", icon: "mappin.circle.fill", color: .goldPrimary)
+            StatCard(title: "Weekly Rite", value: String(format: "%.1f", stats.averagePerWeek), icon: "chart.line.uptrend.xyaxis", color: .goldPrimary)
         }
     }
 
@@ -396,7 +396,7 @@ struct StatsOverviewView: View {
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
-            Text("Track thy progress and unlock sacred badges")
+            Text("Walk the path and prove thy devotion")
                 .font(.caption)
                 .foregroundStyle(.secondary)
         }

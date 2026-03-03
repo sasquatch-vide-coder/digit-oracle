@@ -16,7 +16,7 @@ struct DevotionsView: View {
                     devotionChart
                 } else {
                     ContentUnavailableView(
-                        "No Data Yet",
+                        "The Void Awaits",
                         systemImage: "chart.bar",
                         description: Text("Begin divining visions to see thy devotions.")
                     )

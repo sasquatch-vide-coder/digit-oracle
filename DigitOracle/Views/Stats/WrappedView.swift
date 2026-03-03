@@ -97,7 +97,7 @@ struct WrappedView: View {
         if !locations.isEmpty {
             result.append(.stat(
                 "\(locations.count)",
-                "unique location\(locations.count == 1 ? "" : "s") visited",
+                "sacred ground\(locations.count == 1 ? "" : "s") tread upon",
                 "mappin.circle.fill",
                 .goldDark
             ))
@@ -109,7 +109,7 @@ struct WrappedView: View {
             if streak > 0 {
                 result.append(.stat(
                     "\(streak)",
-                    "day streak — keep it going!",
+                    "day vigil \u{2014} the flame endures!",
                     "flame.fill",
                     .goldLight
                 ))

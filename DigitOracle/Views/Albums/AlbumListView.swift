@@ -69,7 +69,7 @@ struct AlbumListView: View {
                             VStack(spacing: 4) {
                                 Image(systemName: "trash")
                                     .font(.title3)
-                                Text("Delete")
+                                Text("Destroy")
                                     .font(.caption2)
                             }
                             .frame(maxWidth: .infinity)
@@ -83,7 +83,7 @@ struct AlbumListView: View {
                             VStack(spacing: 4) {
                                 Image(systemName: "trash.slash")
                                     .font(.title3)
-                                Text("Delete All")
+                                Text("Destroy All")
                                     .font(.caption2)
                             }
                             .frame(maxWidth: .infinity)
@@ -97,26 +97,26 @@ struct AlbumListView: View {
             }
         }
         .confirmationDialog(
-            "Delete \(selectedAlbumIDs.count) Album\(selectedAlbumIDs.count == 1 ? "" : "s")?",
+            "Destroy \(selectedAlbumIDs.count) Scroll\(selectedAlbumIDs.count == 1 ? "" : "s")?",
             isPresented: $showingDeleteSelected,
             titleVisibility: .visible
         ) {
-            Button("Delete", role: .destructive) {
+            Button("Destroy", role: .destructive) {
                 deleteSelectedAlbums()
             }
         } message: {
-            Text("The selected album\(selectedAlbumIDs.count == 1 ? "" : "s") will be permanently deleted. Visions shall remain.")
+            Text("The chosen scroll\(selectedAlbumIDs.count == 1 ? "" : "s") shall crumble to dust. Thy visions shall endure.")
         }
         .confirmationDialog(
-            "Delete All \(albums.count) Album\(albums.count == 1 ? "" : "s")?",
+            "Destroy All \(albums.count) Scroll\(albums.count == 1 ? "" : "s")?",
             isPresented: $showingDeleteAll,
             titleVisibility: .visible
         ) {
-            Button("Delete All", role: .destructive) {
+            Button("Destroy All", role: .destructive) {
                 deleteAllAlbums()
             }
         } message: {
-            Text("All albums will be permanently deleted. Visions shall remain.")
+            Text("All scrolls shall crumble to dust. Thy visions shall endure.")
         }
         .sheet(isPresented: $showingNewAlbum) {
             AlbumFormView()
@@ -162,7 +162,7 @@ struct AlbumListView: View {
                             Button(role: .destructive) {
                                 albumToDelete = album
                             } label: {
-                                Label("Delete Album", systemImage: "trash")
+                                Label("Destroy Scroll", systemImage: "trash")
                             }
                         }
                     }
@@ -181,21 +181,21 @@ struct AlbumListView: View {
             }
         }
         .confirmationDialog(
-            "Delete Album",
+            "Destroy Scroll",
             isPresented: Binding(
                 get: { albumToDelete != nil },
                 set: { if !$0 { albumToDelete = nil } }
             ),
             titleVisibility: .visible
         ) {
-            Button("Delete", role: .destructive) {
+            Button("Destroy", role: .destructive) {
                 if let album = albumToDelete {
                     modelContext.delete(album)
                     albumToDelete = nil
                 }
             }
         } message: {
-            Text("This album will be permanently deleted. Visions in the scroll shall remain.")
+            Text("This scroll shall crumble to dust. Thy visions shall endure.")
         }
     }
 
