@@ -50,7 +50,15 @@ struct DigitOracleApp: App {
                                 }
                             }
 
-                        if appLockService.isEnabled && (appLockService.isLocked || appLockService.showPrivacyOverlay) {
+                        // Privacy overlay — just a visual cover, no auth
+                        if appLockService.isEnabled && appLockService.showPrivacyOverlay && !appLockService.isLocked {
+                            Color.backgroundPrimary
+                                .ignoresSafeArea()
+                                .transition(.opacity)
+                        }
+
+                        // Lock screen — requires authentication
+                        if appLockService.isEnabled && appLockService.isLocked {
                             AppLockView(appLockService: appLockService)
                                 .transition(.opacity)
                         }
@@ -58,7 +66,6 @@ struct DigitOracleApp: App {
                     .onChange(of: scenePhase) { _, newPhase in
                         switch newPhase {
                         case .active:
-                            selectedTab = .capture
                             appLockService.handleSceneActive()
                             if !GameCenterService.shared.isAuthenticated {
                                 authenticateGameCenter()

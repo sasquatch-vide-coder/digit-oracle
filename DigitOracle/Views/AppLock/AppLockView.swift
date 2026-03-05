@@ -46,7 +46,9 @@ struct AppLockView: View {
             .padding(.horizontal, 32)
         }
         .onAppear {
-            tryAuthenticate()
+            if appLockService.isLocked {
+                tryAuthenticate()
+            }
         }
     }
 
