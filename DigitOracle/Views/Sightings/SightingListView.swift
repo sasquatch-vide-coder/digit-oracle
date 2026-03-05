@@ -84,9 +84,9 @@ struct SightingListView: View {
                         .font(.headline)
                     if !sightings.isEmpty {
                         HStack(spacing: 4) {
-                            Text("\(filteredSightings.count) vision\(filteredSightings.count == 1 ? "" : "s")")
+                            Text(filteredSightings.count.pluralized("vision"))
                             Text("\u{00B7}")
-                            Text("\(totalMatches) revelation\(totalMatches == 1 ? "" : "s")")
+                            Text(totalMatches.pluralized("revelation"))
                                 .foregroundColor(.goldPrimary)
                         }
                         .font(.caption)
@@ -134,53 +134,17 @@ struct SightingListView: View {
         }
         .safeAreaInset(edge: .bottom) {
             if editMode == .active {
-                VStack(spacing: 0) {
-                    Divider()
-                    HStack {
-                        Button {
-                            showingDeleteSelected = true
-                        } label: {
-                            VStack(spacing: 4) {
-                                Image(systemName: "trash")
-                                    .font(.title3)
-                                Text("Banish")
-                                    .font(.caption2)
-                            }
-                            .frame(maxWidth: .infinity)
-                        }
-                        .disabled(selectedSightingIDs.isEmpty)
-                        .tint(.red)
-
-                        Button {
-                            showingAlbumPickerForSelected = true
-                        } label: {
-                            VStack(spacing: 4) {
-                                Image(systemName: "rectangle.stack.badge.plus")
-                                    .font(.title3)
-                                Text("Add to Scroll")
-                                    .font(.caption2)
-                            }
-                            .frame(maxWidth: .infinity)
-                        }
-                        .disabled(selectedSightingIDs.isEmpty)
-
-                        Button {
-                            showingDeleteAll = true
-                        } label: {
-                            VStack(spacing: 4) {
-                                Image(systemName: "trash.slash")
-                                    .font(.title3)
-                                Text("Banish All")
-                                    .font(.caption2)
-                            }
-                            .frame(maxWidth: .infinity)
-                        }
-                        .tint(.red)
-                    }
-                    .padding(.vertical, 10)
-                    .padding(.horizontal)
-                }
-                .background(.bar)
+                BulkActionBar(actions: [
+                    .init(icon: "trash", label: "Banish", tint: .red, isDisabled: selectedSightingIDs.isEmpty) {
+                        showingDeleteSelected = true
+                    },
+                    .init(icon: "rectangle.stack.badge.plus", label: "Add to Scroll", isDisabled: selectedSightingIDs.isEmpty) {
+                        showingAlbumPickerForSelected = true
+                    },
+                    .init(icon: "trash.slash", label: "Banish All", tint: .red) {
+                        showingDeleteAll = true
+                    },
+                ])
             }
         }
         .sheet(isPresented: $showingFilter) {
@@ -211,7 +175,7 @@ struct SightingListView: View {
             Text("This vision shall be cast into the void. Thy original shall remain untouched.")
         }
         .confirmationDialog(
-            "Erase \(selectedSightingIDs.count) Vision\(selectedSightingIDs.count == 1 ? "" : "s")?",
+            "Erase \(selectedSightingIDs.count.pluralized("Vision"))?",
             isPresented: $showingDeleteSelected,
             titleVisibility: .visible
         ) {
@@ -219,10 +183,10 @@ struct SightingListView: View {
                 deleteSelectedSightings()
             }
         } message: {
-            Text("The selected vision\(selectedSightingIDs.count == 1 ? "" : "s") shall be cast into the void. Thy original photos shall endure.")
+            Text("The selected vision\(selectedSightingIDs.count.pluralSuffix) shall be cast into the void. Thy original photos shall endure.")
         }
         .confirmationDialog(
-            "Erase All \(filteredSightings.count) Vision\(filteredSightings.count == 1 ? "" : "s")?",
+            "Erase All \(filteredSightings.count.pluralized("Vision"))?",
             isPresented: $showingDeleteAll,
             titleVisibility: .visible
         ) {

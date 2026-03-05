@@ -138,8 +138,7 @@ struct MemoryCard: View {
 
             Spacer()
         }
-        .padding()
-        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16))
+        .oracleCard()
     }
 }
 

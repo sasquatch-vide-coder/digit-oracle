@@ -76,7 +76,7 @@ struct WrappedView: View {
         if let top = catCounts.first {
             result.append(.stat(
                 top.key.capitalized,
-                "was your top vessel with \(top.value) vision\(top.value == 1 ? "" : "s")",
+                "was your top vessel with \(top.value.pluralized("vision"))",
                 SightingCategory(rawValue: top.key)?.iconName ?? "tag.fill",
                 SightingCategory(rawValue: top.key)?.color ?? .gray
             ))
@@ -97,7 +97,7 @@ struct WrappedView: View {
         if !locations.isEmpty {
             result.append(.stat(
                 "\(locations.count)",
-                "sacred ground\(locations.count == 1 ? "" : "s") tread upon",
+                "sacred ground\(locations.count.pluralSuffix) tread upon",
                 "mappin.circle.fill",
                 .goldDark
             ))

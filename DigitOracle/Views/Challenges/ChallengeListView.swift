@@ -197,7 +197,7 @@ struct ChallengeCelebrationView: View {
                 if let template, case .streakFreeze(let count) = template.reward {
                     HStack(spacing: 4) {
                         Image(systemName: "snowflake")
-                        Text("+\(count) frost ward\(count == 1 ? "" : "s") earned!")
+                        Text("+\(count.pluralized("frost ward")) earned!")
                     }
                     .font(.subheadline.bold())
                     .foregroundColor(.cyan)

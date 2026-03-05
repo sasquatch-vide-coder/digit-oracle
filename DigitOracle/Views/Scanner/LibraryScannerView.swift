@@ -9,7 +9,7 @@ struct LibraryScannerView: View {
     @State private var scanner = LibraryScannerService()
     @State private var achievementEngine = AchievementEngine()
     @State private var importedIdentifiers: Set<String> = []
-    @State private var importedHashes: Set<String> = []
+    @State private var importedHashes: [String] = []
     @State private var isFullRescan = false
     @State private var savedCount = 0
     @State private var unsavedCount = 0
@@ -148,7 +148,7 @@ struct LibraryScannerView: View {
                             .font(.system(size: 48))
                             .foregroundColor(.successGreen)
 
-                        Text("\(savedCount) vision\(savedCount == 1 ? "" : "s") saved")
+                        Text("\(savedCount.pluralized("vision")) saved")
                             .font(.headline)
                     }
                     .padding()
@@ -256,7 +256,7 @@ struct LibraryScannerView: View {
         let descriptor = FetchDescriptor<Sighting>()
         let existing = (try? modelContext.fetch(descriptor)) ?? []
         importedIdentifiers = Set(existing.compactMap(\.sourceIdentifier))
-        importedHashes = Set(existing.compactMap(\.imageHash))
+        importedHashes = existing.compactMap(\.imageHash)
 
         savedCount = 0
         unsavedCount = 0
@@ -323,5 +323,11 @@ struct LibraryScannerView: View {
         WidgetCenter.shared.reloadAllTimelines()
 
         achievementEngine.checkAll(context: modelContext)
+
+        // Report to Game Center
+        let allAchievements = (try? modelContext.fetch(FetchDescriptor<Achievement>())) ?? []
+        let longestStreak = StatsCalculator.longestStreak(from: allSightings)
+        GameCenterService.shared.submitScores(totalSightings: allSightings.count, longestStreak: longestStreak)
+        GameCenterService.shared.reportAchievements(allAchievements)
     }
 }

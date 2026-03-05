@@ -6,13 +6,7 @@ struct SightingThumbnailView: View {
 
     var body: some View {
         Group {
-            if let thumbName = sighting.thumbnailFileName,
-               let image = ImageStorageService.shared.loadImage(fileName: thumbName) {
-                Image(uiImage: image)
-                    .resizable()
-                    .scaledToFill()
-            } else if sighting.hasLocalFullImage,
-                      let image = ImageStorageService.shared.loadImage(fileName: sighting.imageFileName) {
+            if let image = sighting.loadBestImage() {
                 Image(uiImage: image)
                     .resizable()
                     .scaledToFill()

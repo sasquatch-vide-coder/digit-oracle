@@ -27,7 +27,7 @@ struct SightingRowView: View {
 
                 // Category
                 if let category = sighting.category {
-                    Label(category.capitalized, systemImage: categoryIcon(for: category))
+                    Label(category.capitalized, systemImage: SightingCategory(rawValue: category)?.iconName ?? "tag.fill")
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }
@@ -38,7 +38,7 @@ struct SightingRowView: View {
 
             VStack(spacing: 4) {
                 rarityBadge
-                Text("\(sighting.totalMatchCount) \(sighting.totalMatchCount == 1 ? "revelation" : "revelations")")
+                Text(sighting.totalMatchCount.pluralized("revelation"))
                     .font(.caption.bold())
                     .foregroundColor(.goldPrimary)
             }
@@ -58,28 +58,7 @@ struct SightingRowView: View {
     // MARK: - Rarity Badge
 
     private var rarityBadge: some View {
-        Text(OracleTextService.tierLabel(for: sighting.rarityScore))
-            .font(.oracleCaption)
-            .foregroundStyle(Color.rarityColor(for: sighting.rarityScore))
-            .padding(.horizontal, 8)
-            .padding(.vertical, 3)
-            .background(Color.backgroundSecondary, in: Capsule())
-            .overlay(
-                Capsule().stroke(Color.rarityColor(for: sighting.rarityScore).opacity(0.5), lineWidth: 0.5)
-            )
+        RarityBadge(score: sighting.rarityScore)
     }
 
-    // MARK: - Helpers
-
-    private func categoryIcon(for category: String) -> String {
-        switch category {
-        case "printed": "book.fill"
-        case "digital": "desktopcomputer"
-        case "natural": "leaf.fill"
-        case "handwritten": "pencil"
-        case "architectural": "building.2.fill"
-        case "serendipitous": "sparkles"
-        default: "tag.fill"
-        }
-    }
 }

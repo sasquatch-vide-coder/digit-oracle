@@ -36,7 +36,7 @@ final class LibraryScannerService {
 
     private var scanTask: Task<Void, Never>?
     private var excludedIdentifiers: Set<String> = []
-    private var excludedHashes: Set<String> = []
+    private var excludedHashes: [String] = []
     private var sinceDate: Date?
 
     // MARK: - Permissions
@@ -52,7 +52,7 @@ final class LibraryScannerService {
 
     // MARK: - Scanning
 
-    func startScan(excludingIdentifiers: Set<String> = [], excludingHashes: Set<String> = [], sinceDate: Date? = nil) {
+    func startScan(excludingIdentifiers: Set<String> = [], excludingHashes: [String] = [], sinceDate: Date? = nil) {
         guard state != .scanning else { return }
         state = .scanning
         scannedCount = 0
@@ -158,8 +158,8 @@ final class LibraryScannerService {
         }
     }
 
-    private func processAsset(_ asset: PHAsset, excludedHashes: Set<String>) async -> LibraryScanResult? {
-        guard let image = await loadImage(from: asset, targetSize: CGSize(width: 600, height: 600)) else {
+    private func processAsset(_ asset: PHAsset, excludedHashes: [String]) async -> LibraryScanResult? {
+        guard let image = await loadImage(from: asset, targetSize: PHImageManagerMaximumSize) else {
             return nil
         }
 
@@ -167,7 +167,7 @@ final class LibraryScannerService {
         let hash = ImageStorageService.perceptualHash(of: image)
         if !excludedHashes.isEmpty,
            let hash,
-           excludedHashes.contains(hash) {
+           excludedHashes.contains(where: { ImageStorageService.isPerceptualDuplicate($0, hash) }) {
             return nil
         }
 
@@ -195,7 +195,7 @@ final class LibraryScannerService {
             options.deliveryMode = .highQualityFormat
             options.isSynchronous = false
             options.isNetworkAccessAllowed = true
-            options.resizeMode = .fast
+            options.resizeMode = targetSize == PHImageManagerMaximumSize ? .none : .fast
 
             PHImageManager.default().requestImage(
                 for: asset,

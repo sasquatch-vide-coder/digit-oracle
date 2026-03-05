@@ -11,6 +11,7 @@
 		09B3B05ACDBE3199D53AB011 /* MonthlyDigestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDDBAFAAFA61994CEDEC20E4 /* MonthlyDigestView.swift */; };
 		0B3CE8CF6920D236677F35B8 /* AlbumListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 840D318CDB3DFFDE29295F51 /* AlbumListView.swift */; };
 		0DE57B14BA561F9BA8479F1E /* DigitOracleShortcuts.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3D50FBF3D2E0DF4BA75ADF9 /* DigitOracleShortcuts.swift */; };
+		0F68A3587E7A936E43C5957C /* SightingMatchCountsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E279E0B4C26BCF3C0FB8D4FF /* SightingMatchCountsSection.swift */; };
 		0FC6243ADAEF7CEDCD8FC7C9 /* Date+Formatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970D68033061F15E7F42FFB0 /* Date+Formatting.swift */; };
 		11FE0CFE3A4DB776B13007E0 /* MetadataFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BD2CBBE81B5D501E402C920 /* MetadataFormView.swift */; };
 		15ECE549E21EF9FD2CAE1039 /* ScanResultCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B5E092267166231E5EBAC1 /* ScanResultCard.swift */; };
@@ -22,7 +23,9 @@
 		277D2F63807F72DB8C483C74 /* NotificationSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EA9D2131051683CB85947ED /* NotificationSettingsView.swift */; };
 		2947E43B7A3549A9132F6CFA /* ChallengeTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F045DD1A19C7C820A0D164D /* ChallengeTemplates.swift */; };
 		2C29F5A20F927DA3374A0AF1 /* TrackedNumberService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 982DD53435ED55744AC48BDE /* TrackedNumberService.swift */; };
+		2C4C90E32CA10454FB94FD63 /* FlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = F651A81A890C52E4689B1249 /* FlowLayout.swift */; };
 		309EB94006E74B335868AF3C /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 220135F0FDEF8B3CCB58A2A0 /* UserProfile.swift */; };
+		3234647258D207917353B294 /* RarityBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35ADAA200DF281D8F77675C8 /* RarityBadge.swift */; };
 		359BDB7DA6FC6E934DBE1578 /* StatsOverviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFDE526C61C75F4FD9AB4A2E /* StatsOverviewView.swift */; };
 		35FE1A78FC37DC9511840E2C /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC1228B52A66C37D7F7CB1D /* LocationService.swift */; };
 		3631D8F9F8FDC28B07BE3D3F /* AlbumDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E18D763A59BE5874A7C619 /* AlbumDetailView.swift */; };
@@ -30,7 +33,9 @@
 		3B5C9CF0067AAD2A364A8E9B /* AchievementsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42DB0FAA4EB6D8B228D2B771 /* AchievementsView.swift */; };
 		3C1B9438F74CDB75A550CF37 /* DetectionOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CC10E3EE7DEFB4F04346472 /* DetectionOverlayView.swift */; };
 		402AEA9866010CFB9BFA52A9 /* QuickCaptureWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1941EF97BD0A603ACDCE6DB /* QuickCaptureWidget.swift */; };
+		4078ACAB703957BC12DE2986 /* SightingCollectionCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 478483E8F3437FF39918F87C /* SightingCollectionCard.swift */; };
 		45EE33F746128C77C9AAC064 /* DigitOracleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F13BC62DF229D2030055DF85 /* DigitOracleApp.swift */; };
+		47D4D9AF61D62922A01EFBF2 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88D7EB7461C9D479EC972910 /* GameKit.framework */; };
 		4A5BCC74F8EA6F1B941C8E90 /* ShareExtensionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53FD7295FE8C69D396251A6 /* ShareExtensionView.swift */; };
 		4BE1C6A1F33F61F0F93F3953 /* RarityBorderModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 773910CFBE310D5320F18516 /* RarityBorderModifier.swift */; };
 		5076CF83B10F3FF31A70FEEC /* ImageStorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29ECAACB58622A48204E9D79 /* ImageStorageService.swift */; };
@@ -41,8 +46,10 @@
 		60051EEE24251E22D8279E82 /* SightingListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD259032946F6CCAAD59CEBC /* SightingListView.swift */; };
 		60A6D19F86BD37FD269F9EC1 /* Color+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1C66A5C57BF179A5F8DABD4 /* Color+Theme.swift */; };
 		60FE90CF5AF640DBBF22CC7F /* Achievement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84AAFF7A09CDE15AAC3192D8 /* Achievement.swift */; };
+		616E7DB2C2C66EF26B055399 /* StatsCards.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B7B50871B9B8EA04E3F074 /* StatsCards.swift */; };
 		6196B9EE8027EDEE264AA1B0 /* IlluminatedTextModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC3244E54909751EC4361C01 /* IlluminatedTextModifier.swift */; };
 		62D1EAA718510EC279FDE82A /* LibraryScannerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64D4C6C4BD19BE04FF5825C8 /* LibraryScannerService.swift */; };
+		65FBB8C6172B939B792A5C8D /* BulkActionBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9F86AEE16F8308D3495AF4D /* BulkActionBar.swift */; };
 		666D6BE109220D549B7410F3 /* OracleLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDA77D4D2B2D85F7E7F51363 /* OracleLoadingView.swift */; };
 		6C25DC845DFF1973E85F76F5 /* DigitOracleWidgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB3739EFD92744D9DB020C62 /* DigitOracleWidgets.swift */; };
 		6EEE46DCAD67440D7DCEC50B /* AlbumFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D77E3485B881C197EE9F0223 /* AlbumFormView.swift */; };
@@ -53,7 +60,10 @@
 		7966F46ACFAB1475894BE2E6 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 283A99430A06654B666F0D98 /* NotificationService.swift */; };
 		7A23367ED02C0E09E2B394D2 /* Album.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A476D8DE4BCA73338AAAAC0 /* Album.swift */; };
 		7A33D5C4FADCBA15886A9816 /* SightingRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2910F7C424AFEC8525CD96C8 /* SightingRowView.swift */; };
+		7B548A154F6295DDEF9E2EBF /* FullScreenImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1EBF613530156C19AFD9696 /* FullScreenImageView.swift */; };
 		7F19FACE0421D69FAC7AC706 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C01A7A6542B1AF2763864D4 /* OnboardingView.swift */; };
+		83D3A56EDC671C50829983ED /* Sighting+ImageLoading.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB7E6995CF4F3288C43A9AEE /* Sighting+ImageLoading.swift */; };
+		841304159035FD98E14CA4DE /* AlbumPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF3E0DA43390A9E915361BB /* AlbumPickerView.swift */; };
 		8BAF450F0FAA7E37A3D2D7A6 /* AppLockService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CB7C64985AB4C71683D3336 /* AppLockService.swift */; };
 		97579BDDF9E93796204AB344 /* OCRSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FA58F4B6EBCC727B2A0523D /* OCRSettingsView.swift */; };
 		9B743E2ACB38EB27D4D771C1 /* OnThisDayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF25BE85B36EE52EB6392A8B /* OnThisDayView.swift */; };
@@ -68,11 +78,14 @@
 		A789E3AA0119BFD3B7B9229E /* AchievementDefinitions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63749C1155CA1D9BB9094D32 /* AchievementDefinitions.swift */; };
 		A9A2D776CF86A252541759AC /* LiveDetectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3279707BD4F9A91F6A1E95B /* LiveDetectorView.swift */; };
 		AAB5487640CF05FB407BF5ED /* DigitOracleShareExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = FDC6414459006B7BDFEE4922 /* DigitOracleShareExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		AB58BA3CF4711AD28892A99C /* LeaderboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E3E3AC03266E5613422CF93 /* LeaderboardView.swift */; };
 		AF89ED77149E48C7FC7CD4EC /* StatsCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6169CFF5277CBDF79CDE1035 /* StatsCalculator.swift */; };
 		B5086C96937C0F3FC9AAA1F2 /* ChallengeEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45FA7A46D7D8CD60C95A0343 /* ChallengeEngine.swift */; };
 		B5E88FAAB7B068176ACAE4B1 /* LiveDetectorService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B667D92EB61CC3A1E53711 /* LiveDetectorService.swift */; };
 		B82E52245473B2E52E8D90F4 /* CameraPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50E56B24E60D81C4DCB8BDE /* CameraPreviewView.swift */; };
+		BC5B76348EEE365C0958B99D /* SightingImageSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C4FDFB06F9E10475B20AA9 /* SightingImageSection.swift */; };
 		BDD4C4DFD4171DF36E24E286 /* WidgetData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 438BE36773A997788D22F258 /* WidgetData.swift */; };
+		BF681D6907E5441E8B9DA62D /* GameCenterService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 032E2BBE66018CAB2FDB0A55 /* GameCenterService.swift */; };
 		C244E07526E2CE7FE11D11B3 /* Challenge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 095C65BD6160CDCF24760DCC /* Challenge.swift */; };
 		C4017C6723D23C76A75B4936 /* ShareCardRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2B349234CFE2C19B69711F6 /* ShareCardRenderer.swift */; };
 		C46D3652B0687978B32C8FFF /* OracleTextService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B036D1F5C87A513ADD0856B3 /* OracleTextService.swift */; };
@@ -85,16 +98,19 @@
 		D6839CAB0EC41D174A590E5A /* WidgetDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3413A731B4E979C9A3ADEF0E /* WidgetDataService.swift */; };
 		D84CEEFF708E0B8E3F1AFCD7 /* PhotoReviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB9B230A5690337B83219420 /* PhotoReviewView.swift */; };
 		D8C502A750EE908893801E6E /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F12E5B5BFAE2C2A97A635B4 /* ShareViewController.swift */; };
+		DBB4AEC461C4A82933CFE943 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0D258239A40D63FDEE0A9FF /* Constants.swift */; };
 		DBB92C92B4CDEAE7E42BC2EB /* AppLockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5AB61D2B6092B62387ADCCB /* AppLockView.swift */; };
 		DFC16786B9237A2D155F9E84 /* Tag.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFA9D6BF683D22B317191CD0 /* Tag.swift */; };
 		E21F297BDA3CD418BF4F3E9F /* PreviewSampleData.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFE7297DD78AC9725913067D /* PreviewSampleData.swift */; };
 		E25D3E6DBB21CC6A97CDDCF1 /* ChallengeListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8245DC043E587AEFD55CC43A /* ChallengeListView.swift */; };
+		E7EE1EEA7BFDEDCCCD710D53 /* Int+Pluralize.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9E7FCAAF1F7954B43A84905 /* Int+Pluralize.swift */; };
 		EAE412770FC5F7607280086D /* OCRService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20FB24663D6AFAC5C534C742 /* OCRService.swift */; };
 		EE8CF87800476D7D3578D3DC /* CameraControlsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2AAA61FF305EF668A848263 /* CameraControlsView.swift */; };
 		EF433110142ECF2AC596150F /* CaptureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E9122EB157E66C9231B7529 /* CaptureView.swift */; };
 		EF4DA1B0F6FED1395F383405 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CA0DAC8BAB649B62B325420 /* SettingsView.swift */; };
 		EFBB4E5FBBF8356537F8A6AB /* StreakWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A97891EB265B0A8A116EA40 /* StreakWidget.swift */; };
 		F13AF3F31C49FA73AE2CC49A /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0D258239A40D63FDEE0A9FF /* Constants.swift */; };
+		F78A63597F78550615BDFEF7 /* OracleCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A0D22FE9FD04741D341FBE0 /* OracleCard.swift */; };
 		FA9BD93AF69945CFB1BA1E13 /* AppTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6608C566C558D25F5C143EC4 /* AppTab.swift */; };
 		FB042085A3B24CDB4C93C791 /* Sighting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A9E2384529DE08E0C10B730 /* Sighting.swift */; };
 		FC3B27897C61AC35E659243E /* LibraryScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6714CC9D475482C5DE319C4E /* LibraryScannerView.swift */; };
@@ -135,13 +151,17 @@
 
 /* Begin PBXFileReference section */
 		0305FEBBA7C043B97BA89952 /* DigitOracle.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DigitOracle.entitlements; sourceTree = "<group>"; };
+		032E2BBE66018CAB2FDB0A55 /* GameCenterService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameCenterService.swift; sourceTree = "<group>"; };
 		04C8D59984FEC6089BABFF2C /* CountWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountWidget.swift; sourceTree = "<group>"; };
 		095C65BD6160CDCF24760DCC /* Challenge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Challenge.swift; sourceTree = "<group>"; };
+		0A0D22FE9FD04741D341FBE0 /* OracleCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OracleCard.swift; sourceTree = "<group>"; };
 		0CB7C64985AB4C71683D3336 /* AppLockService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLockService.swift; sourceTree = "<group>"; };
+		0E3E3AC03266E5613422CF93 /* LeaderboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardView.swift; sourceTree = "<group>"; };
 		0E9122EB157E66C9231B7529 /* CaptureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureView.swift; sourceTree = "<group>"; };
 		0F045DD1A19C7C820A0D164D /* ChallengeTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeTemplates.swift; sourceTree = "<group>"; };
 		17B5E092267166231E5EBAC1 /* ScanResultCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanResultCard.swift; sourceTree = "<group>"; };
 		18B7694FB9394579E3B20AE4 /* FilterSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterSheetView.swift; sourceTree = "<group>"; };
+		19C4FDFB06F9E10475B20AA9 /* SightingImageSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SightingImageSection.swift; sourceTree = "<group>"; };
 		1A476D8DE4BCA73338AAAAC0 /* Album.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Album.swift; sourceTree = "<group>"; };
 		20FB24663D6AFAC5C534C742 /* OCRService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OCRService.swift; sourceTree = "<group>"; };
 		220135F0FDEF8B3CCB58A2A0 /* UserProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfile.swift; sourceTree = "<group>"; };
@@ -155,14 +175,17 @@
 		31B884A1B4B531787998A2E0 /* WrappedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WrappedView.swift; sourceTree = "<group>"; };
 		3413A731B4E979C9A3ADEF0E /* WidgetDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetDataService.swift; sourceTree = "<group>"; };
 		35A023D5E2E5EA3F4DD9708D /* DigitOracleShareExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DigitOracleShareExtension.entitlements; sourceTree = "<group>"; };
+		35ADAA200DF281D8F77675C8 /* RarityBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RarityBadge.swift; sourceTree = "<group>"; };
 		3A97891EB265B0A8A116EA40 /* StreakWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreakWidget.swift; sourceTree = "<group>"; };
 		3AE266BDB5FDDB3DA5ADCFD6 /* DigitOracleWidget.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DigitOracleWidget.entitlements; sourceTree = "<group>"; };
 		3CBB7BFC6FD1FB44BC9C642A /* DigitOracleWidget.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = DigitOracleWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		42DB0FAA4EB6D8B228D2B771 /* AchievementsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementsView.swift; sourceTree = "<group>"; };
 		438BE36773A997788D22F258 /* WidgetData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetData.swift; sourceTree = "<group>"; };
 		45FA7A46D7D8CD60C95A0343 /* ChallengeEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeEngine.swift; sourceTree = "<group>"; };
+		478483E8F3437FF39918F87C /* SightingCollectionCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SightingCollectionCard.swift; sourceTree = "<group>"; };
 		4C1F6E112BF6F191762DEA12 /* PendingSightingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingSightingService.swift; sourceTree = "<group>"; };
 		4CC10E3EE7DEFB4F04346472 /* DetectionOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetectionOverlayView.swift; sourceTree = "<group>"; };
+		59B7B50871B9B8EA04E3F074 /* StatsCards.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsCards.swift; sourceTree = "<group>"; };
 		5FFC0F8BDF8AD3CCA2B7CC58 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		6169CFF5277CBDF79CDE1035 /* StatsCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsCalculator.swift; sourceTree = "<group>"; };
 		63749C1155CA1D9BB9094D32 /* AchievementDefinitions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementDefinitions.swift; sourceTree = "<group>"; };
@@ -185,6 +208,7 @@
 		8245DC043E587AEFD55CC43A /* ChallengeListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChallengeListView.swift; sourceTree = "<group>"; };
 		840D318CDB3DFFDE29295F51 /* AlbumListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumListView.swift; sourceTree = "<group>"; };
 		84AAFF7A09CDE15AAC3192D8 /* Achievement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Achievement.swift; sourceTree = "<group>"; };
+		88D7EB7461C9D479EC972910 /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GameKit.framework; sourceTree = "<group>"; };
 		8C5CBEF63823D893E90928CC /* SightingDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SightingDetailView.swift; sourceTree = "<group>"; };
 		8F12E5B5BFAE2C2A97A635B4 /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
 		93E18D763A59BE5874A7C619 /* AlbumDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumDetailView.swift; sourceTree = "<group>"; };
@@ -194,12 +218,14 @@
 		9BD2CBBE81B5D501E402C920 /* MetadataFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetadataFormView.swift; sourceTree = "<group>"; };
 		9EA9D2131051683CB85947ED /* NotificationSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettingsView.swift; sourceTree = "<group>"; };
 		A9D7EB0DEBCE96E0E948A931 /* RarityCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RarityCalculator.swift; sourceTree = "<group>"; };
+		A9F86AEE16F8308D3495AF4D /* BulkActionBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BulkActionBar.swift; sourceTree = "<group>"; };
 		AB9B230A5690337B83219420 /* PhotoReviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoReviewView.swift; sourceTree = "<group>"; };
 		AC3244E54909751EC4361C01 /* IlluminatedTextModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IlluminatedTextModifier.swift; sourceTree = "<group>"; };
 		ACB384B72824458B3527BE9D /* CameraService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraService.swift; sourceTree = "<group>"; };
 		B036D1F5C87A513ADD0856B3 /* OracleTextService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OracleTextService.swift; sourceTree = "<group>"; };
 		B03D3F57EE15F4901208F7EA /* ShareCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareCardView.swift; sourceTree = "<group>"; };
 		B5AB61D2B6092B62387ADCCB /* AppLockView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLockView.swift; sourceTree = "<group>"; };
+		B9E7FCAAF1F7954B43A84905 /* Int+Pluralize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+Pluralize.swift"; sourceTree = "<group>"; };
 		BDA77D4D2B2D85F7E7F51363 /* OracleLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OracleLoadingView.swift; sourceTree = "<group>"; };
 		BF0D81766465BC2A0FD5306D /* SightingThumbnailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SightingThumbnailView.swift; sourceTree = "<group>"; };
 		C0AD8AC0A38A43ED6549ED57 /* DevotionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevotionsView.swift; sourceTree = "<group>"; };
@@ -208,6 +234,7 @@
 		C50E56B24E60D81C4DCB8BDE /* CameraPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraPreviewView.swift; sourceTree = "<group>"; };
 		C53FD7295FE8C69D396251A6 /* ShareExtensionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareExtensionView.swift; sourceTree = "<group>"; };
 		CAC1228B52A66C37D7F7CB1D /* LocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationService.swift; sourceTree = "<group>"; };
+		CEF3E0DA43390A9E915361BB /* AlbumPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumPickerView.swift; sourceTree = "<group>"; };
 		CF25BE85B36EE52EB6392A8B /* OnThisDayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnThisDayView.swift; sourceTree = "<group>"; };
 		CFDE526C61C75F4FD9AB4A2E /* StatsOverviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsOverviewView.swift; sourceTree = "<group>"; };
 		D2AAA61FF305EF668A848263 /* CameraControlsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraControlsView.swift; sourceTree = "<group>"; };
@@ -218,20 +245,35 @@
 		DDD0352ED27BA9DB658A9538 /* ActivityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityViewController.swift; sourceTree = "<group>"; };
 		DE3E8A9B16523FC4B065222E /* SecuritySettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecuritySettingsView.swift; sourceTree = "<group>"; };
 		E0D258239A40D63FDEE0A9FF /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		E1EBF613530156C19AFD9696 /* FullScreenImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenImageView.swift; sourceTree = "<group>"; };
+		E279E0B4C26BCF3C0FB8D4FF /* SightingMatchCountsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SightingMatchCountsSection.swift; sourceTree = "<group>"; };
 		E6B667D92EB61CC3A1E53711 /* LiveDetectorService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveDetectorService.swift; sourceTree = "<group>"; };
 		EB3739EFD92744D9DB020C62 /* DigitOracleWidgets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DigitOracleWidgets.swift; sourceTree = "<group>"; };
+		EB7E6995CF4F3288C43A9AEE /* Sighting+ImageLoading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sighting+ImageLoading.swift"; sourceTree = "<group>"; };
 		EDDBAFAAFA61994CEDEC20E4 /* MonthlyDigestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthlyDigestView.swift; sourceTree = "<group>"; };
 		EFA9D6BF683D22B317191CD0 /* Tag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tag.swift; sourceTree = "<group>"; };
 		F12343B82CABF6448A4EA501 /* CalendarHeatmapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarHeatmapView.swift; sourceTree = "<group>"; };
 		F13BC62DF229D2030055DF85 /* DigitOracleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DigitOracleApp.swift; sourceTree = "<group>"; };
 		F1941EF97BD0A603ACDCE6DB /* QuickCaptureWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickCaptureWidget.swift; sourceTree = "<group>"; };
 		F1C66A5C57BF179A5F8DABD4 /* Color+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Theme.swift"; sourceTree = "<group>"; };
+		F651A81A890C52E4689B1249 /* FlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowLayout.swift; sourceTree = "<group>"; };
 		F71D0D7B9BB725729C11DF5B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FCF622FCB4C508A4DD8F8C63 /* AchievementEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementEngine.swift; sourceTree = "<group>"; };
 		FDC6414459006B7BDFEE4922 /* DigitOracleShareExtension.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = DigitOracleShareExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		FF6EF5E0D85040D003CC3B5F /* RecentSightingWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentSightingWidget.swift; sourceTree = "<group>"; };
 		FFE7297DD78AC9725913067D /* PreviewSampleData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewSampleData.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		E0464A4C3232FF8BECAFA7C9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				47D4D9AF61D62922A01EFBF2 /* GameKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		00126749CA98AC58B8A1E497 /* Memories */ = {
@@ -246,9 +288,12 @@
 			isa = PBXGroup;
 			children = (
 				18B7694FB9394579E3B20AE4 /* FilterSheetView.swift */,
+				E1EBF613530156C19AFD9696 /* FullScreenImageView.swift */,
 				8C5CBEF63823D893E90928CC /* SightingDetailView.swift */,
 				7C2C0334D418E55EB87E0DB7 /* SightingEditView.swift */,
+				19C4FDFB06F9E10475B20AA9 /* SightingImageSection.swift */,
 				DD259032946F6CCAAD59CEBC /* SightingListView.swift */,
+				E279E0B4C26BCF3C0FB8D4FF /* SightingMatchCountsSection.swift */,
 				2910F7C424AFEC8525CD96C8 /* SightingRowView.swift */,
 				BF0D81766465BC2A0FD5306D /* SightingThumbnailView.swift */,
 			);
@@ -290,6 +335,7 @@
 				E6A57039944495971B7E8530 /* DigitOracleIntents */,
 				82649C69762DC41925CD016D /* DigitOracleShareExtension */,
 				73D7B5091B3CB8425FAC3002 /* DigitOracleWidget */,
+				74C18589C4E43EA95AFFC029 /* Frameworks */,
 				EB690347D64B82E3BE8F9C9A /* Products */,
 			);
 			sourceTree = "<group>";
@@ -313,6 +359,8 @@
 				F1C66A5C57BF179A5F8DABD4 /* Color+Theme.swift */,
 				970D68033061F15E7F42FFB0 /* Date+Formatting.swift */,
 				7436849696B3A5319A39C281 /* Font+Theme.swift */,
+				B9E7FCAAF1F7954B43A84905 /* Int+Pluralize.swift */,
+				EB7E6995CF4F3288C43A9AEE /* Sighting+ImageLoading.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -380,6 +428,14 @@
 			path = DigitOracleWidget;
 			sourceTree = "<group>";
 		};
+		74C18589C4E43EA95AFFC029 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				88D7EB7461C9D479EC972910 /* GameKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		7F0B816484F57E8DA7A002FC /* Services */ = {
 			isa = PBXGroup;
 			children = (
@@ -387,6 +443,7 @@
 				0CB7C64985AB4C71683D3336 /* AppLockService.swift */,
 				ACB384B72824458B3527BE9D /* CameraService.swift */,
 				45FA7A46D7D8CD60C95A0343 /* ChallengeEngine.swift */,
+				032E2BBE66018CAB2FDB0A55 /* GameCenterService.swift */,
 				29ECAACB58622A48204E9D79 /* ImageStorageService.swift */,
 				64D4C6C4BD19BE04FF5825C8 /* LibraryScannerService.swift */,
 				E6B667D92EB61CC3A1E53711 /* LiveDetectorService.swift */,
@@ -412,7 +469,9 @@
 				974E38F10C6E4CD9C0F011DA /* CategoryBreakdownView.swift */,
 				C0AD8AC0A38A43ED6549ED57 /* DevotionsView.swift */,
 				64B84C628052398F14DA84D2 /* HeatmapView.swift */,
+				0E3E3AC03266E5613422CF93 /* LeaderboardView.swift */,
 				EDDBAFAAFA61994CEDEC20E4 /* MonthlyDigestView.swift */,
+				59B7B50871B9B8EA04E3F074 /* StatsCards.swift */,
 				CFDE526C61C75F4FD9AB4A2E /* StatsOverviewView.swift */,
 				31B884A1B4B531787998A2E0 /* WrappedView.swift */,
 			);
@@ -425,6 +484,7 @@
 				93E18D763A59BE5874A7C619 /* AlbumDetailView.swift */,
 				D77E3485B881C197EE9F0223 /* AlbumFormView.swift */,
 				840D318CDB3DFFDE29295F51 /* AlbumListView.swift */,
+				CEF3E0DA43390A9E915361BB /* AlbumPickerView.swift */,
 			);
 			path = Albums;
 			sourceTree = "<group>";
@@ -443,10 +503,15 @@
 		8EF47B5AB538563A14B11DDC /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				A9F86AEE16F8308D3495AF4D /* BulkActionBar.swift */,
+				F651A81A890C52E4689B1249 /* FlowLayout.swift */,
 				AC3244E54909751EC4361C01 /* IlluminatedTextModifier.swift */,
 				6AA2DB411E743FF1FAAD1E21 /* OracleButtonStyle.swift */,
+				0A0D22FE9FD04741D341FBE0 /* OracleCard.swift */,
 				BDA77D4D2B2D85F7E7F51363 /* OracleLoadingView.swift */,
+				35ADAA200DF281D8F77675C8 /* RarityBadge.swift */,
 				773910CFBE310D5320F18516 /* RarityBorderModifier.swift */,
+				478483E8F3437FF39918F87C /* SightingCollectionCard.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -546,6 +611,7 @@
 			buildPhases = (
 				35A2EA2EA187A7156498A4E6 /* Sources */,
 				256E7433DB198203B17EBBFB /* Resources */,
+				E0464A4C3232FF8BECAFA7C9 /* Frameworks */,
 				50DA4D3EB7F138F29253195A /* Embed Foundation Extensions */,
 			);
 			buildRules = (
@@ -662,9 +728,11 @@
 				3631D8F9F8FDC28B07BE3D3F /* AlbumDetailView.swift in Sources */,
 				6EEE46DCAD67440D7DCEC50B /* AlbumFormView.swift in Sources */,
 				0B3CE8CF6920D236677F35B8 /* AlbumListView.swift in Sources */,
+				841304159035FD98E14CA4DE /* AlbumPickerView.swift in Sources */,
 				8BAF450F0FAA7E37A3D2D7A6 /* AppLockService.swift in Sources */,
 				DBB92C92B4CDEAE7E42BC2EB /* AppLockView.swift in Sources */,
 				FA9BD93AF69945CFB1BA1E13 /* AppTab.swift in Sources */,
+				65FBB8C6172B939B792A5C8D /* BulkActionBar.swift in Sources */,
 				C5CD27A25BB651F936CC2230 /* CalendarHeatmapView.swift in Sources */,
 				EE8CF87800476D7D3578D3DC /* CameraControlsView.swift in Sources */,
 				B82E52245473B2E52E8D90F4 /* CameraPreviewView.swift in Sources */,
@@ -685,10 +753,15 @@
 				45EE33F746128C77C9AAC064 /* DigitOracleApp.swift in Sources */,
 				0DE57B14BA561F9BA8479F1E /* DigitOracleShortcuts.swift in Sources */,
 				A192E6E759E743B1C2F09270 /* FilterSheetView.swift in Sources */,
+				2C4C90E32CA10454FB94FD63 /* FlowLayout.swift in Sources */,
 				5B8B3945C943ABBED191148D /* Font+Theme.swift in Sources */,
+				7B548A154F6295DDEF9E2EBF /* FullScreenImageView.swift in Sources */,
+				BF681D6907E5441E8B9DA62D /* GameCenterService.swift in Sources */,
 				0764F7B5C76D832DEA3EA79B /* HeatmapView.swift in Sources */,
 				6196B9EE8027EDEE264AA1B0 /* IlluminatedTextModifier.swift in Sources */,
 				5076CF83B10F3FF31A70FEEC /* ImageStorageService.swift in Sources */,
+				E7EE1EEA7BFDEDCCCD710D53 /* Int+Pluralize.swift in Sources */,
+				AB58BA3CF4711AD28892A99C /* LeaderboardView.swift in Sources */,
 				62D1EAA718510EC279FDE82A /* LibraryScannerService.swift in Sources */,
 				FC3B27897C61AC35E659243E /* LibraryScannerView.swift in Sources */,
 				B5E88FAAB7B068176ACAE4B1 /* LiveDetectorService.swift in Sources */,
@@ -704,12 +777,14 @@
 				9B743E2ACB38EB27D4D771C1 /* OnThisDayView.swift in Sources */,
 				7F19FACE0421D69FAC7AC706 /* OnboardingView.swift in Sources */,
 				9C482960E601CACF0642FEA7 /* OracleButtonStyle.swift in Sources */,
+				F78A63597F78550615BDFEF7 /* OracleCard.swift in Sources */,
 				666D6BE109220D549B7410F3 /* OracleLoadingView.swift in Sources */,
 				C46D3652B0687978B32C8FFF /* OracleTextService.swift in Sources */,
 				5F1E1CEB2937CF1C6BF93A0E /* PendingSightingService.swift in Sources */,
 				C8F6BCA78874D3779E5929F5 /* PhotoLibraryImageService.swift in Sources */,
 				D84CEEFF708E0B8E3F1AFCD7 /* PhotoReviewView.swift in Sources */,
 				E21F297BDA3CD418BF4F3E9F /* PreviewSampleData.swift in Sources */,
+				3234647258D207917353B294 /* RarityBadge.swift in Sources */,
 				4BE1C6A1F33F61F0F93F3953 /* RarityBorderModifier.swift in Sources */,
 				1ACA75D63F12A6FE7DAD09C4 /* RarityCalculator.swift in Sources */,
 				15ECE549E21EF9FD2CAE1039 /* ScanResultCard.swift in Sources */,
@@ -717,13 +792,18 @@
 				EF4DA1B0F6FED1395F383405 /* SettingsView.swift in Sources */,
 				C4017C6723D23C76A75B4936 /* ShareCardRenderer.swift in Sources */,
 				A63C0963B365440566A1B2C3 /* ShareCardView.swift in Sources */,
+				83D3A56EDC671C50829983ED /* Sighting+ImageLoading.swift in Sources */,
 				FB042085A3B24CDB4C93C791 /* Sighting.swift in Sources */,
+				4078ACAB703957BC12DE2986 /* SightingCollectionCard.swift in Sources */,
 				382B72FB51E144347C1BD19B /* SightingDetailView.swift in Sources */,
 				50BE28444F39BD19E71D1701 /* SightingEditView.swift in Sources */,
+				BC5B76348EEE365C0958B99D /* SightingImageSection.swift in Sources */,
 				60051EEE24251E22D8279E82 /* SightingListView.swift in Sources */,
+				0F68A3587E7A936E43C5957C /* SightingMatchCountsSection.swift in Sources */,
 				7A33D5C4FADCBA15886A9816 /* SightingRowView.swift in Sources */,
 				74CAB472AA04C8C8A043C77D /* SightingThumbnailView.swift in Sources */,
 				AF89ED77149E48C7FC7CD4EC /* StatsCalculator.swift in Sources */,
+				616E7DB2C2C66EF26B055399 /* StatsCards.swift in Sources */,
 				359BDB7DA6FC6E934DBE1578 /* StatsOverviewView.swift in Sources */,
 				DFC16786B9237A2D155F9E84 /* Tag.swift in Sources */,
 				2160E39CE28EC7625184AF23 /* TimeCapsule.swift in Sources */,
@@ -738,6 +818,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DBB4AEC461C4A82933CFE943 /* Constants.swift in Sources */,
 				219B2F394694176F05D849BF /* CountWidget.swift in Sources */,
 				6C25DC845DFF1973E85F76F5 /* DigitOracleWidgets.swift in Sources */,
 				402AEA9866010CFB9BFA52A9 /* QuickCaptureWidget.swift in Sources */,
@@ -778,7 +859,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = DigitOracleWidget/DigitOracleWidget.entitlements;
-				CURRENT_PROJECT_VERSION = 19;
+				CURRENT_PROJECT_VERSION = 20;
 				INFOPLIST_FILE = DigitOracleWidget/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -920,7 +1001,11 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = DigitOracle/DigitOracle.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 19;
+				CURRENT_PROJECT_VERSION = 20;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\".\"",
+				);
 				INFOPLIST_FILE = DigitOracle/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -937,7 +1022,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = DigitOracleShareExtension/DigitOracleShareExtension.entitlements;
-				CURRENT_PROJECT_VERSION = 19;
+				CURRENT_PROJECT_VERSION = 20;
 				INFOPLIST_FILE = DigitOracleShareExtension/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -958,7 +1043,11 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = DigitOracle/DigitOracle.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 19;
+				CURRENT_PROJECT_VERSION = 20;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\".\"",
+				);
 				INFOPLIST_FILE = DigitOracle/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -975,7 +1064,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = DigitOracleShareExtension/DigitOracleShareExtension.entitlements;
-				CURRENT_PROJECT_VERSION = 19;
+				CURRENT_PROJECT_VERSION = 20;
 				INFOPLIST_FILE = DigitOracleShareExtension/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -993,7 +1082,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = DigitOracleWidget/DigitOracleWidget.entitlements;
-				CURRENT_PROJECT_VERSION = 19;
+				CURRENT_PROJECT_VERSION = 20;
 				INFOPLIST_FILE = DigitOracleWidget/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

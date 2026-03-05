@@ -10,6 +10,8 @@ struct ContentView: View {
     @State private var importedShareCount: Int?
     @State private var orphanedSightings: [Sighting] = []
     @State private var showOrphanAlert = false
+    @State private var achievementEngine = AchievementEngine()
+    @State private var challengeEngine = ChallengeEngine()
 
     var body: some View {
         TabView(selection: $selectedTab) {
@@ -83,8 +85,19 @@ struct ContentView: View {
             return
         }
 
+        // Collect existing hashes for duplicate detection
+        let existingSightings = (try? modelContext.fetch(FetchDescriptor<Sighting>())) ?? []
+        var knownHashes = existingSightings.compactMap(\.imageHash)
+
         var count = 0
         for item in pending {
+            // Check for duplicate before saving image files
+            if let hash = ImageStorageService.perceptualHash(of: item.image),
+               knownHashes.contains(where: { ImageStorageService.isPerceptualDuplicate($0, hash) }) {
+                try? PendingSightingService.deletePendingItem(id: item.metadata.id)
+                continue
+            }
+
             let fileNames = try? ImageStorageService.shared.saveImage(item.image, id: item.metadata.id)
             guard let fileNames else { continue }
 
@@ -103,13 +116,15 @@ struct ContentView: View {
             )
             sighting.thumbnailFileName = fileNames.thumbnail
             sighting.hasLocalFullImage = true
-            sighting.imageHash = ImageStorageService.perceptualHash(of: item.image)
+            let imageHash = ImageStorageService.perceptualHash(of: item.image)
+            sighting.imageHash = imageHash
             sighting.contains47 = ocrResult.matchedNumbers.contains(47)
             sighting.matchedNumbers = ocrResult.matchedNumbers
             sighting.matchCounts = ocrResult.matchCounts
             sighting.rarityScore = min(max(sighting.totalMatchCount, 1), 5)
 
             modelContext.insert(sighting)
+            if let imageHash { knownHashes.append(imageHash) }
             try? PendingSightingService.deletePendingItem(id: item.metadata.id)
             count += 1
         }
@@ -117,6 +132,16 @@ struct ContentView: View {
         if count > 0 {
             try? modelContext.save()
             await refreshWidgetData()
+
+            // Check achievements and challenges
+            achievementEngine.checkAll(context: modelContext)
+            // challengeEngine needs a specific sighting; check all active challenges
+            let allSightings = (try? modelContext.fetch(FetchDescriptor<Sighting>())) ?? []
+            let allAchievements = (try? modelContext.fetch(FetchDescriptor<Achievement>())) ?? []
+            let longestStreak = StatsCalculator.longestStreak(from: allSightings)
+            GameCenterService.shared.submitScores(totalSightings: allSightings.count, longestStreak: longestStreak)
+            GameCenterService.shared.reportAchievements(allAchievements)
+
             importedShareCount = count
 
             // Auto-hide after 3 seconds
@@ -168,7 +193,7 @@ struct ContentView: View {
     private func importBanner(count: Int) -> some View {
         HStack(spacing: 8) {
             Image(systemName: "square.and.arrow.down.fill")
-            Text("The Oracle hath received \(count) vision\(count == 1 ? "" : "s").")
+            Text("The Oracle hath received \(count.pluralized("vision")).")
         }
         .font(.subheadline.bold())
         .foregroundColor(.textPrimary)

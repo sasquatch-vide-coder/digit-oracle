@@ -60,44 +60,18 @@ struct AlbumListView: View {
         }
         .safeAreaInset(edge: .bottom) {
             if isSelecting {
-                VStack(spacing: 0) {
-                    Divider()
-                    HStack {
-                        Button {
-                            showingDeleteSelected = true
-                        } label: {
-                            VStack(spacing: 4) {
-                                Image(systemName: "trash")
-                                    .font(.title3)
-                                Text("Destroy")
-                                    .font(.caption2)
-                            }
-                            .frame(maxWidth: .infinity)
-                        }
-                        .disabled(selectedAlbumIDs.isEmpty)
-                        .tint(.red)
-
-                        Button {
-                            showingDeleteAll = true
-                        } label: {
-                            VStack(spacing: 4) {
-                                Image(systemName: "trash.slash")
-                                    .font(.title3)
-                                Text("Destroy All")
-                                    .font(.caption2)
-                            }
-                            .frame(maxWidth: .infinity)
-                        }
-                        .tint(.red)
-                    }
-                    .padding(.vertical, 10)
-                    .padding(.horizontal)
-                }
-                .background(.bar)
+                BulkActionBar(actions: [
+                    .init(icon: "trash", label: "Destroy", tint: .red, isDisabled: selectedAlbumIDs.isEmpty) {
+                        showingDeleteSelected = true
+                    },
+                    .init(icon: "trash.slash", label: "Destroy All", tint: .red) {
+                        showingDeleteAll = true
+                    },
+                ])
             }
         }
         .confirmationDialog(
-            "Destroy \(selectedAlbumIDs.count) Scroll\(selectedAlbumIDs.count == 1 ? "" : "s")?",
+            "Destroy \(selectedAlbumIDs.count.pluralized("Scroll"))?",
             isPresented: $showingDeleteSelected,
             titleVisibility: .visible
         ) {
@@ -105,10 +79,10 @@ struct AlbumListView: View {
                 deleteSelectedAlbums()
             }
         } message: {
-            Text("The chosen scroll\(selectedAlbumIDs.count == 1 ? "" : "s") shall crumble to dust. Thy visions shall endure.")
+            Text("The chosen scroll\(selectedAlbumIDs.count.pluralSuffix) shall crumble to dust. Thy visions shall endure.")
         }
         .confirmationDialog(
-            "Destroy All \(albums.count) Scroll\(albums.count == 1 ? "" : "s")?",
+            "Destroy All \(albums.count.pluralized("Scroll"))?",
             isPresented: $showingDeleteAll,
             titleVisibility: .visible
         ) {
@@ -129,7 +103,7 @@ struct AlbumListView: View {
                 // "All Visions" virtual album — always first, never selectable
                 if !isSelecting {
                     NavigationLink(value: "all_sightings") {
-                        AllSightingsCardView(sightings: allSightings)
+                        SightingCollectionCard(title: "All Visions", sightings: allSightings, placeholderIcon: "photo.on.rectangle.angled")
                     }
                     .buttonStyle(.plain)
                 }
@@ -143,7 +117,7 @@ struct AlbumListView: View {
                                 selectedAlbumIDs.insert(album.id)
                             }
                         } label: {
-                            AlbumCardView(album: album)
+                            SightingCollectionCard(title: album.name, sightings: album.sightings)
                                 .overlay(alignment: .topLeading) {
                                     Image(systemName: selectedAlbumIDs.contains(album.id) ? "checkmark.circle.fill" : "circle")
                                         .font(.title2)
@@ -155,7 +129,7 @@ struct AlbumListView: View {
                         .buttonStyle(.plain)
                     } else {
                         NavigationLink(value: album.id) {
-                            AlbumCardView(album: album)
+                            SightingCollectionCard(title: album.name, sightings: album.sightings)
                         }
                         .buttonStyle(.plain)
                         .contextMenu {
@@ -215,138 +189,6 @@ struct AlbumListView: View {
         }
         selectedAlbumIDs.removeAll()
         isSelecting = false
-    }
-}
-
-// MARK: - Album Card
-
-struct AlbumCardView: View {
-    let album: Album
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            // Cover image or placeholder
-            ZStack {
-                if let coverImage = loadCoverImage() {
-                    Image(uiImage: coverImage)
-                        .resizable()
-                        .scaledToFill()
-                        .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
-                } else {
-                    Rectangle()
-                        .fill(Color(.systemGray5))
-                        .overlay {
-                            Image(systemName: "rectangle.stack")
-                                .font(.system(size: 28))
-                                .foregroundStyle(.tertiary)
-                        }
-                }
-            }
-            .frame(height: 130)
-            .clipped()
-
-            // Info bar
-            VStack(alignment: .leading, spacing: 3) {
-                Text(album.name)
-                    .font(.subheadline.bold())
-                    .foregroundStyle(.primary)
-                    .lineLimit(1)
-                HStack(spacing: 8) {
-                    Text("\(album.sightings.count) vision\(album.sightings.count == 1 ? "" : "s")")
-                        .foregroundStyle(.secondary)
-                    if totalMatchCount > 0 {
-                        Label("\(totalMatchCount)×", systemImage: "sparkles")
-                            .foregroundStyle(Color.goldPrimary)
-                    }
-                }
-                .font(.caption)
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(.horizontal, 10)
-            .padding(.vertical, 8)
-            .background(Color(.secondarySystemGroupedBackground))
-        }
-        .clipShape(RoundedRectangle(cornerRadius: 14))
-        .shadow(color: .black.opacity(0.1), radius: 5, y: 2)
-    }
-
-    private func loadCoverImage() -> UIImage? {
-        guard let firstSighting = album.sightings.sorted(by: { $0.captureDate > $1.captureDate }).first else { return nil }
-        if let thumbName = firstSighting.thumbnailFileName,
-           let image = ImageStorageService.shared.loadImage(fileName: thumbName) {
-            return image
-        }
-        guard firstSighting.hasLocalFullImage else { return nil }
-        return ImageStorageService.shared.loadImage(fileName: firstSighting.imageFileName)
-    }
-
-    private var totalMatchCount: Int {
-        album.sightings.reduce(0) { $0 + $1.totalMatchCount }
-    }
-}
-
-// MARK: - All Sightings Card
-
-struct AllSightingsCardView: View {
-    let sightings: [Sighting]
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            ZStack {
-                if let coverImage = loadCoverImage() {
-                    Image(uiImage: coverImage)
-                        .resizable()
-                        .scaledToFill()
-                        .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
-                } else {
-                    Rectangle()
-                        .fill(Color(.systemGray5))
-                        .overlay {
-                            Image(systemName: "photo.on.rectangle.angled")
-                                .font(.system(size: 28))
-                                .foregroundStyle(.tertiary)
-                        }
-                }
-            }
-            .frame(height: 130)
-            .clipped()
-
-            VStack(alignment: .leading, spacing: 3) {
-                Text("All Visions")
-                    .font(.subheadline.bold())
-                    .foregroundStyle(.primary)
-                    .lineLimit(1)
-                HStack(spacing: 8) {
-                    Text("\(sightings.count) vision\(sightings.count == 1 ? "" : "s")")
-                        .foregroundStyle(.secondary)
-                    if totalMatchCount > 0 {
-                        Label("\(totalMatchCount)×", systemImage: "sparkles")
-                            .foregroundStyle(Color.goldPrimary)
-                    }
-                }
-                .font(.caption)
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(.horizontal, 10)
-            .padding(.vertical, 8)
-            .background(Color(.secondarySystemGroupedBackground))
-        }
-        .clipShape(RoundedRectangle(cornerRadius: 14))
-        .shadow(color: .black.opacity(0.1), radius: 5, y: 2)
-    }
-
-    private func loadCoverImage() -> UIImage? {
-        guard let first = sightings.first else { return nil }
-        if let thumbName = first.thumbnailFileName,
-           let image = ImageStorageService.shared.loadImage(fileName: thumbName) {
-            return image
-        }
-        guard first.hasLocalFullImage else { return nil }
-        return ImageStorageService.shared.loadImage(fileName: first.imageFileName)
-    }
-
-    private var totalMatchCount: Int {
-        sightings.reduce(0) { $0 + $1.totalMatchCount }
     }
 }
 

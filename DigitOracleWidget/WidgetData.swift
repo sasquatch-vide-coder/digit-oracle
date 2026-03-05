@@ -3,7 +3,7 @@ import UIKit
 
 /// Reads shared data from App Group UserDefaults. Mirror of WidgetDataService read-side.
 enum WidgetData {
-    private static let suiteName = "group.com.digitoracle.app"
+    private static let suiteName = Constants.appGroupIdentifier
     private static var defaults: UserDefaults? {
         UserDefaults(suiteName: suiteName)
     }

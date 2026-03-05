@@ -28,6 +28,7 @@ struct PhotoReviewView: View {
     @State private var saveCompleted = false
     @State private var detectedRects: [CGRect] = []
     @State private var cachedDetection: DetectionResult?
+    @State private var showDuplicateAtSaveAlert = false
 
     var body: some View {
         ScrollView {
@@ -90,6 +91,11 @@ struct PhotoReviewView: View {
             }
         }
         .sensoryFeedback(.success, trigger: saveCompleted)
+        .alert("Already Witnessed", isPresented: $showDuplicateAtSaveAlert) {
+            Button("OK", role: .cancel) { dismiss() }
+        } message: {
+            Text("This vision hath already been recorded.")
+        }
     }
 
     // MARK: - Image Preview
@@ -160,7 +166,7 @@ struct PhotoReviewView: View {
                     if ocrResult.containsTrackedNumber {
                         Image(systemName: "sparkles")
                             .foregroundStyle(Color.goldPrimary)
-                        Text("\(ocrResult.matchCount) revelation\(ocrResult.matchCount == 1 ? "" : "s")")
+                        Text(ocrResult.matchCount.pluralized("revelation"))
                             .font(.caption)
                             .foregroundStyle(Color.goldPrimary)
                     } else {
@@ -267,6 +273,32 @@ struct PhotoReviewView: View {
             sighting.matchCounts = savedOCR.matchCounts
             sighting.rarityScore = min(max(sighting.totalMatchCount, 1), 5)
 
+            // Safety net: check for duplicates before inserting
+            let allExisting = (try? modelContext.fetch(FetchDescriptor<Sighting>())) ?? []
+            let isDuplicate: Bool = {
+                if let newID = sighting.sourceIdentifier,
+                   allExisting.contains(where: { $0.sourceIdentifier == newID }) {
+                    return true
+                }
+                if let newHash = sighting.imageHash,
+                   allExisting.contains(where: {
+                       guard let h = $0.imageHash else { return false }
+                       return ImageStorageService.isPerceptualDuplicate(h, newHash)
+                   }) {
+                    return true
+                }
+                return false
+            }()
+
+            if isDuplicate {
+                // Clean up saved files
+                try? ImageStorageService.shared.deleteImage(fileName: imageFileName)
+                try? ImageStorageService.shared.deleteImage(fileName: thumbFileName)
+                isSaving = false
+                showDuplicateAtSaveAlert = true
+                return
+            }
+
             for tagName in tagNames {
                 let tag = Tag(name: tagName)
                 modelContext.insert(tag)
@@ -293,6 +325,12 @@ struct PhotoReviewView: View {
             // Check achievements and challenges
             achievementEngine.checkAll(context: modelContext)
             challengeEngine.checkCompletion(sighting: sighting, context: modelContext)
+
+            // Report to Game Center
+            let allAchievements = (try? modelContext.fetch(FetchDescriptor<Achievement>())) ?? []
+            let longestStreak = StatsCalculator.longestStreak(from: allSightings)
+            GameCenterService.shared.submitScores(totalSightings: allSightings.count, longestStreak: longestStreak)
+            GameCenterService.shared.reportAchievements(allAchievements)
 
             saveCompleted.toggle()
 

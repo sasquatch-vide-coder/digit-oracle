@@ -60,7 +60,7 @@ struct HeatmapView: View {
                             }
                         } label: {
                             SightingMarkerView(
-                                rarityScore: sighting.rarityScore,
+                                color: markerColor(for: sighting.rarityScore),
                                 isSelected: selectedSighting?.id == sighting.id
                             )
                         }
@@ -135,7 +135,7 @@ struct HeatmapView: View {
 
                     HStack(spacing: 8) {
                         if sighting.totalMatchCount > 0 {
-                            Text("\(sighting.totalMatchCount) revelation\(sighting.totalMatchCount == 1 ? "" : "s")")
+                            Text(sighting.totalMatchCount.pluralized("revelation"))
                                 .font(.caption.bold())
                                 .foregroundColor(.goldPrimary)
                         }
@@ -159,6 +159,7 @@ struct HeatmapView: View {
             .padding(12)
             .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16))
             .shadow(color: .black.opacity(0.15), radius: 8, y: 4)
+
         }
         .buttonStyle(.plain)
     }
@@ -167,19 +168,8 @@ struct HeatmapView: View {
 // MARK: - Sighting Marker
 
 private struct SightingMarkerView: View {
-    let rarityScore: Int
+    let color: Color
     let isSelected: Bool
-
-    private var color: Color {
-        switch rarityScore {
-        case 1: .goldDark
-        case 2: .goldPrimary
-        case 3: .blue
-        case 4: .purple
-        case 5: .orange
-        default: .goldDark
-        }
-    }
 
     var body: some View {
         ZStack {

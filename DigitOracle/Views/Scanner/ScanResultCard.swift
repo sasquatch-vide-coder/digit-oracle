@@ -12,7 +12,7 @@ struct ScanResultCard: View {
                     .frame(minHeight: 120)
                     .clipped()
 
-                Label("\(result.detection.ocr.matchCount)× revelation\(result.detection.ocr.matchCount == 1 ? "" : "s")", systemImage: "sparkles")
+                Label("\(result.detection.ocr.matchCount)× revelation\(result.detection.ocr.matchCount.pluralSuffix)", systemImage: "sparkles")
                     .font(.caption2.bold())
                     .foregroundStyle(Color.textPrimary)
                     .padding(.horizontal, 6)

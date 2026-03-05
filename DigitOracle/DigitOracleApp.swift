@@ -1,6 +1,7 @@
 import SwiftUI
 import SwiftData
 import CoreLocation
+import GameKit
 
 @main
 struct DigitOracleApp: App {
@@ -41,6 +42,12 @@ struct DigitOracleApp: App {
                                 backfillSightings()
                                 migrateFullImagesToPhotoLibrary()
                                 backfillLocationNames()
+                                authenticateGameCenter()
+                            }
+                            .onChange(of: GameCenterService.shared.isAuthenticated) { _, authenticated in
+                                if authenticated {
+                                    GameCenterService.shared.backfillScoresAndAchievements(context: container.mainContext)
+                                }
                             }
 
                         if appLockService.isEnabled && (appLockService.isLocked || appLockService.showPrivacyOverlay) {
@@ -53,6 +60,9 @@ struct DigitOracleApp: App {
                         case .active:
                             selectedTab = .capture
                             appLockService.handleSceneActive()
+                            if !GameCenterService.shared.isAuthenticated {
+                                authenticateGameCenter()
+                            }
                         case .inactive:
                             appLockService.handleSceneInactive()
                         case .background:
@@ -149,6 +159,15 @@ struct DigitOracleApp: App {
                 try? await Task.sleep(for: .milliseconds(200))
             }
             await MainActor.run { try? context.save() }
+        }
+    }
+
+    private func authenticateGameCenter() {
+        // Delay auth slightly so app lock can dismiss first if needed
+        Task {
+            try? await Task.sleep(for: .milliseconds(500))
+            guard !appLockService.isEnabled || !appLockService.isLocked else { return }
+            GameCenterService.shared.authenticate()
         }
     }
 

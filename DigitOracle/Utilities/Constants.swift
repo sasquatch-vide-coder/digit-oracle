@@ -64,6 +64,16 @@ enum Constants {
         static let defaultTimeout = 0  // immediate
     }
 
+    enum Duplicates {
+        static let hashDistanceThreshold = 5
+    }
+
+    enum GameCenter {
+        static let leaderboardTotalSightings = "com.digitoracle.app.lb.totalSightings"
+        static let leaderboardLongestStreak = "com.digitoracle.app.lb.longestStreak"
+        static let achievementPrefix = "com.digitoracle.app.ach."
+    }
+
     enum TrackedNumbers {
         static let maxTrackedNumbers = 10
         static let defaultNumbers: [Int] = [47]

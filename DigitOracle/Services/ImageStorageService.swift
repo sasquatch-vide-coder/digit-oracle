@@ -176,6 +176,12 @@ final class ImageStorageService {
         return (va ^ vb).nonzeroBitCount
     }
 
+    /// Returns true if two perceptual hashes are within the duplicate threshold.
+    static func isPerceptualDuplicate(_ a: String, _ b: String) -> Bool {
+        guard let distance = hashDistance(a, b) else { return false }
+        return distance <= Constants.Duplicates.hashDistanceThreshold
+    }
+
     // MARK: - Orientation Normalization
 
     private func normalizeOrientation(_ image: UIImage) -> UIImage {

@@ -84,7 +84,7 @@ struct ShareCardView: View {
                 // Category + Location
                 VStack(alignment: .leading, spacing: 6) {
                     if let category = sighting.category {
-                        Label(category.capitalized, systemImage: categoryIcon(for: category))
+                        Label(category.capitalized, systemImage: SightingCategory(rawValue: category)?.iconName ?? "tag.fill")
                             .font(.system(size: 16, weight: .medium))
                             .foregroundStyle(CardColor.textSecondary)
                     }
@@ -129,15 +129,4 @@ struct ShareCardView: View {
         .background(CardColor.bgPrimary)
     }
 
-    private func categoryIcon(for category: String) -> String {
-        switch category {
-        case "printed": "book.fill"
-        case "digital": "desktopcomputer"
-        case "natural": "leaf.fill"
-        case "handwritten": "pencil"
-        case "architectural": "building.2.fill"
-        case "serendipitous": "sparkles"
-        default: "tag.fill"
-        }
-    }
 }

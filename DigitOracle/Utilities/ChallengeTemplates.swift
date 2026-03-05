@@ -17,7 +17,7 @@ enum ChallengeReward {
 
     var displayText: String {
         switch self {
-        case .streakFreeze(let count): "\(count) streak freeze\(count == 1 ? "" : "s")"
+        case .streakFreeze(let count): count.pluralized("streak freeze")
         case .none: "Bragging rights"
         }
     }

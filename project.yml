@@ -23,12 +23,13 @@ targets:
       properties:
         com.apple.security.application-groups:
           - group.com.digitoracle.app
+        com.apple.developer.game-center: true
     settings:
       base:
         INFOPLIST_FILE: DigitOracle/Info.plist
         PRODUCT_BUNDLE_IDENTIFIER: com.digitoracle.app
         MARKETING_VERSION: "0.47.0"
-        CURRENT_PROJECT_VERSION: "19"
+        CURRENT_PROJECT_VERSION: "20"
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
     info:
@@ -66,12 +67,15 @@ targets:
         embed: true
       - target: DigitOracleShareExtension
         embed: true
+      - framework: GameKit.framework
+        embed: false
 
   DigitOracleWidget:
     type: app-extension
     platform: iOS
     sources:
       - path: DigitOracleWidget
+      - path: DigitOracle/Utilities/Constants.swift
     entitlements:
       path: DigitOracleWidget/DigitOracleWidget.entitlements
       properties:
@@ -81,7 +85,7 @@ targets:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.digitoracle.app.widget
         MARKETING_VERSION: "0.47.0"
-        CURRENT_PROJECT_VERSION: "19"
+        CURRENT_PROJECT_VERSION: "20"
         INFOPLIST_FILE: DigitOracleWidget/Info.plist
     info:
       path: DigitOracleWidget/Info.plist
@@ -114,7 +118,7 @@ targets:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.digitoracle.app.share
         MARKETING_VERSION: "0.47.0"
-        CURRENT_PROJECT_VERSION: "19"
+        CURRENT_PROJECT_VERSION: "20"
         INFOPLIST_FILE: DigitOracleShareExtension/Info.plist
     info:
       path: DigitOracleShareExtension/Info.plist

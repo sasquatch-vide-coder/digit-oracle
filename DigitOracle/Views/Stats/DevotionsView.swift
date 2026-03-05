@@ -56,8 +56,7 @@ struct DevotionsView: View {
             }
             .frame(height: 200)
         }
-        .padding()
-        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16))
+        .oracleCard()
     }
 
     // MARK: - Devotion Legend
@@ -83,8 +82,7 @@ struct DevotionsView: View {
                 }
             }
         }
-        .padding()
-        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16))
+        .oracleCard()
     }
 
     // MARK: - Colors

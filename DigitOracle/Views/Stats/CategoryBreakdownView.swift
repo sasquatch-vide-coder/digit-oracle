@@ -57,8 +57,7 @@ struct VesselsView: View {
             .chartXAxis(.hidden)
             .frame(height: CGFloat(stats.categoryBreakdown.count) * 44)
         }
-        .padding()
-        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16))
+        .oracleCard()
     }
 
     // MARK: - Vessel Legend
@@ -89,8 +88,7 @@ struct VesselsView: View {
                 }
             }
         }
-        .padding()
-        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16))
+        .oracleCard()
     }
 
     // MARK: - Colors

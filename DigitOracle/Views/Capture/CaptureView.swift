@@ -380,7 +380,10 @@ struct CaptureView: View {
         }
 
         if let hash = ImageStorageService.perceptualHash(of: image),
-           existing.contains(where: { $0.imageHash == hash }) {
+           existing.contains(where: {
+               guard let existingHash = $0.imageHash else { return false }
+               return ImageStorageService.isPerceptualDuplicate(existingHash, hash)
+           }) {
             selectedItem = nil
             showDuplicateAlert = true
             return
