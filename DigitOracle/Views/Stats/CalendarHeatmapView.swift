@@ -169,7 +169,7 @@ private struct YearlyHeatmapSection: View {
     }
 
     private var yearStart: Date {
-        calendar.date(from: DateComponents(year: currentYear, month: 1, day: 1))!
+        calendar.date(from: DateComponents(year: currentYear, month: 1, day: 1)) ?? Date()
     }
 
     private var yearTotal: Int {
@@ -185,10 +185,10 @@ private struct YearlyHeatmapSection: View {
         let startWeekday = calendar.component(.weekday, from: yearStart) - 1 // 0 = Sunday
 
         // Find the last day to show (today or Dec 31, whichever is earlier)
-        let yearEnd = calendar.date(from: DateComponents(year: currentYear, month: 12, day: 31))!
+        let yearEnd = calendar.date(from: DateComponents(year: currentYear, month: 12, day: 31)) ?? today
         let lastDay = min(today, yearEnd)
 
-        let totalDays = calendar.dateComponents([.day], from: yearStart, to: lastDay).day! + 1
+        let totalDays = (calendar.dateComponents([.day], from: yearStart, to: lastDay).day ?? 0) + 1
         let totalSlots = startWeekday + totalDays
         let weekCount = (totalSlots + 6) / 7
 
@@ -222,7 +222,7 @@ private struct YearlyHeatmapSection: View {
             // Only show months that have started
             if firstOfMonth > Date.now { break }
 
-            let dayOffset = calendar.dateComponents([.day], from: yearStart, to: firstOfMonth).day!
+            let dayOffset = calendar.dateComponents([.day], from: yearStart, to: firstOfMonth).day ?? 0
             let startWeekday = calendar.component(.weekday, from: yearStart) - 1
             let weekIndex = (startWeekday + dayOffset) / 7
             markers.append((months[month - 1], weekIndex))

@@ -77,19 +77,28 @@ final class LocationService: NSObject, CLLocationManagerDelegate {
 
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let location = locations.last
-        lastLocation = location
-        isLoading = false
-        continuation?.resume(returning: location)
+        let c = continuation
         continuation = nil
+        Task { @MainActor in
+            self.lastLocation = location
+            self.isLoading = false
+        }
+        c?.resume(returning: location)
     }
 
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        isLoading = false
-        continuation?.resume(returning: nil)
+        let c = continuation
         continuation = nil
+        Task { @MainActor in
+            self.isLoading = false
+        }
+        c?.resume(returning: nil)
     }
 
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
-        authorizationStatus = manager.authorizationStatus
+        let status = manager.authorizationStatus
+        Task { @MainActor in
+            self.authorizationStatus = status
+        }
     }
 }

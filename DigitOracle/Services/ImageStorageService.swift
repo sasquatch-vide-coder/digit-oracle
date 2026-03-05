@@ -130,7 +130,19 @@ final class ImageStorageService {
     /// Computes an 8x8 average perceptual hash for duplicate detection.
     /// Returns a 16-character hex string, or nil if the image can't be processed.
     static func perceptualHash(of image: UIImage) -> String? {
-        guard let cgImage = image.cgImage else { return nil }
+        // Normalize orientation so the same photo always produces the same hash
+        // regardless of whether it was loaded via PHImageManager or PhotosPicker
+        let cgImage: CGImage
+        if image.imageOrientation == .up, let cg = image.cgImage {
+            cgImage = cg
+        } else {
+            let renderer = UIGraphicsImageRenderer(size: image.size)
+            let normalized = renderer.image { _ in
+                image.draw(in: CGRect(origin: .zero, size: image.size))
+            }
+            guard let cg = normalized.cgImage else { return nil }
+            cgImage = cg
+        }
 
         let size = 8
         let colorSpace = CGColorSpaceCreateDeviceGray()

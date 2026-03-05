@@ -35,8 +35,10 @@ final class PhotoLibraryImageService {
                 options: options
             ) { image, info in
                 let isDegraded = (info?[PHImageResultIsDegradedKey] as? Bool) ?? false
-                if !isDegraded {
-                    continuation.resume(returning: image)
+                let isCancelled = (info?[PHImageCancelledKey] as? Bool) ?? false
+                let hasError = info?[PHImageErrorKey] != nil
+                if !isDegraded || isCancelled || hasError {
+                    continuation.resume(returning: isDegraded ? nil : image)
                 }
             }
         }

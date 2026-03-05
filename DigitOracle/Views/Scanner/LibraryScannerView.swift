@@ -270,6 +270,22 @@ struct LibraryScannerView: View {
     }
 
     private func saveSighting(from result: LibraryScanResult) {
+        // Safety-net duplicate check: sourceIdentifier
+        if importedIdentifiers.contains(result.id) { return }
+        // Safety-net duplicate check: perceptual hash
+        if let newHash = result.hash,
+           importedHashes.contains(where: { ImageStorageService.isPerceptualDuplicate($0, newHash) }) {
+            return
+        }
+        // Also check SwiftData for anything saved since scan started
+        let allExisting = (try? modelContext.fetch(FetchDescriptor<Sighting>())) ?? []
+        if allExisting.contains(where: { $0.sourceIdentifier == result.id }) { return }
+        if let newHash = result.hash,
+           allExisting.contains(where: {
+               guard let h = $0.imageHash else { return false }
+               return ImageStorageService.isPerceptualDuplicate(h, newHash)
+           }) { return }
+
         let sightingID = UUID()
         let ownerID = Constants.defaultOwnerID
 
@@ -301,6 +317,10 @@ struct LibraryScannerView: View {
             modelContext.insert(sighting)
             savedCount += 1
             unsavedCount += 1
+
+            // Accumulate within-session dedup state
+            importedIdentifiers.insert(result.id)
+            if let hash = result.hash { importedHashes.append(hash) }
 
             // Batch save every 20 sightings
             if unsavedCount >= 20 {

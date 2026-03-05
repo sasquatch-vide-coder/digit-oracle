@@ -1,6 +1,7 @@
 import AVFoundation
 import Vision
 import CoreVideo
+import os
 
 @Observable
 final class LiveDetectorService: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate {
@@ -16,7 +17,7 @@ final class LiveDetectorService: NSObject, AVCaptureVideoDataOutputSampleBufferD
 
     let processingQueue = DispatchQueue(label: "com.digitoracle.live-detector")
     private var consecutiveDetections = 0
-    private var isProcessingFrame = false
+    private let isProcessingFrame = OSAllocatedUnfairLock(initialState: false)
     private var lastProcessTime: Date = .distantPast
     private var cooldownUntil: Date = .distantPast
     private var cooldownTimer: Timer?
@@ -88,7 +89,7 @@ final class LiveDetectorService: NSObject, AVCaptureVideoDataOutputSampleBufferD
         matchCount = 0
         isInCooldown = false
         cooldownRemaining = 0
-        isProcessingFrame = false
+        isProcessingFrame.withLock { $0 = false }
         lastProcessTime = .distantPast
     }
 
@@ -101,25 +102,23 @@ final class LiveDetectorService: NSObject, AVCaptureVideoDataOutputSampleBufferD
         // Throttle to ~2 fps
         let throttle = UserDefaults.standard.object(forKey: Constants.LiveDetector.throttleIntervalKey) as? TimeInterval ?? Constants.LiveDetector.throttleInterval
         guard now.timeIntervalSince(lastProcessTime) >= throttle else { return }
-        guard !isProcessingFrame else { return }
-
-        isProcessingFrame = true
+        guard isProcessingFrame.withLock({ guard !$0 else { return false }; $0 = true; return true }) else { return }
         lastProcessTime = now
 
         guard let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else {
-            isProcessingFrame = false
+            isProcessingFrame.withLock { $0 = false }
             return
         }
 
         let patterns = cachedPatterns
         guard !patterns.isEmpty else {
-            isProcessingFrame = false
+            isProcessingFrame.withLock { $0 = false }
             return
         }
 
         let request = VNRecognizeTextRequest { [weak self] request, error in
             guard let self else { return }
-            defer { self.isProcessingFrame = false }
+            defer { self.isProcessingFrame.withLock { $0 = false } }
 
             guard let observations = request.results as? [VNRecognizedTextObservation] else {
                 self.updateDetections([], count: 0)
@@ -158,7 +157,7 @@ final class LiveDetectorService: NSObject, AVCaptureVideoDataOutputSampleBufferD
         do {
             try handler.perform([request])
         } catch {
-            isProcessingFrame = false
+            isProcessingFrame.withLock { $0 = false }
         }
     }
 

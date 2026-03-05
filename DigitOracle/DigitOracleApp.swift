@@ -105,17 +105,31 @@ struct DigitOracleApp: App {
         let context = container.mainContext
         guard let sightings = try? context.fetch(FetchDescriptor<Sighting>()) else { return }
 
+        // Extract value-type data before leaving the main actor
+        struct MigrationItem {
+            let imageFileName: String
+            let sourceIdentifier: String
+        }
+        let items: [(sighting: Sighting, info: MigrationItem)] = sightings.compactMap { sighting in
+            guard sighting.hasLocalFullImage, let sourceID = sighting.sourceIdentifier else { return nil }
+            return (sighting, MigrationItem(imageFileName: sighting.imageFileName, sourceIdentifier: sourceID))
+        }
+
         Task.detached(priority: .background) {
-            var migrated = 0
-            for sighting in sightings where sighting.hasLocalFullImage && sighting.sourceIdentifier != nil {
-                if PhotoLibraryImageService.shared.assetExists(identifier: sighting.sourceIdentifier!) {
-                    try? ImageStorageService.shared.deleteImage(fileName: sighting.imageFileName)
-                    await MainActor.run { sighting.hasLocalFullImage = false }
-                    migrated += 1
+            var migratedSightings: [Sighting] = []
+            for item in items {
+                if PhotoLibraryImageService.shared.assetExists(identifier: item.info.sourceIdentifier) {
+                    try? ImageStorageService.shared.deleteImage(fileName: item.info.imageFileName)
+                    migratedSightings.append(item.sighting)
                 }
             }
-            if migrated > 0 {
-                await MainActor.run { try? context.save() }
+            if !migratedSightings.isEmpty {
+                await MainActor.run {
+                    for sighting in migratedSightings {
+                        sighting.hasLocalFullImage = false
+                    }
+                    try? context.save()
+                }
             }
             await MainActor.run {
                 UserDefaults.standard.set(true, forKey: key)
@@ -135,14 +149,23 @@ struct DigitOracleApp: App {
         let context = container.mainContext
         guard let sightings = try? context.fetch(FetchDescriptor<Sighting>()) else { return }
 
-        let needsBackfill = sightings.filter { $0.latitude != nil && $0.longitude != nil && ($0.locationName == nil || $0.locationName!.isEmpty) }
+        let needsBackfill = sightings.filter { $0.latitude != nil && $0.longitude != nil && ($0.locationName?.isEmpty ?? true) }
         guard !needsBackfill.isEmpty else { return }
+
+        // Extract coordinates before leaving the main actor
+        struct BackfillItem {
+            let latitude: Double
+            let longitude: Double
+        }
+        let items: [(sighting: Sighting, coords: BackfillItem)] = needsBackfill.compactMap { sighting in
+            guard let lat = sighting.latitude, let lon = sighting.longitude else { return nil }
+            return (sighting, BackfillItem(latitude: lat, longitude: lon))
+        }
 
         Task.detached(priority: .utility) {
             let geocoder = CLGeocoder()
-            for sighting in needsBackfill {
-                guard let lat = sighting.latitude, let lon = sighting.longitude else { continue }
-                let location = CLLocation(latitude: lat, longitude: lon)
+            for item in items {
+                let location = CLLocation(latitude: item.coords.latitude, longitude: item.coords.longitude)
                 if let placemarks = try? await geocoder.reverseGeocodeLocation(location),
                    let placemark = placemarks.first {
                     var parts: [String] = []
@@ -153,7 +176,7 @@ struct DigitOracleApp: App {
                         parts.removeFirst()
                     }
                     let locationName = parts.joined(separator: ", ")
-                    await MainActor.run { sighting.locationName = locationName }
+                    await MainActor.run { item.sighting.locationName = locationName }
                 }
                 // Rate limit geocoding requests
                 try? await Task.sleep(for: .milliseconds(200))
